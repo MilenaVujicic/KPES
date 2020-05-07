@@ -1,4 +1,4 @@
-package model;
+package com.sample.model;
 
 public class Tuzilac {
 
