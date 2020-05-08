@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tuzioci>
+    <tuzilacTip>
+        <naziv>Osnovni javni tuzilac</naziv>
+    </tuzilacTip>
+    <tuzilacTip>
+        <naziv>Visi javni tuzilac</naziv>
+    </tuzilacTip>
+    <tuzilacTip>
+        <naziv>Tuzilac za maloletnike</naziv>
+    </tuzilacTip>
+    <tuzilacTip>
+        <naziv>Tuzilac za organizovani kriminal</naziv>
+    </tuzilacTip>
+    <tuzilacTip>
+        <naziv>Tuzilac za ratne zlocine</naziv>
+    </tuzilacTip>
+</tuzioci>
