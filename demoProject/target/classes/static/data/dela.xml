@@ -131,7 +131,7 @@
         <maxKazna>100.0</maxKazna>
         <clan>114</clan>
         <minKazna>10.0</minKazna>
-        <naziv>Tesko uboistvo</naziv>
+        <naziv>Tesko ubistvo</naziv>
         <opstaObelezja>Izvrsilac:svako:</opstaObelezja>
         <opstaObelezja>Vreme:svako</opstaObelezja>
         <opstaObelezja>Mesto:svako</opstaObelezja>
@@ -192,7 +192,7 @@
     </delo>
     <delo>
         <maxKazna>8.0</maxKazna>
-        <clan>114</clan>
+        <clan>115</clan>
         <minKazna>1.0</minKazna>
         <naziv>Ubistvo na mah</naziv>
         <opstaObelezja>Izvrsilac:svako:</opstaObelezja>
