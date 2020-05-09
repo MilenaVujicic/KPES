@@ -1,14 +1,35 @@
 package com.sample.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Delo {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column
 	private String naziv;
+	@Column
 	private double maxKazna;
+	@Column
 	private double minKazna;
+	@Column
 	private int clan;
+	
+	@OneToOne(cascade = CascadeType.ALL)
 	private Obelezje opsteObelezje;
+	@OneToOne(cascade = CascadeType.ALL)
 	private Obelezje posebnoObelezje;
+	@Column
 	private int stav;
+	@Column
 	private int tacka;
 	
 	public Delo() {

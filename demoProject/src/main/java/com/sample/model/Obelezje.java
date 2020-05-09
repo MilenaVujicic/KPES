@@ -1,18 +1,40 @@
 package com.sample.model;
 
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
+@Entity
 public class Obelezje {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column
 	private String izvrsilac;
+	@Column
 	private String vreme;
+	@Column
 	private String mesto;
+	@Column
 	private String radnja;
+	@Column
 	private String posledica;
+	@Column
 	private String subjektivanOdnos;
-	private List<String> zrtva;
+	@Column
+	private String zrtva;
+	@Column
 	private String nacin;
 	
+	@OneToOne(mappedBy = "opsteObelezje")
+	private Delo delo1;
+	
+	@OneToOne(mappedBy = "posebnoObelezje")
+	private Delo delo2;
 	public Obelezje() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -66,11 +88,11 @@ public class Obelezje {
 		this.subjektivanOdnos = subjektivanOdnos;
 	}
 
-	public List<String> getZrtva() {
+	public String getZrtva() {
 		return zrtva;
 	}
 
-	public void setZrtva(List<String> zrtva) {
+	public void setZrtva(String zrtva) {
 		this.zrtva = zrtva;
 	}
 
