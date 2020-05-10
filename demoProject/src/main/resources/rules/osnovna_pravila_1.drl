@@ -1,0 +1,54 @@
+//created on: 10-May-2020
+package rules
+
+//list any import classes here.
+import com.sample.model.Obelezje;
+import com.sample.model.Delo;
+import com.sample.model.Tuzilac;
+import com.sample.model.TipTuzioca;
+
+
+//declare any global variables here
+
+
+rule "Ako je ubistvo iz nehata, gleda se član 118"
+	lock-on-active true
+    when
+        $o: Obelezje( subjektivanOdnos == "nehat");
+    then
+        $o.getDelo1().setClan(118);
+        update($o);
+
+end
+
+rule "Ako je u pitanju krađa, a žrtva je starija od 18 godina, opcija 1"
+	lock-on-active true
+    when
+        $o: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje", zrtva == ">18");
+    then
+        $o.getDelo1().setClan(114);
+        $o.getDelo1().setStav(1);
+        $o.getDelo1().setTacka(4);
+        update($o);
+
+end
+
+rule "Ako je u pitanju krađa, a žrtva je starija od 18 godina, opcija 2"
+	lock-on-active true
+    when
+        $o1: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje" && zrtva == ">18");
+    then
+        $o1.getDelo1().setClan(114);
+        $o1.getDelo1().setStav(1);
+        $o1.getDelo1().setTacka(9);
+        update($o1);
+end
+
+rule "Ako je maksimalna kazna manja od 10 godina zatvora"
+	lock-on-active true
+	when
+		Delo( maxKazna < 10);
+	then
+		insert (new Tuzilac(TipTuzioca.OSNOVNI_JAVNI_TUZILAC));
+end
+

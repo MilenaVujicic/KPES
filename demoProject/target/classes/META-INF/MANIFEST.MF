@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: Drools :: Sample Maven Project
 Implementation-Version: 1.0.0-SNAPSHOT
-Built-By: Mimi
+Built-By: Andrea
 Implementation-Vendor-Id: com.sample
 Build-Jdk: 1.8.0_241
 Created-By: Maven Integration for Eclipse

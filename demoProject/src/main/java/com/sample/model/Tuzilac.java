@@ -22,6 +22,13 @@ public class Tuzilac {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Tuzilac(TipTuzioca tip) {
+		super();
+		this.tip = tip;
+	}
+
+
+
 	public TipTuzioca getTip() {
 		return tip;
 	}
