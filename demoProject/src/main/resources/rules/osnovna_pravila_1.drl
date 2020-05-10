@@ -15,8 +15,9 @@ rule "Ako je ubistvo iz nehata, gleda se član 118"
 	lock-on-active true
     when
         $o: Obelezje( subjektivanOdnos == "nehat");
+        $d: Delo (clan == 118);
     then
-        $o.getDelo1().setClan(118);
+        $o.setDelo1($d);
         update($o);
 
 end
@@ -25,10 +26,9 @@ rule "Ako je u pitanju krađa, a žrtva je starija od 18 godina, opcija 1"
 	lock-on-active true
     when
         $o: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje", zrtva == ">18");
+        $d: Delo(clan == 114, stav == 1, tacka == 4);
     then
-        $o.getDelo1().setClan(114);
-        $o.getDelo1().setStav(1);
-        $o.getDelo1().setTacka(4);
+        $o.setDelo1($d);
         update($o);
 
 end
@@ -37,6 +37,7 @@ rule "Ako je u pitanju krađa, a žrtva je starija od 18 godina, opcija 2"
 	lock-on-active true
     when
         $o1: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje" && zrtva == ">18");
+        
     then
         $o1.getDelo1().setClan(114);
         $o1.getDelo1().setStav(1);
