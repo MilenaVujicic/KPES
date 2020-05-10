@@ -1,6 +1,12 @@
 package com.sample
  
 import com.sample.DroolsTest.Message;
+
+import com.sample.model.Delo;
+import com.sample.model.Dokaz;
+import com.sample.model.Obelezje;
+import com.sample.model.Tuzilac;
+import com.sample.model.TipTuzioca;
  
 rule "Hello World"
     when
@@ -17,4 +23,65 @@ rule "GoodBye"
         Message( status == Message.GOODBYE, myMessage : message )
     then
         System.out.println( myMessage );
+end
+
+rule "Veća Kazna"
+	no-loop true
+	when
+		d : Delo(maxKazna > 10)
+		t : Tuzilac(  )
+	then
+		t.setTip(TipTuzioca.VISI_JAVNI_TUZILAC);
+		System.out.println( "Tip tuzioca je: "+ t.getTip() );
+		update( t );
+end
+
+rule "Manja Kazna"
+	no-loop true
+	when
+		d : Delo(maxKazna < 10)
+		t : Tuzilac(  )
+	then
+		t.setTip(TipTuzioca.OSNOVNI_JAVNI_TUZILAC);
+		System.out.println( "Tip tuzioca je: "+ t.getTip() );
+		update( t );
+end
+
+rule "114.1.9"
+	no-loop true
+	when
+		d : Delo()
+		o : Obelezje(subjektivanOdnos == "Umisljaj", zrtva == "<18"  )
+	then
+		d.setClan(114);
+		d.setStav(1);
+		d.setTacka(9);
+		System.out.println( "Clan 114.1.9 " );
+		update( d );
+end
+
+rule "114.1.4"
+	no-loop true
+	when
+		d : Delo()
+		o : Obelezje(radnja  == "Kradja", zrtva == ">18"  )
+	then
+		d.setClan(114);
+		d.setStav(1);
+		d.setTacka(4);
+		System.out.println( "Clan 114.1.4 " );
+		update( d );
+end
+
+rule "114.1.11"
+	no-loop true
+	when
+		d : Delo()
+		o : Obelezje( zrtva == "sve zrtve&>18"  )
+	then
+		d.setClan(114);
+		d.setStav(1);
+		d.setTacka(11);
+		System.out.println( "Clan 114.1.11 " );
+		update( d );
 end
