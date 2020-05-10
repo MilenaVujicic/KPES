@@ -1,4 +1,4 @@
-package testovi;
+package com.sample;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sample.model.Delo;
 import com.sample.model.Obelezje;
@@ -21,6 +24,8 @@ import com.sample.service.DeloService;
 import com.sample.service.ObelezjeService;
 import com.sample.unit.KnowledgeSessionHelper;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes={StartApp.class})
 public class Testiranje {
 
 	@Autowired
@@ -33,8 +38,8 @@ public class Testiranje {
 	static KieContainer kieContainer;
 	
 	
-	@BeforeClass
-	public static void beforeClass() {
+	@Before
+	public void beforeClass() {
 		kieContainer = KnowledgeSessionHelper.createRuleBase();
 	}
 	
@@ -64,6 +69,7 @@ public class Testiranje {
 		
 		List<Obelezje> obelezija = obelezjeService.findAll();
 		System.out.println("###" + obelezija.size());
+		
 		
 		kSession.insert(o1);
 		kSession.insert(o2);

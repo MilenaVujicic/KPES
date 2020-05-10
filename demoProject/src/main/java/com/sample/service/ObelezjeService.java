@@ -12,7 +12,7 @@ import com.sample.repository.ObelezjeRepository;
 public class ObelezjeService {
 
 	@Autowired
-	public ObelezjeRepository obelezjeRepository;
+	ObelezjeRepository obelezjeRepository;
 	
 	public List<Obelezje> findAll() {
 		return obelezjeRepository.findAll();
