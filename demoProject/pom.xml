@@ -16,6 +16,7 @@
     <runtime.version>6.4.0.Final</runtime.version>
   </properties>
 
+
 <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -42,48 +43,66 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        
         <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-orm</artifactId>
-</dependency>
-  <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-orm</artifactId>
+		</dependency>
+		
+  		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		
-  	 <dependency>
+		
+    	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        
+  	 	<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
-    <dependency>
-      <groupId>org.kie</groupId>
-      <artifactId>kie-api</artifactId>
-      <version>${runtime.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-core</artifactId>
-      <version>${runtime.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-decisiontables</artifactId>
-      <version>${runtime.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jbpm</groupId>
-      <artifactId>jbpm-test</artifactId>
-      <version>${runtime.version}</version>
-    </dependency>
+        
+	    <dependency>
+	      <groupId>org.kie</groupId>
+	      <artifactId>kie-api</artifactId>
+	      <version>${runtime.version}</version>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>org.drools</groupId>
+	      <artifactId>drools-core</artifactId>
+	      <version>${runtime.version}</version>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>org.drools</groupId>
+	      <artifactId>drools-decisiontables</artifactId>
+	      <version>${runtime.version}</version>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-test</artifactId>
+	      <version>${runtime.version}</version>
+	    </dependency>
   </dependencies>
   
    <build>

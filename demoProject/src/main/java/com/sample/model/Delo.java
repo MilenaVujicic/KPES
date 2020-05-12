@@ -22,7 +22,6 @@ public class Delo {
 	private double minKazna;
 	@Column
 	private int clan;
-	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Obelezje opsteObelezje;
 	@OneToOne(cascade = CascadeType.ALL)

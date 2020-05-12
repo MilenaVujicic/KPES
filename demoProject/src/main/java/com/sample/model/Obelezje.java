@@ -103,6 +103,24 @@ public class Obelezje {
 	public void setNacin(String nacin) {
 		this.nacin = nacin;
 	}
+	
+	
+
+	public Delo getDelo1() {
+		return delo1;
+	}
+
+	public void setDelo1(Delo delo1) {
+		this.delo1 = delo1;
+	}
+
+	public Delo getDelo2() {
+		return delo2;
+	}
+
+	public void setDelo2(Delo delo2) {
+		this.delo2 = delo2;
+	}
 
 	@Override
 	public String toString() {

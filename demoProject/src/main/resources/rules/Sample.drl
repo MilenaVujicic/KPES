@@ -1,5 +1,5 @@
-package com.sample
- 
+package rules
+
 import com.sample.DroolsTest.Message;
 
 import com.sample.model.Delo;
