@@ -16,27 +16,27 @@
     <runtime.version>6.4.0.Final</runtime.version>
   </properties>
 
-	<parent>
-	    <groupId>org.springframework.boot</groupId>
-	    <artifactId>spring-boot-starter-parent</artifactId>
-	    <version>1.5.1.RELEASE</version>
-	</parent>
-	
-	  <repositories>
-	    <repository>
-	      <id>jboss-public-repository-group</id>
-	      <name>JBoss Public Repository Group</name>
-	      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-	      <releases>
-	        <enabled>true</enabled>
-	        <updatePolicy>never</updatePolicy>
-	      </releases>
-	      <snapshots>
-	        <enabled>true</enabled>
-	        <updatePolicy>daily</updatePolicy>
-	      </snapshots>
-	    </repository>
-	  </repositories>
+
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.5.1.RELEASE</version>
+</parent>
+  <repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencies>
         <dependency>

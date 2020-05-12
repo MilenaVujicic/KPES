@@ -4,6 +4,10 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import com.sample.model.Delo;
+import com.sample.model.Obelezje;
+import com.sample.model.Tuzilac;
+
 /**
  * This is a sample class to launch a rule.
  */
@@ -21,6 +25,17 @@ public class DroolsTest {
             message.setMessage("Hello World");
             message.setStatus(Message.HELLO);
             kSession.insert(message);
+            
+            Delo d1 = new Delo();
+            d1.setMaxKazna(16);
+            Tuzilac t1 = new Tuzilac();
+            Obelezje o1 = new Obelezje();
+            o1.setRadnja("Kradja");
+            o1.setZrtva(">18");
+            kSession.insert(o1);
+            kSession.insert(d1);
+            kSession.insert(t1);
+            
             kSession.fireAllRules();
         } catch (Throwable t) {
             t.printStackTrace();
