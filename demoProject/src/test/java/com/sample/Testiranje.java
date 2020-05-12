@@ -58,12 +58,14 @@ public class Testiranje {
 		kSession.insert(o2);
 		kSession.getAgenda().getAgendaGroup("odredjivanjeClana").setFocus();
 		int firedFirstTime = kSession.fireAllRules();
+		System.out.println(firedFirstTime);
 
 		kSession.getAgenda().getAgendaGroup("odredjivanjeTuzioca").setFocus();
 		int firedSecondTime = kSession.fireAllRules();
+		System.out.println(firedSecondTime);
 		
 		assertEquals(2, firedFirstTime);
 		assertEquals(1, firedSecondTime);
-		assertEquals(118, o1.getDelo1().getClan());
+		assertEquals(118, o1.getDelo2().getClan());
 	}
 }

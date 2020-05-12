@@ -27,7 +27,7 @@ rule "Ako je u pitanju krađa, a žrtva je starija od 18 godina, opcija 1"
 	agenda-group "odredjivanjeClana"
 	lock-on-active true
     when
-        $o: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje", zrtva == ">18", delo1 == null );
+        $o: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje", zrtva == ">18", delo2 == null );
         $d: Delo(clan == 114, stav == 1, tacka == 4);
     then
         $o.setDelo2($d);
@@ -39,7 +39,7 @@ rule "Ako je u pitanju krađa, a žrtva je starija od 18 godina, opcija 2"
 	agenda-group "odredjivanjeClana"
 	lock-on-active true
     when
-        $o: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje" && zrtva == ">18", delo1 == null);
+        $o: Obelezje( radnja == "tokom razbojnistva ili razbojnicke kradje" && zrtva == ">18", delo2 == null);
         $d: Delo(clan == 114, stav == 1, tacka == 9);
     then
         $o.setDelo2($d);
@@ -50,7 +50,7 @@ rule "Ako je maksimalna kazna manja od 10 godina zatvora"
 	agenda-group "odredjivanjeTuzioca"
 	lock-on-active true
 	when
-		Obelezje( $delo : delo1 )
+		Obelezje( $delo : delo2 )
 		Delo (this == $delo, minKazna < 10)
 	then
 		System.out.println("Osnovi javni");
