@@ -20,7 +20,6 @@ rule "Ako je ubistvo iz nehata, gleda se član 118"
     then
         $o.setDelo2($d);
         update($o);
-
 end
 
 rule "Ako je u pitanju krađa, a žrtva je starija od 18 godina, opcija 1"

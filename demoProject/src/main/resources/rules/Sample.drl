@@ -36,17 +36,6 @@ rule "Veća Kazna"
 		update( t );
 end
 
-rule "Manja Kazna"
-	no-loop true
-	when
-		d : Delo(maxKazna < 10)
-		t : Tuzilac(  )
-	then
-		t.setTip(TipTuzioca.OSNOVNI_JAVNI_TUZILAC);
-		System.out.println( "Tip tuzioca je: "+ t.getTip() );
-		update( t );
-end
-
 rule "114.1.9"
 	no-loop true
 	when
