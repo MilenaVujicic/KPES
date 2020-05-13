@@ -32,3 +32,4 @@ insert into dokaz(clan, stav, tacka, opis) values (0, 0, 0, 'Uzimanje obuce i od
 insert into dokaz(clan, stav, tacka, opis) values (0, 0, 0, 'Uzimanje uredjaja za video nadzor sa lica mesta');
 insert into dokaz(clan, stav, tacka, opis) values (0, 0, 0, 'Vestacenja eksperata');
 insert into dokaz(clan, stav, tacka, opis) values (114, 1, 9, 'Treba pribaviti dokaz o tome da je zrtva dete u vidu izvoda iz maticne knjige rodjenih, odnosno da je zrtva bremenita zena u vidu sudskomedicinskog vestacenja sa posebnim akcentom na tu okolnost');
+insert into dokaz(clan, stav, tacka, opis) values (115, 0, 0, 'Treba privaviti sudskopsihijatrisko i psiholosko vestacenje radi utvrdjivanja da li je ucinilac u vremeizvrsenja krivicnog dela bio u stanju jake razdrazenosti izazvane postupkom zrtve');
