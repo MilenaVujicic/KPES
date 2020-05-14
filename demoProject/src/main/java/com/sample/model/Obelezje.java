@@ -121,12 +121,33 @@ public class Obelezje {
 	public void setDelo2(Delo delo2) {
 		this.delo2 = delo2;
 	}
+	
+	
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	
 	@Override
 	public String toString() {
-		return "Obelezje [izvrsilac=" + izvrsilac + ", vreme=" + vreme + ", mesto=" + mesto + ", radnja=" + radnja
-				+ ", posledica=" + posledica + ", subjektivanOdnos=" + subjektivanOdnos + ", zrtva=" + zrtva
+		return "Obelezje [id=" + id + ", izvrsilac=" + izvrsilac + ", vreme=" + vreme + ", mesto=" + mesto + ", radnja="
+				+ radnja + ", posledica=" + posledica + ", subjektivanOdnos=" + subjektivanOdnos + ", zrtva=" + zrtva
 				+ ", nacin=" + nacin + "]";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		Obelezje o = (Obelezje) obj;
+		if(o.getId().equals(id))
+			return true;
+			
+		return false;
 	}
 	
 	

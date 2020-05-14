@@ -1,29 +1,24 @@
 //created on: May 14, 2020
 package rules
-
 //list any import classes here.
-
-
+import com.sample.DroolsTest.Message;
+import com.sample.model.QueryDataList;
+import com.sample.model.Delo;
 
 //declare any global variables here
 
 
 
 
-rule "Your First Rule"
-
+rule "118"
+	lock-on-active true
     when
-        //conditions
+       $queryMap : QueryDataList(this["subOdnos"] == "nehat");
+       $s : String() from $queryMap.get("subOdnos");
+   	   $o : Obelezje(subjektivanOdnos == $s);
+       $d : Delo(posebnoObelezje.equals( $o));
     then
-        //actions
-
+		insert($d);
+		
 end
 
-rule "Your Second Rule"
-    //include attributes such as "salience" here...
-    when
-        //conditions
-    then
-        //actions
-
-end
