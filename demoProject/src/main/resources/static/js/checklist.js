@@ -41,7 +41,9 @@ function sendData(event){
 		type: 'POST',
 		data: JSON.stringify({starost1: starost1, starost2 : starost2, subOdnos : subOdnos, stanje: stanje, mesto: mesto, radnja: radnja, broj: broj}),
 		contentType: 'application/json',
-		success: function(){
+		success: function(odgovor){
+			localStorage.setItem("response", odgovor);
+			window.location = './list.html';
 		},
 		error: function(){
 			alert('Something went wrong');

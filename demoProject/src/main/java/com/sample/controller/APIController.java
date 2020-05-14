@@ -20,7 +20,8 @@ public class APIController {
 
 	
 	@RequestMapping(value = "/sendData", method = RequestMethod.POST)
-	public ResponseEntity<?> sendData(HttpEntity<String> json) throws ParseException{
+	public ResponseEntity<String> sendData(HttpEntity<String> json) throws ParseException{
+		System.out.println("#######");
 		String jString = json.getBody();
 		System.out.println(jString);
 		QueryDataList.getInstance().clear();
@@ -142,7 +143,7 @@ public class APIController {
 		}
 		
 		System.out.println(QueryDataList.getInstance().toString());
-		return new ResponseEntity<String>("success", HttpStatus.OK);
+		return new ResponseEntity<String>("Tuzilac&Dokazi", HttpStatus.OK);
 	}
 	
 }
