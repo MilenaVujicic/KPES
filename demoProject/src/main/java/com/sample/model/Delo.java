@@ -31,6 +31,7 @@ public class Delo {
 	@Column
 	private int tacka;
 	
+	
 	public Delo() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -98,6 +99,27 @@ public class Delo {
 
 	public void setTacka(int tacka) {
 		this.tacka = tacka;
+	}
+
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		Delo d = (Delo) obj;
+		if(this.id == null || d == null)
+			return false;
+		if(d.getId().equals(id))
+			return true;
+		return false;
 	}
 
 	@Override

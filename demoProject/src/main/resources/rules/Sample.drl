@@ -1,4 +1,4 @@
-package rules
+/*package rules
 
 import com.sample.DroolsTest.Message;
 
@@ -73,4 +73,4 @@ rule "114.1.11"
 		d.setTacka(11);
 		System.out.println( "Clan 114.1.11 " );
 		update( d );
-end
+end*/

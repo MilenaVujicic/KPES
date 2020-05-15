@@ -1,0 +1,59 @@
+//created on: May 14, 2020
+package rules
+//list any import classes here.
+import com.sample.DroolsTest;
+import com.sample.model.QueryDataList;
+import com.sample.model.Delo;
+import com.sample.model.PodaciODelu;
+import com.sample.model.Dokaz;
+import com.sample.model.TipTuzioca;
+import com.sample.model.Tuzilac;
+//declare any global variables here
+
+
+
+
+rule "118"
+	lock-on-active true
+    when
+       $queryMap : QueryDataList(this["subOdnos"] == "nehat");
+       $s : String() from $queryMap.get("subOdnos");
+   	   $o : Obelezje(subjektivanOdnos == $s);
+       $d : Delo(posebnoObelezje.equals( $o));
+    then
+   	 	PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+    	insert($pd);
+		
+end
+
+
+
+rule "tuzilac"
+	no-loop true
+	when
+		$d : Delo(maxKazna < 10);
+		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
+		$t : Tuzilac(tip == TipTuzioca.OSNOVNI_JAVNI_TUZILAC);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+		
+end
+
+rule "118 dokazi"
+	no-loop  true
+	when
+		$d : Delo(clan == 118);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 0);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);
+		
+		
+end
