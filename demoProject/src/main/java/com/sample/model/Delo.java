@@ -111,16 +111,17 @@ public class Delo {
 		this.id = id;
 	}
 
-/*@Override
+	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
 		Delo d = (Delo) obj;
-		
+		if(this.id == null || d == null)
+			return false;
 		if(d.getId().equals(id))
 			return true;
 		return false;
 	}
-*/
+
 	@Override
 	public String toString() {
 		return "Delo [naziv=" + naziv + ", maxKazna=" + maxKazna + ", minKazna=" + minKazna + ", clan=" + clan

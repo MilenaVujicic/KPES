@@ -14,10 +14,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sample.model.Delo;
+import com.sample.model.Dokaz;
 import com.sample.model.Obelezje;
 import com.sample.model.QueryDataList;
+import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
+import com.sample.service.DokazService;
 import com.sample.service.ObelezjeService;
+import com.sample.service.TuzilacService;
 import com.sample.unit.KnowledgeSessionHelper;
 
 @RunWith(SpringRunner.class)
@@ -29,6 +33,12 @@ public class Test2 {
 	
 	@Autowired
 	ObelezjeService obelezjeService;
+	
+	@Autowired
+	DokazService dokazService;
+	
+	@Autowired
+	TuzilacService tuzilacService;
 	
 	KieSession kieSession = null;
 	static KieContainer kieContainer;
@@ -54,9 +64,20 @@ public class Test2 {
 		for(Delo d : dela)
 			kSession.insert(d);
 		
-		int firedFirstTime = kSession.fireAllRules();
+		List<Dokaz> dokazi = dokazService.findAll();
+		for(Dokaz d : dokazi)
+			kSession.insert(d);
 		
-		assertEquals(1, firedFirstTime);
+		List<Tuzilac> tuzioci = tuzilacService.findAll();
+		for(Tuzilac t : tuzioci)
+			kSession.insert(t);
+ 		
+	/*	for(Delo d : dela)
+			System.out.println("J " + d.getClan());*/
+		
+		int firedFirstTime = kSession.fireAllRules();
+		//System.out.println(firedFirstTime);
+		assertEquals(6, firedFirstTime);
 	
 	}
 }
