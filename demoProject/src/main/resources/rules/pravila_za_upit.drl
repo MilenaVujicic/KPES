@@ -16,25 +16,37 @@ import com.sample.model.Tuzilac;
 rule "118"
 	lock-on-active true
     when
-       $queryMap : QueryDataList(this["subOdnos"] == "nehat");
+       $queryMap : QueryDataList(this["subOdnos"] == "Nehat");
        $s : String() from $queryMap.get("subOdnos");
    	   $o : Obelezje(subjektivanOdnos == $s);
-       $d : Delo(posebnoObelezje.equals( $o));
+       $d : Delo(posebnoObelezje.equals($o));
     then
    	 	PodaciODelu $pd = new PodaciODelu($d);
    	 	System.out.println($pd);
-    	insert($pd);
-		
+    	insert($pd);	
 end
 
 
 
-rule "tuzilac"
+rule "tuzilac maksimalna kazna manja od 10"
 	no-loop true
 	when
 		$d : Delo(maxKazna < 10);
 		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
 		$t : Tuzilac(tip == TipTuzioca.OSNOVNI_JAVNI_TUZILAC);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+		
+end
+
+rule "tuzilac maksimalna kazna veca od 10"
+	no-loop true
+	when
+		$d : Delo(maxKazna > 10);
+		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
+		$t : Tuzilac(tip == TipTuzioca.VISI_JAVNI_TUZILAC);
 	then
 		$pd.setTuzilac($t);
 		System.out.println($pd);
