@@ -87,11 +87,11 @@ public class Testiranje {
 		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
 		for (PodaciODelu p : podaci)
 			podaciODelu.add(p);
-		
+
 		PodaciODelu podatakODelu = podaciODelu.get(podaciODelu.size() - 1);
-		
-		assertEquals(TipTuzioca.VISI_JAVNI_TUZILAC, podatakODelu.getTuzilac().getTip());
-		assertEquals(8, podatakODelu.getDokazi().size());
+		System.out.println(podatakODelu.getDokazi());
+		assertEquals(TipTuzioca.OSNOVNI_JAVNI_TUZILAC, podatakODelu.getTuzilac().getTip());
+		assertEquals(4, podatakODelu.getDokazi().size());
 		
 	}
 	
@@ -130,11 +130,11 @@ public class Testiranje {
 		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
 		for (PodaciODelu p : podaci)
 			podaciODelu.add(p);
-		
+
 		PodaciODelu podatakODelu = podaciODelu.get(podaciODelu.size() - 1);
-		
+		System.out.println(podatakODelu.getDokazi());
 		assertEquals(TipTuzioca.VISI_JAVNI_TUZILAC, podatakODelu.getTuzilac().getTip());
-		assertEquals(8, podatakODelu.getDokazi().size());
+		assertEquals(4, podatakODelu.getDokazi().size());
 	}
 	
 	@Test
@@ -172,11 +172,11 @@ public class Testiranje {
 		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
 		for (PodaciODelu p : podaci)
 			podaciODelu.add(p);
-		
+
 		PodaciODelu podatakODelu = podaciODelu.get(podaciODelu.size() - 1);
-		
+		System.out.println(podatakODelu.getDokazi());
 		assertEquals(TipTuzioca.VISI_JAVNI_TUZILAC, podatakODelu.getTuzilac().getTip());
-		assertEquals(8, podatakODelu.getDokazi().size());
+		assertEquals(4, podatakODelu.getDokazi().size());
 	}
 	
 	@Test
@@ -184,7 +184,7 @@ public class Testiranje {
 		KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kieContainer, "ksession-rules");
 		
 		QueryDataList qdl = QueryDataList.getInstance();
-		qdl.put("age2", "Manje od 14");
+		qdl.put("age2", "Izmedju 18 i 14");
 		qdl.put("radnja", "Razbojnistvo");
 		
 		
@@ -214,10 +214,10 @@ public class Testiranje {
 		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
 		for (PodaciODelu p : podaci)
 			podaciODelu.add(p);
-		
+
 		PodaciODelu podatakODelu = podaciODelu.get(podaciODelu.size() - 1);
-		
+		System.out.println(podatakODelu.getDokazi());
 		assertEquals(TipTuzioca.VISI_JAVNI_TUZILAC, podatakODelu.getTuzilac().getTip());
-		assertEquals(2, podatakODelu.getDokazi().size());
+		assertEquals(5, podatakODelu.getDokazi().size());
 	}
 }
