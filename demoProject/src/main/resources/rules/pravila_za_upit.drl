@@ -12,35 +12,6 @@ import com.sample.model.Obelezje;
 //declare any global variables here
 
 
-rule "114.1.9"
-	no-loop true
-	when
-		$queryMap : QueryDataList(this["age2"]=="Izmedju 18 i 14");
-		$s1 : String() from $queryMap.get("age2");
-		$s2 : String() from $queryMap.get("subOdnos");
-		$o : Obelezje(zrtva == $s1, $s2 == "Umisljaj");
-		$d : Delo(posebnoObelezje.equals($o));
-	then
-		PodaciODelu $pd = new PodaciODelu($d);
-   	 	System.out.println($pd);
-   	 	System.out.println("114.1.9");
-    	insert($pd);
-end
-
-rule "114.1.4"
-	no-loop true
-	when
-		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
-		$s1 : String() from $queryMap.get("age2");
-		$s2 : String() from $queryMap.get("radnja");
-		$o : Obelezje(zrtva == $s1, $s2 == "Kradja");
-		$d : Delo(posebnoObelezje.equals($o));
-	then
-		PodaciODelu $pd = new PodaciODelu($d);
-   	 	System.out.println($pd);
-   	 	System.out.println("114.1.4");
-    	insert($pd);
-end
 
 rule "114.1.11"
 	no-loop true
@@ -55,6 +26,77 @@ rule "114.1.11"
    	 	System.out.println($pd);
    	 	System.out.println("114.1.11");
     	insert($pd);
+end
+
+rule "114.1.11 dokazi"
+	no-loop  true
+	when
+		$d : Delo(clan == 114, stav == 1, tacka == 11);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 114, stav == 1, tacka == 11);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);	
+end
+
+rule "113"
+	no-loop true
+	when
+		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
+		$s1 : String() from $queryMap.get("age2");
+		$s2 : String() from $queryMap.get("broj");
+		$o : Obelezje(zrtva == $s1, subjektivanOdnos == "Umisljaj", radnja != "Kradja", $s2 == "Vise");
+		$d : Delo(posebnoObelezje.equals($o));
+	then
+		PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+   	 	System.out.println("113");
+    	insert($pd);
+end
+
+rule "113 dokazi"
+	no-loop  true
+	when
+		$d : Delo(clan == 113);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 0);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);	
+end
+
+rule "114.1.4 or 114.1.9"
+	no-loop true
+	when
+		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
+		$s1 : String() from $queryMap.get("age2");
+		$o : Obelezje(zrtva == $s1, radnja =="Kradja");
+		$d : Delo(posebnoObelezje.equals($o));
+	then
+		PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+   	 	System.out.println("114.1.4 or 114.1.9");
+    	insert($pd);
+end
+
+rule "114.1.4 or 114.1.9 dokazi"
+	no-loop  true
+	when
+		$d : Delo(clan == 114, stav == 1, tacka == 4);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 114, stav == 1, tacka == 4);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);	
 end
 
 rule "118"
