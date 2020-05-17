@@ -16,7 +16,7 @@ import com.sample.model.Obelezje;
 rule "114.1.11"
 	no-loop true
 	when
-		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
+		$queryMap : QueryDataList(this["age2"]=="Vise od 18" && this["izvrsilacStanje"] != "doveden u posebno psihicko stanje");
 		$s2 : String() from $queryMap.get("broj");
 		$o : Obelezje(zrtva == "Vise od 18", $s2 == "Vise");
 		$d : Delo(posebnoObelezje.equals($o));
@@ -41,10 +41,12 @@ rule "114.1.11 dokazi"
 		update($pd);	
 end
 
+
+
 rule "113"
 	no-loop true
 	when
-		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
+		$queryMap : QueryDataList(this["age2"]=="Vise od 18"  && this["izvrsilacStanje"] != "doveden u posebno psihicko stanje" && this["zrtva"] != "poseban status");
 		$s2 : String() from $queryMap.get("broj");
 		$o : Obelezje(zrtva == "Vise od 18", subjektivanOdnos == "Umisljaj", radnja != "Kradja", $s2 == "1");
 		$d : Delo(posebnoObelezje.equals($o));
@@ -113,20 +115,22 @@ end
 rule "310"
 	lock-on-active true
 	when
-		$queryMap: QueryDataList(this["subOdnos"] == "umisljaj" && this["zrtva"] == "poseban status");
+		//System.out.println("RULE 310");
+		$queryMap: QueryDataList(this["subOdnos"] == "Umisljaj" && this["zrtva"] == "poseban status");
 		$s : String() from $queryMap.get("zrtva");
+		//System.out.println($s);
 		$o: Obelezje(zrtva == $s);
 		$d : Delo(posebnoObelezje.equals($o));
 	then
 		PodaciODelu $pd = new PodaciODelu($d);
-		System.out.println($pd);
+		//System.out.println($pd);
 		insert($pd);
 end
 		
 rule "115"
 	lock-on-active true
 	when
-		$queryMap: QueryDataList(this["izvrsilacStanje"] == "doveden u posebno psihicko stanje" && this["subOdnos"] == "umisljaj");
+		$queryMap: QueryDataList(this["izvrsilacStanje"] == "doveden u posebno psihicko stanje" && this["subOdnos"] == "Umisljaj");
 		$s : String() from $queryMap.get("izvrsilacStanje");
 		$o: Obelezje(izvrsilac == $s);
 		$d : Delo(posebnoObelezje.equals($o));
@@ -139,7 +143,7 @@ end
 rule "tuzilac za maloletnike"
 	no-loop true
 	when
-		$queryMap : QueryDataList(this["izvrsilac"] == "Izmedju 18 i 14");
+		$queryMap : QueryDataList(this["age1"] == "Izmedju 18 i 14");
 		$pd : PodaciODelu(tuzilac == null);
 		$t : Tuzilac(tip == TipTuzioca.TUZILAC_ZA_MALOLETNIKE);
 	then
@@ -186,6 +190,9 @@ rule "tuzilac maksimalna kazna veca od 10"
 		update($pd);
 		
 end
+
+
+
 
 rule "118 dokazi"
 	no-loop  true

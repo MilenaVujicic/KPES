@@ -194,7 +194,7 @@ public class APIController {
 			QueryDataList.getInstance().put("broj", broj);
 		}
 		if(status != null && !status.equals("nema podataka")) {
-			QueryDataList.getInstance().put("status", "poseban status");
+			QueryDataList.getInstance().put("zrtva", "poseban status");
 		}
 		if(psih != null && !psih.equals("nema podataka")){
 			QueryDataList.getInstance().put("izvrsilacStanje", "doveden u posebno psihicko stanje");
@@ -226,6 +226,7 @@ public class APIController {
         
 		int fired = kSession.fireAllRules();
 		System.out.println("##" + fired);
+		
 		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
 		String odgovor = "";
@@ -244,6 +245,7 @@ public class APIController {
 		}
 		odgovor = odgovor.replace("_", " ");
 		}
+	
 		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
 	}
 	

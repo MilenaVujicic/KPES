@@ -56,7 +56,7 @@ public class Test2 {
 		//qdl.put("subOdnos", "Nehat");
 		
 		
-		qdl.put("subOdnos", "umisljaj");
+		qdl.put("subOdnos", "Umisljaj");
 		//qdl.put("zrtva", "poseban status");
 		qdl.put("izvrsilacStanje","doveden u posebno psihicko stanje");
 		kSession.insert(qdl);
