@@ -63,7 +63,7 @@ public class Testiranje {
 		kSession.getAgenda().getAgendaGroup("odredjivanjeTuzioca").setFocus();
 		int firedSecondTime = kSession.fireAllRules();
 		System.out.println(firedSecondTime);
-		
+				
 		assertEquals(2, firedFirstTime);
 		assertEquals(1, firedSecondTime);
 		assertEquals(118, o1.getDelo2().getClan());

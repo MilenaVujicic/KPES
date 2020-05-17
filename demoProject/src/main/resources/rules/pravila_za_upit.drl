@@ -11,7 +11,50 @@ import com.sample.model.Tuzilac;
 //declare any global variables here
 
 
+rule "114.1.9"
+	no-loop true
+	when
+		$queryMap : QueryDataList(this["age2"]=="Izmedju 18 i 14");
+		$s1 : String() from $queryMap.get("age2");
+		$s2 : String() from $queryMap.get("subOdnos");
+		$o : Obelezje(zrtva == $s1, $s2 == "Umisljaj");
+		$d : Delo(posebnoObelezje.equals($o));
+	then
+		PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+   	 	System.out.println("114.1.9");
+    	insert($pd);
+end
 
+rule "114.1.4"
+	no-loop true
+	when
+		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
+		$s1 : String() from $queryMap.get("age2");
+		$s2 : String() from $queryMap.get("radnja");
+		$o : Obelezje(zrtva == $s1, $s2 == "Kradja");
+		$d : Delo(posebnoObelezje.equals($o));
+	then
+		PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+   	 	System.out.println("114.1.4");
+    	insert($pd);
+end
+
+rule "114.1.11"
+	no-loop true
+	when
+		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
+		$s1 : String() from $queryMap.get("age2");
+		$s2 : String() from $queryMap.get("broj");
+		$o : Obelezje(zrtva == $s1, $s2 == "Vise");
+		$d : Delo(posebnoObelezje.equals($o));
+	then
+		PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+   	 	System.out.println("114.1.11");
+    	insert($pd);
+end
 
 rule "118"
 	lock-on-active true
@@ -23,18 +66,30 @@ rule "118"
     then
    	 	PodaciODelu $pd = new PodaciODelu($d);
    	 	System.out.println($pd);
-    	insert($pd);
-		
+    	insert($pd);	
 end
 
 
 
-rule "tuzilac"
+rule "OJT"
 	no-loop true
 	when
 		$d : Delo(maxKazna < 10);
 		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
 		$t : Tuzilac(tip == TipTuzioca.OSNOVNI_JAVNI_TUZILAC);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+		
+end
+
+rule "VJT"
+	no-loop true
+	when
+		$d : Delo(maxKazna > 10);
+		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
+		$t : Tuzilac(tip == TipTuzioca.VISI_JAVNI_TUZILAC);
 	then
 		$pd.setTuzilac($t);
 		System.out.println($pd);
