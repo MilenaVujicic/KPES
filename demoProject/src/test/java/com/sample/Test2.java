@@ -53,9 +53,13 @@ public class Test2 {
 		KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kieContainer, "ksession-rules");
 	
 		QueryDataList qdl = QueryDataList.getInstance();
-		qdl.put("subOdnos", "Nehat");
+		//qdl.put("subOdnos", "Nehat");
+		
+		
+		qdl.put("subOdnos", "umisljaj");
+		//qdl.put("zrtva", "poseban status");
+		qdl.put("izvrsilacStanje","doveden u posebno psihicko stanje");
 		kSession.insert(qdl);
-	
 		List<Obelezje> obelezja = obelezjeService.findAll();
 		for(Obelezje o : obelezja)
 			kSession.insert(o);

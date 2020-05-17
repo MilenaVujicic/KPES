@@ -27,7 +27,55 @@ rule "118"
     	insert($pd);	
 end
 
+rule "310"
+	lock-on-active true
+	when
+		$queryMap: QueryDataList(this["subOdnos"] == "umisljaj" && this["zrtva"] == "poseban status");
+		$s : String() from $queryMap.get("zrtva");
+		$o: Obelezje(zrtva == $s);
+		$d : Delo(posebnoObelezje.equals($o));
+	then
+		PodaciODelu $pd = new PodaciODelu($d);
+		System.out.println($pd);
+		insert($pd);
+end
+		
+rule "115"
+	lock-on-active true
+	when
+		$queryMap: QueryDataList(this["izvrsilacStanje"] == "doveden u posebno psihicko stanje" && this["subOdnos"] == "umisljaj");
+		$s : String() from $queryMap.get("izvrsilacStanje");
+		$o: Obelezje(izvrsilac == $s);
+		$d : Delo(posebnoObelezje.equals($o));
+	then
+		PodaciODelu $pd = new PodaciODelu($d);
+		System.out.println($pd);
+		insert($pd);
+end
 
+rule "tuzilac za maloletnike"
+	no-loop true
+	when
+		$queryMap : QueryDataList(this["izvrsilac"] == "Izmedju 18 i 14");
+		$pd : PodaciODelu(tuzilac == null);
+		$t : Tuzilac(tip == TipTuzioca.TUZILAC_ZA_MALOLETNIKE);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+end
+
+rule "tuzilac za organizovani kriminal"
+	no-loop true
+	when
+		$d : Delo(clan == 310);
+		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
+		$t : Tuzilac(tip == TipTuzioca.TUZILAC_ZA_ORGANIZOVANI_KRIMINAL);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+end
 
 rule "tuzilac maksimalna kazna manja od 10"
 	no-loop true
@@ -70,3 +118,32 @@ rule "118 dokazi"
 		
 		
 end
+
+rule "310 dokazi"
+	no-loop true
+	when 
+		$d : Delo(clan == 310);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 0 || clan == 310);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);
+end
+
+rule "115 dokazi"
+	no-loop true
+	when
+		$d : Delo(clan == 115);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 0 || clan == 115);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);
+end
+
