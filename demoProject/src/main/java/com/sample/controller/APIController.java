@@ -1,5 +1,6 @@
 package com.sample.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class APIController {
 		}else if(jObj.get("starostZrtve") != null) {
 		}
 		System.out.println(QueryDataList.getInstance().toString());*/
-	
+		System.out.println("###" + jArrRadnja);
 		String age1 = null;
 		String age2 = null;
 		String subOdnos = null;
@@ -129,6 +130,7 @@ public class APIController {
 			}
 		}
 		
+		System.out.println("####" + radnja);
 		
 		for(Object o : jArrStanje) {
 			if(stanje == null) {
@@ -200,15 +202,20 @@ public class APIController {
 		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
 		String odgovor = "";
-		for (PodaciODelu p : podaci) {
-			odgovor += p.getTuzilac().getTip().toString();
-			odgovor += "&";
-			odgovor += "Neophodno je prikupiti sledece dokaze: ";
-			for (Dokaz d : p.getDokazi()) {
-				odgovor += d.getOpis();
-				odgovor += " ";
-			}
+		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
+		for (PodaciODelu p : podaci)
+			podaciODelu.add(p);
+		
+		
+		PodaciODelu p = podaciODelu.get(podaciODelu.size() - 1);
+		odgovor += p.getTuzilac().getTip().toString();
+		odgovor += "&";
+		odgovor += "Neophodno je prikupiti sledece dokaze: ";
+		for (Dokaz d : p.getDokazi()) {
+			odgovor += d.getOpis();
+			odgovor += " ";
 		}
+		odgovor = odgovor.replace("_", " ");
 		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
 	}
 	

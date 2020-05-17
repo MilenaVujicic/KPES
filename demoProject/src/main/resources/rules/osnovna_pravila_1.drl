@@ -15,32 +15,74 @@ import com.sample.model.Obelezje;
 //declare any global variables here
 
 
-rule "114.1.4"
+rule "114.1.4 - kradja"
 	lock-on-active true
     when
-       $queryMap : QueryDataList(this["age2"] == "Vise od 18");
+       $queryMap : QueryDataList(this["age2"] == "Vise od 18", this["radnja"] == "Kradja");
        $s : String() from $queryMap.get("age2");
-       $r : String() from $queryMap.get("radnja");
-   	   $o : Obelezje(zrtva == $s, radnja.contains($r));
+   	   $o : Obelezje(zrtva == $s, radnja == "Razbojnistvo&Kradja");
        $d : Delo(posebnoObelezje.equals($o));
     then
    	 	PodaciODelu $pd = new PodaciODelu($d);
    	 	System.out.println($pd);
+   	 	System.out.println($s);
     	insert($pd);
 end
-/*
+
+rule "114.1.4 - razbojnistvo"
+	lock-on-active true
+    when
+       $queryMap : QueryDataList(this["age2"] == "Vise od 18", this["radnja"] == "Razbojnistvo");
+       $s : String() from $queryMap.get("age2");
+   	   $o : Obelezje(zrtva == $s, radnja == "Razbojnistvo&Kradja");
+       $d : Delo(posebnoObelezje.equals($o));
+    then
+   	 	PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+   	 	System.out.println($s);
+    	insert($pd);
+end
+
+rule "114.1.4 dokazi"
+	no-loop  true
+	when
+		$d : Delo(clan == 114, stav == 1, tacka == 4);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 0);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);	
+end
+
 rule "114.1.9"
 	lock-on-active true
     when
-       $queryMap : QueryDataList(this["age2"] == "Manje od 18" || this["age2"] == "Bremenita zena");
-       $s : String() from $queryMap.get("age2");
-   	   $o : Obelezje(zrtva.contains($s), radnja.contains($r.toString()));
+       $queryMap : QueryDataList(this["age2"] == "Izmedju 18 i 14" || this["age2"] == "Bremenita zena" || this["age2"] == "Manje od 14");
+       // $s : String() from $queryMap.get("age2");
+   	   $o : Obelezje(zrtva == "Izmedju 18 i 14&Manje od 14&Bremenita zena");
        $d : Delo(posebnoObelezje.equals($o));
     then
    	 	PodaciODelu $pd = new PodaciODelu($d);
    	 	System.out.println($pd);
     	insert($pd);
 end
-*/
+
+rule "114.1.9 dokazi"
+	no-loop  true
+	when
+		$d : Delo(clan == 114, stav == 1, tacka == 9);
+		
+		$pd : PodaciODelu(this.compareDelo($d));
+		
+		$dk : Dokaz(clan == 114, stav == 1, tacka == 9);
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);	
+end
+
 
 
