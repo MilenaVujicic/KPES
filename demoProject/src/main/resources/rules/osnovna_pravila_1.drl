@@ -9,6 +9,7 @@ import com.sample.model.PodaciODelu;
 import com.sample.model.Dokaz;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
+import com.sample.model.Obelezje;
 
 
 //declare any global variables here
