@@ -36,6 +36,7 @@ function sendData(event){
 	if(broj == null){
 		broj = ['nema podataka'];
 	}
+	
 	$.ajax({
 		url:'data/sendData',
 		type: 'POST',
