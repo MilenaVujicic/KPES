@@ -3,5 +3,6 @@ html,body{
 }
 
 h1, p {
-	color: white;
+	color: aqua;
+	background-color: black;
 }

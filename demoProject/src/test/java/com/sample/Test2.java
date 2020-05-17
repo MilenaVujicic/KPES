@@ -53,7 +53,7 @@ public class Test2 {
 		KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kieContainer, "ksession-rules");
 	
 		QueryDataList qdl = QueryDataList.getInstance();
-		qdl.put("subOdnos", "nehat");
+		qdl.put("subOdnos", "Nehat");
 		kSession.insert(qdl);
 	
 		List<Obelezje> obelezja = obelezjeService.findAll();

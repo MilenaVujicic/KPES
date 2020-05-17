@@ -8,6 +8,7 @@ import com.sample.model.PodaciODelu;
 import com.sample.model.Dokaz;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
+import com.sample.model.Obelezje;
 //declare any global variables here
 
 
@@ -59,10 +60,10 @@ end
 rule "118"
 	lock-on-active true
     when
-       $queryMap : QueryDataList(this["subOdnos"] == "nehat");
+       $queryMap : QueryDataList(this["subOdnos"] == "Nehat");
        $s : String() from $queryMap.get("subOdnos");
    	   $o : Obelezje(subjektivanOdnos == $s);
-       $d : Delo(posebnoObelezje.equals( $o));
+       $d : Delo(posebnoObelezje.equals($o));
     then
    	 	PodaciODelu $pd = new PodaciODelu($d);
    	 	System.out.println($pd);
@@ -71,7 +72,7 @@ end
 
 
 
-rule "OJT"
+rule "tuzilac maksimalna kazna manja od 10"
 	no-loop true
 	when
 		$d : Delo(maxKazna < 10);
@@ -84,7 +85,8 @@ rule "OJT"
 		
 end
 
-rule "VJT"
+
+rule "tuzilac maksimalna kazna veca od 10"
 	no-loop true
 	when
 		$d : Delo(maxKazna > 10);
