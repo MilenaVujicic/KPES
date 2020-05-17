@@ -17,9 +17,8 @@ rule "114.1.11"
 	no-loop true
 	when
 		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
-		$s1 : String() from $queryMap.get("age2");
 		$s2 : String() from $queryMap.get("broj");
-		$o : Obelezje(zrtva == $s1, $s2 == "Vise");
+		$o : Obelezje(zrtva == "Vise od 18", $s2 == "Vise");
 		$d : Delo(posebnoObelezje.equals($o));
 	then
 		PodaciODelu $pd = new PodaciODelu($d);
@@ -46,9 +45,8 @@ rule "113"
 	no-loop true
 	when
 		$queryMap : QueryDataList(this["age2"]=="Vise od 18");
-		$s1 : String() from $queryMap.get("age2");
 		$s2 : String() from $queryMap.get("broj");
-		$o : Obelezje(zrtva == $s1, subjektivanOdnos == "Umisljaj", radnja != "Kradja", $s2 == "Vise");
+		$o : Obelezje(zrtva == "Vise od 18", subjektivanOdnos == "Umisljaj", radnja != "Kradja", $s2 == "1");
 		$d : Delo(posebnoObelezje.equals($o));
 	then
 		PodaciODelu $pd = new PodaciODelu($d);
