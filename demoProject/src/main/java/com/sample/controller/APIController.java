@@ -66,6 +66,8 @@ public class APIController {
 		JSONArray jArrRadnja = (JSONArray) jObj.get("radnja");
 		JSONArray jArrStanje = (JSONArray) jObj.get("stanje");
 		JSONArray jArrBroj = (JSONArray) jObj.get("broj");
+		JSONArray jArrStatus = (JSONArray) jObj.get("status");
+		JSONArray jArrPsih = (JSONArray) jObj.get("psih");
 	/*	JSONArray jArr = (JSONArray) jObj.get("subOdnos");
 		
 		String subOdnos = jArr.get(0).toString();
@@ -82,6 +84,8 @@ public class APIController {
 		String stanje = null;
 		String broj = null;
 		String radnja = null;
+		String status = null;
+		String psih = null;
 		
 		for(Object o : jArrAge1) {
 			if(age1 == null) {
@@ -151,6 +155,23 @@ public class APIController {
 			}
 		}
 		
+		for(Object o : jArrStatus) {
+			if(status == null){
+				status = o.toString();
+			}else {
+				status += "&";
+				status += o.toString();
+			}
+		}
+		
+		for(Object o : jArrPsih) {
+			if(psih == null) {
+				psih = o.toString();
+			}else {
+				psih += "&";
+				psih += o.toString();
+			}
+		}
 		if(age1 != null && !age1.equals("nema podataka")) {
 			QueryDataList.getInstance().put("age1", age1);
 		}
@@ -171,6 +192,12 @@ public class APIController {
 		}
 		if(broj != null && !broj.equals("nema podataka")) {
 			QueryDataList.getInstance().put("broj", broj);
+		}
+		if(status != null && !status.equals("nema podataka")) {
+			QueryDataList.getInstance().put("status", "poseban status");
+		}
+		if(psih != null && !psih.equals("nema podataka")){
+			QueryDataList.getInstance().put("izvrsilacStanje", "doveden u posebno psihicko stanje");
 		}
 		
 		System.out.println(QueryDataList.getInstance().toString());
@@ -206,7 +233,7 @@ public class APIController {
 		for (PodaciODelu p : podaci)
 			podaciODelu.add(p);
 		
-		
+		if(podaciODelu.size() >= 1) {
 		PodaciODelu p = podaciODelu.get(podaciODelu.size() - 1);
 		odgovor += p.getTuzilac().getTip().toString();
 		odgovor += "&";
@@ -216,6 +243,7 @@ public class APIController {
 			odgovor += " ";
 		}
 		odgovor = odgovor.replace("_", " ");
+		}
 		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
 	}
 	
