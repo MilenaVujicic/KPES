@@ -14,6 +14,8 @@ function sendData(event){
 	var mesto = $('#sMesto').val();
 	var radnja = $('#sRadnja').val();
 	var broj = $('#sBroj').val();
+	var status = $('#sStatus').val();
+	var psih = $('#sPsih').val();
 	
 	if(starost1 == null){
 		starost1 = ['nema podataka'];
@@ -36,11 +38,17 @@ function sendData(event){
 	if(broj == null){
 		broj = ['nema podataka'];
 	}
+	if(status == null){
+		status = ['nema podataka'];
+	}
+	if(psih == null){
+		psih = ['nema podataka']
+	}
 	
 	$.ajax({
 		url:'data/sendData',
 		type: 'POST',
-		data: JSON.stringify({starost1: starost1, starost2 : starost2, subOdnos : subOdnos, stanje: stanje, mesto: mesto, radnja: radnja, broj: broj}),
+		data: JSON.stringify({starost1: starost1, starost2 : starost2, subOdnos : subOdnos, stanje: stanje, mesto: mesto, radnja: radnja, broj: broj, status : status, psih: psih}),
 		contentType: 'application/json',
 		success: function(odgovor){
 			localStorage.setItem("response", odgovor);
