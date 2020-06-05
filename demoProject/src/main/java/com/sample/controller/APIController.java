@@ -21,6 +21,7 @@ import com.sample.model.Dokaz;
 import com.sample.model.Obelezje;
 import com.sample.model.PodaciODelu;
 import com.sample.model.QueryDataList;
+import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
 import com.sample.service.DokazService;
@@ -235,15 +236,27 @@ public class APIController {
 			podaciODelu.add(p);
 		
 		if(podaciODelu.size() >= 1) {
-		PodaciODelu p = podaciODelu.get(podaciODelu.size() - 1);
-		odgovor += p.getTuzilac().getTip().toString();
-		odgovor += "&";
-		odgovor += "Neophodno je prikupiti sledece dokaze: ";
-		for (Dokaz d : p.getDokazi()) {
-			odgovor += d.getOpis();
-			odgovor += " ";
-		}
-		odgovor = odgovor.replace("_", " ");
+			PodaciODelu p = podaciODelu.get(podaciODelu.size() - 1);
+			odgovor += "Za ovo krivično delo neophodno je pozvati ";
+			if (p.getTuzilac().getTip().equals(TipTuzioca.OSNOVNI_JAVNI_TUZILAC)) {
+				odgovor += "osnovnog javnog tužioca";
+			} else if (p.getTuzilac().getTip().equals(TipTuzioca.VISI_JAVNI_TUZILAC)) {
+				odgovor += "višeg javnog tužioca";
+			} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_MALOLETNIKE)) {
+				odgovor += "tužioca za maloletnike";
+			} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_ORGANIZOVANI_KRIMINAL)) {
+				odgovor += "tužioca za organizovani kriminal";
+			}
+			odgovor += ".&";
+			odgovor += "Neophodno je prikupiti sledeće dokaze: ";
+			for (Dokaz d : p.getDokazi()) {
+				odgovor += d.getOpis();
+				odgovor += " ";
+			}
+			odgovor += ".&";
+			odgovor += "U pitanju je krivično delo sa nazivom: \"" + p.getDelo().getNaziv() + "\"";
+			odgovor += ".&";
+			odgovor += "Predviđena je maksimalna kazna do: " + p.getDelo().getMaxKazna() + " godina zatvora.";
 		}
 	
 		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
