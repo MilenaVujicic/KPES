@@ -1,0 +1,56 @@
+<html>
+
+<head>
+	<title>Title</title>
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  	<link href="css/backward.css" rel="stylesheet">
+  
+	<script src = "./js/jquery-3.5.0.js" type = "text/javascript"></script>
+	<script src = "./js/backward.js"></script>
+</head>
+
+<body>
+	<div class="container" id="container">
+		<div class="outer-form mt-3">
+			<div class="text-center align-middle py-4" id="form-header">
+				<h1 id="title">Izaberite u tabeli</h1>
+				<p id="description">podatke koji vas interesuju</p>
+			</div>
+			<form id="survey-form" class="d-flex justify-content-center mt-5 " method="GET">
+				<div class="form-row">
+					<div class="col-sm-12 col-lg-4">
+						<div class="form-group">
+							<label for="userRating" class="labels">Izaberite tužioca za koga želite da vidite podatke:</label>
+							<div id="tuzioci">
+							
+							</div>
+						</div>
+						<a class="btn btn-dark pull-right" role="button" id = "btnSendTuzioci" style="background-color:red; color:white" onclick="return sendTuzioci();">Pošalji tuzioce</a>
+					</div>
+					<div class="col-sm-12 col-lg-4">
+						<div class="form-group">
+							<label for="userRating" class="labels mb-4">Izaberite dela za koga želite da vidite podatke:</label>
+							<div id = "dela">
+								
+							</div>
+						</div>
+						<a class="btn btn-dark pull-right" role="button" id = "btnSendDela" style="background-color:red; color:white" onclick="return sendDela();">Pošalji dela</a>
+					</div>
+					<div class="col-sm-12 col-lg-4">
+						<div class="form-group">
+							<label for="userRating" class="labels mb-4">Izaberite dokaze za koga želite da vidite podatke:</label>
+							<div id="dokazi">
+								
+							</div>
+						</div>
+						<a class="btn btn-dark pull-right" role="button" id = "btnSendDokazi" style="background-color:red; color:white" onclick="return sendDokazi();">Pošalji dokaze</a>
+					</div>
+				</div>
+			</form>
+			
+		</div>
+		
+	</div>
+</body>
+
+</html>

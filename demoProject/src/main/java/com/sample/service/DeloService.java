@@ -12,7 +12,7 @@ import com.sample.repository.DeloRepository;
 public class DeloService {
 
 	@Autowired
-	DeloRepository deloRepository;
+	private DeloRepository deloRepository;
 	
 	public List<Delo> findAll() {
 		return deloRepository.findAll();
