@@ -1,5 +1,103 @@
-function sendData() {
-	
+function proveriDela() {
+	$.ajax({
+		url:"list/dela",
+		type: 'GET',
+		success: function(dela) {
+			let url = "list/sendDela/dela";
+			for (let delo of dela) {
+				let checked = $('input[name="'+delo.naziv+'"]:checked').val();
+				if(checked == 'on')
+					url += "&" + delo.naziv;
+			}
+			
+			$.ajax({
+				url:url,
+				type: 'GET',
+				success: function() {
+					alert("Success");
+					window.location = './backward_result.html';
+				},
+				error: function() {
+					alert("Error");
+				} 
+			});
+		},
+		error: function(){
+			alert("ERROR");
+		}
+	});
+}
+
+function proveriDokaze() {
+	$.ajax({
+		url:"list/dokazi",
+		type: 'GET',
+		success: function(dokazi) {
+			let url = "list/sendDokazi/dokazi";
+			for (let dokaz of dokazi) {
+				let checked = $('input[name="'+dokaz.opis+'"]:checked').val();
+				if(checked == 'on')
+					url += "&" + dokaz.opis;
+			}
+			
+			$.ajax({
+				url:url,
+				type: 'GET',
+				success: function() {
+					alert("Success");
+					window.location = './backward_result.html';
+				},
+				error: function() {
+					alert("Error");
+				} 
+			});
+		},
+		error: function(){
+			alert("ERROR");
+		}
+	});
+}
+
+function proveriTuzioca() {
+	$.ajax({
+		url:"list/tuzioci",
+		type: 'GET',
+		success: function(tuzioci) {
+			let url = "list/sendTuzilac/tuzioci";
+			for (let tuzilac of tuzioci) {
+				let checked = $('input[name="'+tuzilac.tip+'"]:checked').val();
+				if(checked == 'on')
+					url += "&" + tuzilac.tip;
+			}
+			
+			$.ajax({
+				url:url,
+				type: 'GET',
+				success: function() {
+					alert("Success");
+					window.location = './backward_result.html';
+				},
+				error: function() {
+					alert("Error");
+				} 
+			});
+		},
+		error: function(){
+			alert("ERROR");
+		}
+	});
+}
+
+function sendTuzioci() {
+	proveriTuzioca();
+}
+
+function sendDokazi() {
+	proveriDokaze();
+}
+
+function sendDela() {
+	proveriDela();
 }
 
 $(document).ready(function() {
@@ -54,23 +152,22 @@ function getDokazi() {
 }
 
 function prikaziTuzioca(tuzilac) {
-	let string = tuzilac.tip.replace('_', ' ');
-	let tuzilacLabel = $('<label class=" custom-container" for="'+tuzilac.tip+'">' + string +
-					'<input type="radio" name="recommend" id="'+tuzilac.tip+'">' + 
-					'<span class="checkmark-radio"></span></label>');
+	let tuzilacLabel = $('<label class=" custom-container" for="'+tuzilac.tip+'">' + tuzilac.tip +
+					'<input type="checkbox" name="'+tuzilac.tip+'" id="'+tuzilac.tip+'">' + 
+					'<span class="checkmark"></span></label>');
 	$('#tuzioci').append(tuzilacLabel);
 }
 
 function prikaziDelo(delo) {
 	let deloLabel = $('<label class="container custom-container" for="'+delo.naziv+'">' + delo.naziv +
-					  '<input type="checkbox" name="front" id="'+delo.naziv+'">' +
+					  '<input type="checkbox" name="'+delo.naziv+'" id="'+delo.naziv+'">' +
 					  '<span class="checkmark"></span></label>');
 	$('#dela').append(deloLabel);
 }
 
 function prikaziDokaz(dokaz) {
 	let dokazLabel = $('<label class="container custom-container" for="'+ dokaz.opis +'">' + dokaz.opis +
-					   '<input type="checkbox" name="front" id="'+ dokaz.opis +'" value="front">' +
+					   '<input type="checkbox" name="'+dokaz.opis+'" id="'+ dokaz.opis +'">' +
 					   '<span class="checkmark"></span></label>');
 	$('#dokazi').append(dokazLabel);
 }
