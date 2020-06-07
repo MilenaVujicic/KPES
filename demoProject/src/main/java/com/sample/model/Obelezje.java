@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Obelezje {
 
@@ -30,9 +32,11 @@ public class Obelezje {
 	@Column
 	private String nacin;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "opsteObelezje")
 	private Delo delo1;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "posebnoObelezje")
 	private Delo delo2;
 	public Obelezje() {
