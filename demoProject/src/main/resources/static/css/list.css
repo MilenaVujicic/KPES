@@ -2,7 +2,7 @@ html,body{
 	background-image: url("../img/crime.jfif");
 }
 
-h2, p {
+h2, p, h3 {
 	color: aqua;
 	background-color: black;
 }

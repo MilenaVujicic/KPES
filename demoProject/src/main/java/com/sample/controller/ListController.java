@@ -3,6 +3,11 @@ package com.sample.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
 import com.sample.model.Dokaz;
+import com.sample.model.Obelezje;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
 import com.sample.service.DokazService;
+import com.sample.service.ObelezjeService;
 import com.sample.service.TuzilacService;
 
 @RestController
@@ -30,6 +37,9 @@ public class ListController {
 	
 	@Autowired
 	private DokazService dokazService;
+	
+	@Autowired
+	private ObelezjeService obelezjeService;
 	
 	@GetMapping(value = "/tuzioci")
 	public List<Tuzilac> getTuzioci() {
@@ -60,12 +70,39 @@ public class ListController {
 	@GetMapping(value = "/sendTuzilac/{response}")
 	public ResponseEntity<String> sendTuzioci(@PathVariable("response") String response) {
 		if (!response.contains("&"))
-			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
 		System.out.println(splitter[0]);
-		// TODO odraditi dalje islistavanje tuzioca i potrebnih detalja
 		
-		return new ResponseEntity<String>("", HttpStatus.OK);
+		// TODO odraditi dalje islistavanje tuzioca i potrebnih detalja
+		String odgovor = "";
+		for (int i = 1; i < splitter.length; i++) {
+			odgovor += "Dela koja pripadaju pod nadležnost tužioca pod nazivom " + splitter[i] + " su: ";
+			KieContainer kc = KieServices.Factory.get().getKieClasspathContainer();
+	        KieSession kSession = kc.newKieSession( "ksession-rules");
+	        
+	        List<Delo> dela = deloService.findAll();
+			for(Delo d : dela)
+				kSession.insert(d);
+			
+			List<Obelezje> obelezja = obelezjeService.findAll();
+			for(Obelezje o : obelezja)
+				kSession.insert(o);
+			
+			QueryResults results = kSession.getQueryResults(splitter[i]);
+			System.out.println( "### " + results.size() + " ######" );
+			String odg = "";
+			for ( QueryResultsRow row : results ) {
+			    Delo delo = ( Delo ) row.get( "$delo" );
+			    if (!odg.contains(delo.getNaziv().toUpperCase()))
+			    	odg += delo.getNaziv().toUpperCase() + ", ";
+			}
+			odgovor += odg.substring(0, odg.length() - 2);
+			if (i < splitter.length - 1)
+				odgovor += "&";
+		}
+		
+		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/sendDokazi/{response}")
