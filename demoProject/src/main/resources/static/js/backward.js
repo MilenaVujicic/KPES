@@ -73,8 +73,9 @@ function proveriTuzioca() {
 			$.ajax({
 				url:url,
 				type: 'GET',
-				success: function() {
-					alert("Success");
+				success: function(odgovor) {
+					console.log("###" + odgovor);
+					localStorage.setItem("backward_response", odgovor)
 					window.location = './backward_result.html';
 				},
 				error: function() {
