@@ -67,6 +67,7 @@ public class NovoDeloController {
 		Path currentRelativePath = Paths.get("");
 		String s = currentRelativePath.toAbsolutePath().toString();
 		System.out.println("Current relative path is: " + s);
+		
 		InputStream template = NovoDeloController.class.getResourceAsStream(s + "\\src\\main\\resources\\dtable\\template.drt");
 		if (template == null)
 			System.out.println("null");
