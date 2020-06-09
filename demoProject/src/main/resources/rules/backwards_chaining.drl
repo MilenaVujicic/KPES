@@ -1,9 +1,39 @@
 package rules
 
-query tuzilacDelo(String t, int clan, int tacka, int stav)
+import com.sample.DroolsTest.Message;
+
+import com.sample.DroolsTest;
+import com.sample.model.QueryDataList;
+import com.sample.model.Delo;
+import com.sample.model.PodaciODelu;
+import com.sample.model.Dokaz;
+import com.sample.model.TipTuzioca;
+import com.sample.model.Tuzilac;
+import com.sample.model.Obelezje;
+
+query tuzilacDelo(TipTuzioca t, int clan, int tacka, int stav)
 	LinkT(t, clan, tacka, stav;)
 end
 
 query dokazDelo(String d, int clan, int tacka, int stav)
 	LinkD(d, clan, tacka, stav;)
+end
+
+rule "tuzilac delo"
+when
+	$queryMap: QueryDataList();
+	$t: String() from  $queryMap.get("tuzilac");
+	LinkT($t, clan, tacka, stav;)
+then
+	System.out.println(clan + " " + tacka + " " + stav);
+	//System.out.println($t + " " + clan);
+end
+
+rule "dokaz delo"
+when
+	$queryMap: QueryDataList();
+	$d: String() from  $queryMap.get("dokaz");
+	LinkD($d, clan, tacka, stav;)
+then
+	System.out.println(clan + " " + tacka + " " + stav);
 end

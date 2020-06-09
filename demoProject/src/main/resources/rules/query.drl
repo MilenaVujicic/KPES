@@ -1,3 +1,4 @@
+/*
 //created on: May 27, 2020
 package rules
 import com.sample.DroolsTest;
@@ -25,4 +26,4 @@ end
 
 query "Sva dela"
 	$sd: Delo();
-end
+end*/
