@@ -17,4 +17,9 @@ public class DeloService {
 	public List<Delo> findAll() {
 		return deloRepository.findAll();
 	}
+
+	public Delo save(Delo delo) {
+		// TODO Auto-generated method stub
+		return deloRepository.save(delo);
+	}
 }

@@ -1,0 +1,53 @@
+template header
+naziv
+clan
+stav
+tacka
+zrtva
+subjOdnos
+stanje
+mesto
+radnja
+brZrtava
+psihickoStanje
+dokazi
+
+package chapter07.ruletemplate.simple;
+
+import com.sample.model.QueryDataList;
+import com.sample.model.Delo;
+import com.sample.model.PodaciODelu;
+import com.sample.model.Dokaz;
+import com.sample.model.TipTuzioca;
+import com.sample.model.Tuzilac;
+import com.sample.model.Obelezje;
+
+template "classification-rules"
+
+rule "Delo @{row.rowNumber}"
+	lock-on-active true
+    when
+       $queryMap : QueryDataList(this["age2"] == @{zrtva}, this["radnja"] == @{radnja}, this["subOdnos"] == @{subjOdnos},
+       							 this["stanje"] == @{stanje}, this["mesto"] == @{mesto}, this["broj"] == @{brZrtava},
+       							 this["psih"] == @{psihickoStanje});
+       $s : String() from $queryMap.get("age2");
+   	   $o : Obelezje(zrtva == $s);
+       $d : Delo(posebnoObelezje.equals($o));
+    then
+   	 	PodaciODelu $pd = new PodaciODelu($d);
+   	 	System.out.println($pd);
+   	 	System.out.println($s);
+    	insert($pd);
+end
+
+rule "Dokazi @{row.rowNumber}"
+	no-loop  true
+	when
+		$d : Delo(clan == @{clan}, stav == @{stav}, tacka == @{tacka});
+		$pd : PodaciODelu(this.compareDelo($d));
+		$dk : Dokaz(clan == 0 || clan == @{clan} && stav == @{stav} && tacka == @{tacka});
+	then
+		$pd.addToList($dk);
+		System.out.println($pd);
+		update($pd);	
+end
