@@ -1,0 +1,28 @@
+//created on: May 27, 2020
+package rules
+import com.sample.DroolsTest;
+import com.sample.model.QueryDataList;
+import com.sample.model.Delo;
+import com.sample.model.PodaciODelu;
+import com.sample.model.Dokaz;
+import com.sample.model.TipTuzioca;
+import com.sample.model.Tuzilac;
+import com.sample.model.Obelezje;
+
+//list any import classes here.
+
+
+//declare any global variables here
+
+
+query "Svi dokazi"
+	$sd : Dokaz();
+end
+
+query "Svi tuzioci"
+	$st : Tuzilac();
+end
+
+query "Sva dela"
+	$sd: Delo();
+end

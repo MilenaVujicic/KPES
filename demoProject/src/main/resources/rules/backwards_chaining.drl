@@ -1,0 +1,9 @@
+package rules
+
+query tuzilacDelo(String t, int clan, int tacka, int stav)
+	LinkT(t, clan, tacka, stav;)
+end
+
+query dokazDelo(String d, int clan, int tacka, int stav)
+	LinkD(d, clan, tacka, stav;)
+end
