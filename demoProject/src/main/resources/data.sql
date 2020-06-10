@@ -72,9 +72,6 @@ insert into dokaz(clan, stav, tacka, opis) values (0, 0, 0, 'Vestacenja eksperat
 
 insert into dokaz(clan, stav, tacka, opis) values (114, 1, 9, 'Treba pribaviti dokaz o tome da je zrtva dete u vidu izvoda iz maticne knjige rodjenih, odnosno da je zrtva bremenita zena u vidu sudskomedicinskog vestacenja sa posebnim akcentom na tu okolnost.');
 insert into dokaz(clan, stav, tacka, opis) values (115, 0, 0, 'Treba privaviti sudskopsihijatrisko i psiholosko vestacenje radi utvrdjivanja da li je ucinilac u vremeizvrsenja krivicnog dela bio u stanju jake razdrazenosti izazvane postupkom zrtve.');
-<<<<<<< HEAD
-insert into dokaz(clan, stav, tacka, opis) values (310, 0, 0, 'Treba pribaviti dokaz o sluzbi ili funkciji koje obavljala zrtva krvicnog dela u vidu resenja o zasnivanju radnog odnosa ili odluke o izboru ili imenovanju kako bi se dokazalo da zrtva ima to posebno svojstvo.')
-=======
 insert into dokaz(clan, stav, tacka, opis) values (310, 0, 0, 'Treba pribaviti dokaz o sluzbi ili funkciji koje obavljala zrtva krvicnog dela u vidu resenja o zasnivanju radnog odnosa ili odluke o izboru ili imenovanju kako bi se dokazalo da zrtva ima to posebno svojstvo.');
 
 insert into linkt(tuzilac, clan, stav, tacka) values ('VISI_JAVNI_TUZILAC', 113, 0, 0);
@@ -134,6 +131,3 @@ insert into linkd(dokaz, clan, stav, tacka) values ('Treba privaviti sudskopsihi
 
 insert into linkd(dokaz, clan, stav, tacka) values ('Treba pribaviti dokaz o sluzbi ili funkciji koje obavljala zrtva krvicnog dela u vidu resenja o zasnivanju radnog odnosa ili odluke o izboru ili imenovanju kako bi se dokazalo da zrtva ima to posebno svojstvo.', 310, 0, 0);
 
-
-
->>>>>>> 649804e7f0506981b677010de65aac40d70a5f0b

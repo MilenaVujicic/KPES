@@ -122,36 +122,36 @@ public class ListController {
 		if (!response.contains("&"))
 			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
-
-		//System.out.println(splitter[0]);
-	
-		for(String s : splitter)
-			System.out.println(s);
 		
 		KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession kSession =  kContainer.newKieSession("ksession-rules");
-		splitter[1] += ".";
+        
 	    List<LinkT> tuziociLink = linkTService.findAll();
 	        
-	        for(LinkT t : tuziociLink)
-	        	kSession.insert(t);
+        for(LinkT t : tuziociLink)
+        	kSession.insert(t);
+        
+        List<LinkD> dokazLink = linkDService.findAll();
+        
+        for(LinkD d : dokazLink)
+        	kSession.insert(d);
 	        
-	        List<LinkD> dokazLink = linkDService.findAll();
-	        
-	        for(LinkD d : dokazLink)
-	        	kSession.insert(d);
-	        
-	        QueryDataList.getInstance().put("dokaz", splitter[1]);
+        String odgovor = "";
+        for(int i = 1; i < splitter.length; i++) {
+        	odgovor += "Dokaz pod nazivom " + splitter[i] + " je potreban za sledeca dela: ";
+        	QueryDataList.getInstance().put("dokaz", splitter[i]);
 	        System.out.println(QueryDataList.getInstance().toString());
 	        kSession.insert(QueryDataList.getInstance());
 	        int fired = kSession.fireAllRules();
-		
 	        System.out.println("Fired " + fired);
-	    	@SuppressWarnings("unchecked")
+	        
+	        @SuppressWarnings("unchecked")
 	    	Collection<LinkDAnswer> dela = (Collection<LinkDAnswer>) kSession.getObjects(new ClassObjectFilter(LinkDAnswer.class));
 	        for(LinkDAnswer d : dela)
 	        	System.out.println(d);
+	        
+        }	
 	        
 		return new ResponseEntity<String>("", HttpStatus.OK);
 
