@@ -71,7 +71,8 @@ public class BackwardChainingTest {
 		List<Tuzilac> tuzioci = tuzilacService.findAll();
 		for(Tuzilac t : tuzioci)
 			kSession.insert(t);
- 		
+		
+		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC"));
 		
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 113, 0, 0));
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 114, 1, 4));
@@ -82,7 +83,8 @@ public class BackwardChainingTest {
 		kSession.insert(new LinkT("TUZILAC_ZA_ORGANIZOVANI_KRIMINAL", 310, 0, 0));
 
 		kSession.insert(new LinkD("Vestacenja eksperata", 113,0,0));
-		kSession.fireAllRules();
+		int fired = kSession.fireAllRules();
+		System.out.println("FIRED: " + fired);
 	}
 
 }

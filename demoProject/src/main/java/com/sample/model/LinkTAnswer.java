@@ -1,51 +1,25 @@
 package com.sample.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+public class LinkTAnswer {
 
-import org.kie.api.definition.type.Position;
-
-@Entity
-public class LinkT {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column
-	@Position(0)
 	private String tuzilac;
 	
-	@Column
-	@Position(1)
 	private int clan;
-
-	@Column
-	@Position(2)
+	
 	private int stav;
 	
-	@Column
-	@Position(3)
 	private int tacka;
 	
-	public LinkT() {
+	public LinkTAnswer() {
 		super();
 	}
 
-	public LinkT(String tuzilac, int clan, int stav, int tacka) {
+	public LinkTAnswer(String tuzilac, int clan, int stav, int tacka) {
 		super();
 		this.tuzilac = tuzilac;
 		this.clan = clan;
 		this.stav = stav;
 		this.tacka = tacka;
-	}
-	
-	public LinkT(String tuzilac) {
-		super();
-		this.tuzilac = tuzilac;
 	}
 
 	public String getTuzilac() {
@@ -82,10 +56,8 @@ public class LinkT {
 
 	@Override
 	public String toString() {
-		return "LinkT [id=" + id + ", tuzilac=" + tuzilac + ", clan=" + clan + ", stav=" + stav + ", tacka=" + tacka
-				+ "]";
+		return "LinkTAnswer [tuzilac=" + tuzilac + ", clan=" + clan + ", stav=" + stav + ", tacka=" + tacka + "]";
 	}
 	
 	
-
 }

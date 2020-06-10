@@ -1,41 +1,20 @@
 package com.sample.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+public class LinkDAnswer {
 
-import org.kie.api.definition.type.Position;
-
-@Entity
-public class LinkD {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column
-	@Position(0)
 	private String dokaz;
 	
-	@Column
-	@Position(1)
 	private int clan;
 	
-	@Column
-	@Position(2)
 	private int stav;
 	
-	@Column
-	@Position(3)
 	private int tacka;
-
-	public LinkD() {
+	
+	public LinkDAnswer() {
 		super();
 	}
-	
-	public LinkD(String dokaz, int clan, int stav, int tacka) {
+
+	public LinkDAnswer(String dokaz, int clan, int stav, int tacka) {
 		super();
 		this.dokaz = dokaz;
 		this.clan = clan;
@@ -77,10 +56,8 @@ public class LinkD {
 
 	@Override
 	public String toString() {
-		return "LinkD [id=" + id + ", dokaz=" + dokaz + ", clan=" + clan + ", stav=" + stav + ", tacka=" + tacka + "]";
+		return "LinkDAnswer [dokaz=" + dokaz + ", clan=" + clan + ", stav=" + stav + ", tacka=" + tacka + "]";
 	}
 	
 	
-	
 }
-
