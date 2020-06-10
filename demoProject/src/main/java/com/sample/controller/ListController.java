@@ -123,7 +123,7 @@ public class ListController {
         }
         
         System.out.println("ODGOVOR: " + odgovor);
-    	return new ResponseEntity<String>("", HttpStatus.OK);
+    	return new ResponseEntity<String>(odgovor, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/sendDokazi/{response}")
