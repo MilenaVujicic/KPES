@@ -1,18 +1,33 @@
 package com.sample.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import org.kie.api.definition.type.Position;
 
+@Entity
 public class LinkD {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column
 	@Position(0)
 	private String dokaz;
 	
+	@Column
 	@Position(1)
 	private int clan;
 	
+	@Column
 	@Position(2)
 	private int stav;
 	
+	@Column
 	@Position(3)
 	private int tacka;
 

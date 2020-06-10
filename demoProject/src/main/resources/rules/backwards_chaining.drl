@@ -26,7 +26,6 @@ when
 	LinkT($t, clan, tacka, stav;)
 then
 	System.out.println(clan + " " + tacka + " " + stav);
-	//System.out.println($t + " " + clan);
 end
 
 rule "dokaz delo"
