@@ -70,6 +70,64 @@ insert into dokaz(clan, stav, tacka, opis) values (0, 0, 0, 'Uzimanje obuce i od
 insert into dokaz(clan, stav, tacka, opis) values (0, 0, 0, 'Uzimanje uredjaja za video nadzor sa lica mesta.');
 insert into dokaz(clan, stav, tacka, opis) values (0, 0, 0, 'Vestacenja eksperata.');
 
-insert into dokaz(clan, stav, tacka, opis) values (114, 1, 9, 'Treba pribaviti dokaz o tome da je zrtva dete u vidu izvoda iz maticne knjige rodjenih, odnosno da je zrtva bremenita zena u vidu sudskomedicinskog vestacenja sa posebnim akcentom na tu okolnost');
-insert into dokaz(clan, stav, tacka, opis) values (115, 0, 0, 'Treba privaviti sudskopsihijatrisko i psiholosko vestacenje radi utvrdjivanja da li je ucinilac u vremeizvrsenja krivicnog dela bio u stanju jake razdrazenosti izazvane postupkom zrtve');
-insert into dokaz(clan, stav, tacka, opis) values (310, 0, 0, 'Treba pribaviti dokaz o sluzbi ili funkciji koje obavljala zrtva krvicnog dela u vidu resenja o zasnivanju radnog odnosa ili odluke o izboru ili imenovanju kako bi se dokazalo da zrtva ima to posebno svojstvo.')
+insert into dokaz(clan, stav, tacka, opis) values (114, 1, 9, 'Treba pribaviti dokaz o tome da je zrtva dete u vidu izvoda iz maticne knjige rodjenih, odnosno da je zrtva bremenita zena u vidu sudskomedicinskog vestacenja sa posebnim akcentom na tu okolnost.');
+insert into dokaz(clan, stav, tacka, opis) values (115, 0, 0, 'Treba privaviti sudskopsihijatrisko i psiholosko vestacenje radi utvrdjivanja da li je ucinilac u vremeizvrsenja krivicnog dela bio u stanju jake razdrazenosti izazvane postupkom zrtve.');
+insert into dokaz(clan, stav, tacka, opis) values (310, 0, 0, 'Treba pribaviti dokaz o sluzbi ili funkciji koje obavljala zrtva krvicnog dela u vidu resenja o zasnivanju radnog odnosa ili odluke o izboru ili imenovanju kako bi se dokazalo da zrtva ima to posebno svojstvo.');
+
+insert into linkt(tuzilac, clan, stav, tacka) values ('VISI_JAVNI_TUZILAC', 113, 0, 0);
+insert into linkt(tuzilac, clan, stav, tacka) values ('VISI_JAVNI_TUZILAC', 114, 1, 4);
+insert into linkt(tuzilac, clan, stav, tacka) values ('VISI_JAVNI_TUZILAC', 114, 1, 9);
+insert into linkt(tuzilac, clan, stav, tacka) values ('VISI_JAVNI_TUZILAC', 114, 1, 11);
+insert into linkt(tuzilac, clan, stav, tacka) values ('VISI_JAVNI_TUZILAC', 115, 0, 0);
+
+insert into linkt(tuzilac, clan, stav, tacka) values ('OSNOVNI_JAVNI_TUZILAC', 118, 0, 0);
+
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_ORGANIZOVANI_KRIMINAL', 310, 0, 0);
+
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_MALOLETNIKE', 113, 0, 0);
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_MALOLETNIKE', 114, 1, 4);
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_MALOLETNIKE', 114, 1, 9);
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_MALOLETNIKE', 114, 1, 11);
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_MALOLETNIKE', 115, 0, 0);
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_MALOLETNIKE', 118, 0, 0);
+insert into linkt(tuzilac, clan, stav, tacka) values ('TUZILAC_ZA_MALOLETNIKE', 310, 0, 0);
+
+insert into linkd(dokaz, clan, stav, tacka) values ('Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela.', 113, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela.', 114, 1, 4);
+insert into linkd(dokaz, clan, stav, tacka) values ('Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela.', 114, 1, 9);
+insert into linkd(dokaz, clan, stav, tacka) values ('Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela.', 114, 1, 11);
+insert into linkd(dokaz, clan, stav, tacka) values ('Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela.', 115, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela.', 118, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela.', 310, 0, 0);
+
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve.', 113, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve.', 114, 1, 4);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve.', 114, 1, 9);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve.', 114, 1, 11);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve.', 115, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve.', 118, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve.', 310, 0, 0);
+
+
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje uredjaja za video nadzor sa lica mesta.', 113, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje uredjaja za video nadzor sa lica mesta.', 114, 1, 4);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje uredjaja za video nadzor sa lica mesta.', 114, 1, 9);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje uredjaja za video nadzor sa lica mesta.', 114, 1, 11);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje uredjaja za video nadzor sa lica mesta.', 115, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje uredjaja za video nadzor sa lica mesta.', 118, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Uzimanje uredjaja za video nadzor sa lica mesta.', 310, 0, 0);
+
+insert into linkd(dokaz, clan, stav, tacka) values ('Vestacenja eksperata.', 113, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Vestacenja eksperata.', 114, 1, 4);
+insert into linkd(dokaz, clan, stav, tacka) values ('Vestacenja eksperata.', 114, 1, 9);
+insert into linkd(dokaz, clan, stav, tacka) values ('Vestacenja eksperata.', 114, 1, 11);
+insert into linkd(dokaz, clan, stav, tacka) values ('Vestacenja eksperata.', 115, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Vestacenja eksperata.', 118, 0, 0);
+insert into linkd(dokaz, clan, stav, tacka) values ('Vestacenja eksperata.', 310, 0, 0);
+
+insert into linkd(dokaz, clan, stav, tacka) values ('Treba pribaviti dokaz o tome da je zrtva dete u vidu izvoda iz maticne knjige rodjenih, odnosno da je zrtva bremenita zena u vidu sudskomedicinskog vestacenja sa posebnim akcentom na tu okolnost.', 114, 1, 9);
+
+insert into linkd(dokaz, clan, stav, tacka) values ('Treba privaviti sudskopsihijatrisko i psiholosko vestacenje radi utvrdjivanja da li je ucinilac u vremeizvrsenja krivicnog dela bio u stanju jake razdrazenosti izazvane postupkom zrtve.', 115, 0, 0);
+
+insert into linkd(dokaz, clan, stav, tacka) values ('Treba pribaviti dokaz o sluzbi ili funkciji koje obavljala zrtva krvicnog dela u vidu resenja o zasnivanju radnog odnosa ili odluke o izboru ili imenovanju kako bi se dokazalo da zrtva ima to posebno svojstvo.', 310, 0, 0);
+
