@@ -17,4 +17,9 @@ public class DokazService {
 	public List<Dokaz> findAll(){
 		return dokazRepository.findAll();
 	}
+
+	public Dokaz save(Dokaz dokaz) {
+		// TODO Auto-generated method stub
+		return dokazRepository.save(dokaz);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kie.api.KieServices;
+import org.kie.api.definition.KiePackage;
 import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -205,29 +206,45 @@ public class APIController {
 		KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession kSession =  kContainer.newKieSession("ksession-rules");
+        KieSession kSession1 =  kContainer.newKieSession("ksession");
         
        //QueryDataList qdl = QueryDataList.getInstance();
         kSession.insert(QueryDataList.getInstance());
         
         List<Obelezje> obelezja = obelezjeService.findAll();
-		for(Obelezje o : obelezja)
+		for(Obelezje o : obelezja) {
 			kSession.insert(o);
+			kSession1.insert(o);
+		}
 		
 		List<Delo> dela = deloService.findAll();
-		for(Delo d : dela)
+		for(Delo d : dela) {
 			kSession.insert(d);
+			kSession1.insert(d);
+		}
 		
 		List<Dokaz> dokazi = dokazService.findAll();
-		for(Dokaz d : dokazi)
+		for(Dokaz d : dokazi) {
 			kSession.insert(d);
+			kSession1.insert(d);
+		}
 		
 		List<Tuzilac> tuzioci = tuzilacService.findAll();
-		for(Tuzilac t : tuzioci)
+		for(Tuzilac t : tuzioci) {
 			kSession.insert(t);
+			kSession1.insert(t);
+		}
         
 		int fired = kSession.fireAllRules();
 		System.out.println("##" + fired);
-		
+		Collection<KiePackage> packages = kSession.getKieBase().getKiePackages();
+		int rules = 0;
+		for(KiePackage p : packages) {
+			rules += p.getRules().size();
+		}
+		System.out.println("Num: " + rules);
+		int fired1 = kSession1.fireAllRules();
+		System.out.println("##" + fired1);
 		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
 		String odgovor = "";
