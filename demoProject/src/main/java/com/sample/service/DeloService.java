@@ -17,9 +17,14 @@ public class DeloService {
 	public List<Delo> findAll() {
 		return deloRepository.findAll();
 	}
-	
+  
 	public Delo findByClanTackaStav(int clan, int stav, int tacka) {
 		return deloRepository.findByClanTackaStav(clan, stav, tacka);
 	}
-	
+
+	public Delo save(Delo delo) {
+		// TODO Auto-generated method stub
+		return deloRepository.save(delo);
+	}
+
 }

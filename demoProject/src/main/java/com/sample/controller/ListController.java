@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kie.api.KieServices;
-
 import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +30,12 @@ import com.sample.service.DeloService;
 import com.sample.service.DokazService;
 import com.sample.service.LinkDService;
 import com.sample.service.LinkTService;
+
+import com.sample.model.Obelezje;
+import com.sample.model.Tuzilac;
+import com.sample.service.DeloService;
+import com.sample.service.DokazService;
+
 import com.sample.service.TuzilacService;
 
 @RestController
@@ -80,9 +86,9 @@ public class ListController {
 	@GetMapping(value = "/sendTuzilac/{response}")
 	public ResponseEntity<String> sendTuzioci(@PathVariable("response") String response) {
 		if (!response.contains("&"))
-			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
-		
+
 		String odgovor = "";
         for(int i = 1; i < splitter.length; i++) {
 			KieServices ks = KieServices.Factory.get();
@@ -124,6 +130,7 @@ public class ListController {
         
         System.out.println("ODGOVOR: " + odgovor);
     	return new ResponseEntity<String>(odgovor, HttpStatus.OK);
+
 	}
 	
 	@GetMapping(value = "/sendDokazi/{response}")
