@@ -27,9 +27,9 @@ template "classification-rules"
 rule "Delo @{row.rowNumber}"
 	lock-on-active true
     when
-       $queryMap : QueryDataList(this["age2"] == @{zrtva}, this["radnja"] == @{radnja}, this["subOdnos"] == @{subjOdnos},
-       							 this["stanje"] == @{stanje}, this["mesto"] == @{mesto}, this["broj"] == @{brZrtava},
-       							 this["psih"] == @{psihickoStanje});
+       $queryMap : QueryDataList(this["age2"] == "@{zrtva}", this["radnja"] == "@{radnja}", this["subOdnos"] == "@{subjOdnos}",
+       							 this["stanje"] == "@{stanje}", this["mesto"] == "@{mesto}", this["broj"] == "@{brZrtava}",
+       							 this["psih"] == "@{psihickoStanje}");
        $s : String() from $queryMap.get("age2");
    	   $o : Obelezje(zrtva == $s);
        $d : Delo(posebnoObelezje.equals($o));
@@ -51,3 +51,5 @@ rule "Dokazi @{row.rowNumber}"
 		System.out.println($pd);
 		update($pd);	
 end
+
+end template

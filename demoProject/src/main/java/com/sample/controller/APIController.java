@@ -227,7 +227,7 @@ public class APIController {
         
 		int fired = kSession.fireAllRules();
 		System.out.println("##" + fired);
-		
+
 		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
 		String odgovor = "";

@@ -130,7 +130,8 @@ end
 rule "115"
 	lock-on-active true
 	when
-		$queryMap: QueryDataList(this["izvrsilacStanje"] == "doveden u posebno psihicko stanje" && this["subOdnos"] == "Umisljaj");
+		$queryMap: QueryDataList(this["izvrsilacStanje"] == "doveden u posebno psihicko stanje" && 
+								 this["subOdnos"] == "Umisljaj" && this["stanje"] != "Ratno stanje");
 		$s : String() from $queryMap.get("izvrsilacStanje");
 		$o: Obelezje(izvrsilac == $s);
 		$d : Delo(posebnoObelezje.equals($o));

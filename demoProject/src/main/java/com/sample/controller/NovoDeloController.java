@@ -64,16 +64,16 @@ public class NovoDeloController {
 		
 		Delo d = deloService.save(delo);
 		Dokaz dok = dokazService.save(dokaz);
-		Path currentRelativePath = Paths.get("");
-		String s = currentRelativePath.toAbsolutePath().toString();
-		System.out.println("Current relative path is: " + s);
 		
-		InputStream template = NovoDeloController.class.getResourceAsStream(s + "\\src\\main\\resources\\dtable\\template.drt");
+		
+		InputStream template = NovoDeloController.class.getResourceAsStream("/dtables/templates.drt");
 		if (template == null)
 			System.out.println("null");
+		
 		ArrayList<NovoDelo> nList = new ArrayList<NovoDelo>();
 		nList.add(novoDelo);
         ObjectDataCompiler converter = new ObjectDataCompiler();
+        System.out.println("žžž");
         String drl = converter.compile(nList, template);
         
         System.out.println(drl);
