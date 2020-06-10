@@ -12,7 +12,7 @@ brZrtava
 psihickoStanje
 dokazi
 
-package chapter07.ruletemplate.simple;
+package rules;
 
 import com.sample.model.QueryDataList;
 import com.sample.model.Delo;

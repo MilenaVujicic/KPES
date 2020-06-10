@@ -9,6 +9,13 @@ import java.util.List;
 
 import org.drools.template.ObjectDataCompiler;
 import org.h2.engine.SysProperties;
+import org.kie.api.KieServices;
+import org.kie.api.builder.Message;
+import org.kie.api.builder.Results;
+import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.kie.internal.utils.KieHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,8 +80,25 @@ public class NovoDeloController {
 		ArrayList<NovoDelo> nList = new ArrayList<NovoDelo>();
 		nList.add(novoDelo);
         ObjectDataCompiler converter = new ObjectDataCompiler();
-        System.out.println("žžž");
+        System.out.println("###");
         String drl = converter.compile(nList, template);
+        
+        KieHelper kieHelper = new KieHelper();
+        kieHelper.addContent(drl, ResourceType.DRL);
+        
+        Results results = kieHelper.verify();
+        
+        if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)){
+            List<Message> messages = results.getMessages(Message.Level.WARNING, Message.Level.ERROR);
+            for (Message message : messages) {
+                System.out.println("Error: "+message.getText());
+            }
+            
+            throw new IllegalStateException("Compilation errors were found. Check the logs.");
+        }
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kContainer = ks.getKieClasspathContainer();
+        KieSession kSession =  kieHelper.build().newKieSession();
         
         System.out.println(drl);
 	}
