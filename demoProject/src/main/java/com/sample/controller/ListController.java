@@ -82,36 +82,47 @@ public class ListController {
 		if (!response.contains("&"))
 			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
-		//System.out.println(splitter[0]);
 		
-		for(String s : splitter)
-			System.out.println(s);
-		
-		KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer();
-        KieSession kSession =  kContainer.newKieSession("ksession-rules");
-		
-        List<LinkT> tuziociLink = linkTService.findAll();
+		String odgovor = "";
+        for(int i = 1; i < splitter.length; i++) {
+			KieServices ks = KieServices.Factory.get();
+	        KieContainer kContainer = ks.getKieClasspathContainer();
+	        KieSession kSession =  kContainer.newKieSession("ksession-rules");
+			
+	        List<LinkT> tuziociLink = linkTService.findAll();
+	        
+	        for(LinkT t : tuziociLink)
+	        	kSession.insert(t);
+	        
+	        List<LinkD> dokazLink = linkDService.findAll();
+	        
+	        for(LinkD d : dokazLink)
+	        	kSession.insert(d);
+	        
+	        odgovor += "Dela koja pripadaju pod nadležnost tužioca pod nazivom " + splitter[i] + " su: ";
+	        QueryDataList.getInstance().put("tuzilac", splitter[i]);
+	        System.out.println(QueryDataList.getInstance().toString());
+	        kSession.insert(QueryDataList.getInstance());
+	        int fired = kSession.fireAllRules();
+	        
+	        System.out.println("Fired " + fired);
+	    	@SuppressWarnings("unchecked")
+	    	Collection<LinkTAnswer> dela = (Collection<LinkTAnswer>) kSession.getObjects(new ClassObjectFilter(LinkTAnswer.class));
+	    	
+	    	String odg = "";
+	        for(LinkTAnswer t : dela) {
+	        	Delo novoDelo = deloService.findByClanTackaStav(t.getClan(),t.getStav(),t.getTacka());
+	        	if (!odg.contains(novoDelo.getNaziv().toUpperCase()))
+			    	odg += novoDelo.getNaziv().toUpperCase() + ", ";
+	        }
+	        
+	        odgovor += odg.substring(0, odg.length() - 2);
+			if (i < splitter.length - 1)
+				odgovor += "&";
+	        
+        }
         
-        for(LinkT t : tuziociLink)
-        	kSession.insert(t);
-        
-        List<LinkD> dokazLink = linkDService.findAll();
-        
-        for(LinkD d : dokazLink)
-        	kSession.insert(d);
-        
-        QueryDataList.getInstance().put("tuzilac", splitter[1]);
-        System.out.println(QueryDataList.getInstance().toString());
-        kSession.insert(QueryDataList.getInstance());
-        int fired = kSession.fireAllRules();
-        
-        System.out.println("Fired " + fired);
-    	@SuppressWarnings("unchecked")
-    	Collection<LinkTAnswer> dela = (Collection<LinkTAnswer>) kSession.getObjects(new ClassObjectFilter(LinkTAnswer.class));
-        for(LinkTAnswer t : dela)
-        	System.out.println(t);
-        
+        System.out.println("ODGOVOR: " + odgovor);
     	return new ResponseEntity<String>("", HttpStatus.OK);
 	}
 	
@@ -123,22 +134,24 @@ public class ListController {
 			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
 		
-		KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer();
-        KieSession kSession =  kContainer.newKieSession("ksession-rules");
-        
-	    List<LinkT> tuziociLink = linkTService.findAll();
-	        
-        for(LinkT t : tuziociLink)
-        	kSession.insert(t);
-        
-        List<LinkD> dokazLink = linkDService.findAll();
-        
-        for(LinkD d : dokazLink)
-        	kSession.insert(d);
-	        
-        String odgovor = "";
+		String odgovor = "";
         for(int i = 1; i < splitter.length; i++) {
+		
+			KieServices ks = KieServices.Factory.get();
+	        KieContainer kContainer = ks.getKieClasspathContainer();
+	        KieSession kSession =  kContainer.newKieSession("ksession-rules");
+	        
+		    List<LinkT> tuziociLink = linkTService.findAll();
+		        
+	        for(LinkT t : tuziociLink)
+	        	kSession.insert(t);
+	        
+	        List<LinkD> dokazLink = linkDService.findAll();
+	        
+	        for(LinkD d : dokazLink)
+	        	kSession.insert(d);
+	        
+        
         	odgovor += "Dokaz pod nazivom " + splitter[i] + " je potreban za sledeca dela: ";
         	QueryDataList.getInstance().put("dokaz", splitter[i]);
 	        System.out.println(QueryDataList.getInstance().toString());
@@ -148,12 +161,23 @@ public class ListController {
 	        
 	        @SuppressWarnings("unchecked")
 	    	Collection<LinkDAnswer> dela = (Collection<LinkDAnswer>) kSession.getObjects(new ClassObjectFilter(LinkDAnswer.class));
-	        for(LinkDAnswer d : dela)
-	        	System.out.println(d);
 	        
-        }	
+	        String odg = "";
+        	for(LinkDAnswer d:dela) {
+	        	Delo novoDelo = deloService.findByClanTackaStav(d.getClan(),d.getStav(),d.getTacka());
+	        	if (!odg.contains(novoDelo.getNaziv().toUpperCase()))
+			    	odg += novoDelo.getNaziv().toUpperCase() + ", ";
+	        	
+	        }
+        	
+        	odgovor += odg.substring(0, odg.length() - 2);
+			if (i < splitter.length - 1)
+				odgovor += "&";
 	        
-		return new ResponseEntity<String>("", HttpStatus.OK);
+        }
+        
+        System.out.println("ODGOVOR: " + odgovor);
+		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
 
 	}
 	
