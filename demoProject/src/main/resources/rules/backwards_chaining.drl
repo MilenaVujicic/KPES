@@ -1,0 +1,50 @@
+package rules
+
+import com.sample.DroolsTest.Message;
+
+import com.sample.DroolsTest;
+import com.sample.model.QueryDataList;
+import com.sample.model.Delo;
+import com.sample.model.PodaciODelu;
+import com.sample.model.Dokaz;
+import com.sample.model.TipTuzioca;
+import com.sample.model.Tuzilac;
+import com.sample.model.Obelezje;
+import com.sample.model.LinkTAnswer;
+import com.sample.model.LinkDAnswer;
+import com.sample.model.LinkT;
+import com.sample.model.LinkD;
+
+query tuzilacDelo(String t, int clan, int tacka, int stav)
+	LinkT(t, clan, tacka, stav;)
+end
+
+query dokazDelo(String d, int clan, int tacka, int stav)
+	LinkD(d, clan, tacka, stav;)
+end
+
+rule "tuzilac delo"
+lock-on-active true
+when
+	$queryMap: QueryDataList();
+	$t: String() from  $queryMap.get("tuzilac");
+	tuzilacDelo($t, clan, tacka, stav;)
+then
+	//System.out.println(clan + " " + tacka + " " + stav);
+	LinkTAnswer $lt = new LinkTAnswer($t, clan, tacka, stav);
+	System.out.println($lt);
+	insert($lt);
+end
+
+rule "dokaz delo"
+lock-on-active true
+when
+	$queryMap: QueryDataList();
+	$d: String() from  $queryMap.get("dokaz");
+	dokazDelo($d, clan, tacka, stav;)
+then
+	//System.out.println(clan + " " + tacka + " " + stav);
+	LinkDAnswer $ld = new LinkDAnswer($d, clan, tacka, stav);
+	System.out.println($ld);
+	insert($ld);
+end

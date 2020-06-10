@@ -1,13 +1,14 @@
 package com.sample.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.kie.api.KieServices;
+
+import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.QueryResults;
-import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
 import com.sample.model.Dokaz;
-import com.sample.model.Obelezje;
+
+import com.sample.model.LinkD;
+import com.sample.model.LinkDAnswer;
+import com.sample.model.LinkT;
+import com.sample.model.LinkTAnswer;
+import com.sample.model.QueryDataList;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
 import com.sample.service.DokazService;
-import com.sample.service.ObelezjeService;
+import com.sample.service.LinkDService;
+import com.sample.service.LinkTService;
 import com.sample.service.TuzilacService;
 
 @RestController
@@ -39,7 +46,10 @@ public class ListController {
 	private DokazService dokazService;
 	
 	@Autowired
-	private ObelezjeService obelezjeService;
+	private LinkTService linkTService;
+	
+	@Autowired
+	private LinkDService linkDService;
 	
 	@GetMapping(value = "/tuzioci")
 	public List<Tuzilac> getTuzioci() {
@@ -72,10 +82,37 @@ public class ListController {
 		if (!response.contains("&"))
 			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
-		System.out.println(splitter[0]);
-		// TODO odraditi dalje islistavanje tuzioca i potrebnih detalja
+		//System.out.println(splitter[0]);
 		
-		return new ResponseEntity<String>("", HttpStatus.OK);
+		for(String s : splitter)
+			System.out.println(s);
+		
+		KieServices ks = KieServices.Factory.get();
+        KieContainer kContainer = ks.getKieClasspathContainer();
+        KieSession kSession =  kContainer.newKieSession("ksession-rules");
+		
+        List<LinkT> tuziociLink = linkTService.findAll();
+        
+        for(LinkT t : tuziociLink)
+        	kSession.insert(t);
+        
+        List<LinkD> dokazLink = linkDService.findAll();
+        
+        for(LinkD d : dokazLink)
+        	kSession.insert(d);
+        
+        QueryDataList.getInstance().put("tuzilac", splitter[1]);
+        System.out.println(QueryDataList.getInstance().toString());
+        kSession.insert(QueryDataList.getInstance());
+        int fired = kSession.fireAllRules();
+        
+        System.out.println("Fired " + fired);
+    	@SuppressWarnings("unchecked")
+    	Collection<LinkTAnswer> dela = (Collection<LinkTAnswer>) kSession.getObjects(new ClassObjectFilter(LinkTAnswer.class));
+        for(LinkTAnswer t : dela)
+        	System.out.println(t);
+        
+    	return new ResponseEntity<String>("", HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/sendDokazi/{response}")
@@ -85,48 +122,39 @@ public class ListController {
 		if (!response.contains("&"))
 			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
+
+		//System.out.println(splitter[0]);
+	
+		for(String s : splitter)
+			System.out.println(s);
 		
-		// TODO odraditi dalje islistavanje dokaza i potrebnih detalja
+		KieServices ks = KieServices.Factory.get();
+        KieContainer kContainer = ks.getKieClasspathContainer();
+        KieSession kSession =  kContainer.newKieSession("ksession-rules");
+		splitter[1] += ".";
+	    List<LinkT> tuziociLink = linkTService.findAll();
+	        
+	        for(LinkT t : tuziociLink)
+	        	kSession.insert(t);
+	        
+	        List<LinkD> dokazLink = linkDService.findAll();
+	        
+	        for(LinkD d : dokazLink)
+	        	kSession.insert(d);
+	        
+	        QueryDataList.getInstance().put("dokaz", splitter[1]);
+	        System.out.println(QueryDataList.getInstance().toString());
+	        kSession.insert(QueryDataList.getInstance());
+	        int fired = kSession.fireAllRules();
 		
-		String odgovor = "";
-		for(int i = 1; i < splitter.length; i++) {
-			System.out.println(splitter[i]);
-			odgovor += "Dela koja su vezana za dokaz \"" + splitter[i] + "\" su: ";
-			
-			KieContainer kc = KieServices.Factory.get().getKieClasspathContainer();
-			KieSession kSession = kc.newKieSession("ksession-rules");
-			
-			List<Delo> dela = deloService.findAll();
-			
-			for(Delo d:dela) {
-				kSession.insert(d);
-			}
-			
-			List<Obelezje> obelezja = obelezjeService.findAll();
-			
-			for(Obelezje o:obelezja) {
-				kSession.insert(o);
-			}
-			
-			QueryResults results = kSession.getQueryResults(splitter[i]);
-			System.out.println( "BROJ ODGOVORA JE: " + results.size() );
-			
-			
-			String odg = "";
-			for ( QueryResultsRow row : results ) {
-			    Delo delo = ( Delo ) row.get( "$delo" );
-			    if (!odg.contains(delo.getNaziv().toUpperCase()))
-			    	odg += delo.getNaziv().toUpperCase() + ", ";
-			}
-			
-			odgovor += odg.substring(0, odg.length() - 2);
-			if (i < splitter.length - 1)
-				odgovor += "&";
-			
-		}
-		System.out.println(odgovor);
-		
-		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
+	        System.out.println("Fired " + fired);
+	    	@SuppressWarnings("unchecked")
+	    	Collection<LinkDAnswer> dela = (Collection<LinkDAnswer>) kSession.getObjects(new ClassObjectFilter(LinkDAnswer.class));
+	        for(LinkDAnswer d : dela)
+	        	System.out.println(d);
+	        
+		return new ResponseEntity<String>("", HttpStatus.OK);
+
 	}
 	
 	@GetMapping(value = "/sendDela/{response}")

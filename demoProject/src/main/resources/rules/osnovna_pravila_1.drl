@@ -10,6 +10,8 @@ import com.sample.model.Dokaz;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
 import com.sample.model.Obelezje;
+import com.sample.model.LinkD;
+import com.sample.model.LinkT;
 
 
 //declare any global variables here
