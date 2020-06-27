@@ -73,6 +73,14 @@ public class QueryDataList extends HashMap<String, String>{
 		// TODO Auto-generated method stub
 		return super.size();
 	}
+
+
+	@Override
+	public String toString() {
+		return "QueryDataList [toString()=" + super.toString() + "]";
+	}
+	
+	
 	
 	
 }
