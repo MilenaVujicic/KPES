@@ -29,14 +29,17 @@ rule "Delo @{row.rowNumber}"
     when
        $queryMap : QueryDataList(this["age2"] == "@{zrtva}", this["radnja"] == "@{radnja}", this["subOdnos"] == "@{subjOdnos}",
        							 this["stanje"] == "@{stanje}", this["mesto"] == "@{mesto}", this["broj"] == "@{brZrtava}",
-       							 this["psih"] == "@{psihickoStanje}");
-       $s : String() from $queryMap.get("age2");
-   	   $o : Obelezje(zrtva == $s);
-       $d : Delo(posebnoObelezje.equals($o));
+       							 this["izvrsilacStanje"] == "@{psihickoStanje}");
+       $a : String() from $queryMap.get("age2");
+       $m : String() from $queryMap.get("mesto");
+       $r : String() from $queryMap.get("radnja");
+       $so : String() from $queryMap.get("subOdnos");
+   	   $po : Obelezje(zrtva == $a);
+   	   $oo : Obelezje(mesto == $m, radnja == $r, subjektivanOdnos == $so);
+       $d : Delo(posebnoObelezje.equals($po), opsteObelezje.equals($oo));
     then
    	 	PodaciODelu $pd = new PodaciODelu($d);
    	 	System.out.println($pd);
-   	 	System.out.println($s);
     	insert($pd);
 end
 

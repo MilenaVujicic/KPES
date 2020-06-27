@@ -141,6 +141,19 @@ rule "115"
 		insert($pd);
 end
 
+rule "tuzilac za ratne zlocine"
+	no-loop true
+	when
+		$queryMap : QueryDataList(this["stanje"] == "Ratno stanje");
+		$pd : PodaciODelu(tuzilac == null);
+		$t : Tuzilac(tip == TipTuzioca.TUZILAC_ZA_RATNE_ZLOCINE);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+		
+end
+
 rule "tuzilac za maloletnike"
 	no-loop true
 	when

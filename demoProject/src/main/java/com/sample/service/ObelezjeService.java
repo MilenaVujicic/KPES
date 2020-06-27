@@ -17,4 +17,8 @@ public class ObelezjeService {
 	public List<Obelezje> findAll() {
 		return obelezjeRepository.findAll();
 	}
+
+	public Obelezje save(Obelezje obelezje) {
+		return obelezjeRepository.save(obelezje);
+	}
 }
