@@ -155,12 +155,12 @@ insert into dokaz_leaf(opis, opis_parent_id) values('Pravljenje skice lica mesta
 insert into dokaz_root(clan, stav, tacka, osnovni_opis) values (0, 0, 0, 'Uzimanje tragova sa lica mesta');
 insert into dokaz_leaf(dokaz_parent_id, opis) values (2, 'Uzimanje bioloskih tragova');
 insert into dokaz_leaf(opis, opis_parent_id) values('Uzimanje otisaka sa prstiju i dlanova', 5);
-insert into dokaz_leaf(opis, opis_parent_id) values('Uzimanje krvi, dlake, pljuvacke', 5);
-insert into dokaz_leaf(opis, opis_parent_id) values('Uzimanje sredstava izvrsenja dela', 5);
+insert into dokaz_leaf(dokaz_parent_id, opis) values(2, 'Uzimanje krvi, dlake, pljuvacke');
+insert into dokaz_leaf(dokaz_parent_id, opis) values(2, 'Uzimanje sredstava izvrsenja dela');
 insert into dokaz_leaf(opis, opis_parent_id) values('Uzimanje oruzija', 8);
 insert into dokaz_leaf(opis, opis_parent_id) values('Uzimanje hrane ili tecnosti kojim je neko otrovan', 8);
-insert into dokaz_leaf(opis, opis_parent_id) values('Uzimanje otisaka obuce', 5);
-insert into dokaz_leaf(opis, opis_parent_id) values('Uzimanje otisaka pneumatika vozila', 5);
+insert into dokaz_leaf(dokaz_parent_id, opis) values(2, 'Uzimanje otisaka obuce');
+insert into dokaz_leaf(dokaz_parent_id, opis) values(2, 'Uzimanje otisaka pneumatika vozila');
 
 insert into dokaz_root(clan, stav, tacka, osnovni_opis) values (0, 0, 0, 'Pregled izvrsioca krivicnog dela');
 insert into dokaz_leaf(dokaz_parent_id, opis) values(3, 'Uzimanje krvi i urina');
