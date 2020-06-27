@@ -64,6 +64,7 @@ public class NovoDeloController {
 		dokaz.setClan(Integer.parseInt(novoDelo.getClan()));
 		dokaz.setStav(Integer.parseInt(novoDelo.getStav()));
 		dokaz.setTacka(Integer.parseInt(novoDelo.getTacka()));
+		System.out.println(dokaz);
 		
 		deloService.save(delo);
 		dokazService.save(dokaz);
@@ -76,7 +77,7 @@ public class NovoDeloController {
 		ArrayList<NovoDelo> nList = new ArrayList<NovoDelo>();
 		nList.add(novoDelo);
         ObjectDataCompiler converter = new ObjectDataCompiler();
-        System.out.println("###");
+
         String drl = converter.compile(nList, template);
         
         KieHelper kieHelper = new KieHelper();

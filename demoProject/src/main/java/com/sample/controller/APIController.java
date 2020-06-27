@@ -54,7 +54,7 @@ public class APIController {
 	
 	@RequestMapping(value = "/sendData", method = RequestMethod.POST)
 	public ResponseEntity<String> sendData(HttpEntity<String> json) throws ParseException{
-		System.out.println("#######");
+
 		String jString = json.getBody();
 		System.out.println(jString);
 		QueryDataList.getInstance().clear();
@@ -71,15 +71,7 @@ public class APIController {
 		JSONArray jArrBroj = (JSONArray) jObj.get("broj");
 		JSONArray jArrStatus = (JSONArray) jObj.get("status");
 		JSONArray jArrPsih = (JSONArray) jObj.get("psih");
-	/*	JSONArray jArr = (JSONArray) jObj.get("subOdnos");
-		
-		String subOdnos = jArr.get(0).toString();
-		if(jObj.get("subOdnos") != null) {
-			QueryDataList.getInstance().put("subjektivni_odnos",  subOdnos);
-		}else if(jObj.get("starostZrtve") != null) {
-		}
-		System.out.println(QueryDataList.getInstance().toString());*/
-		System.out.println("###" + jArrRadnja);
+	
 		String age1 = null;
 		String age2 = null;
 		String subOdnos = null;
@@ -136,8 +128,6 @@ public class APIController {
 				radnja += o.toString();
 			}
 		}
-		
-		System.out.println("####" + radnja);
 		
 		for(Object o : jArrStanje) {
 			if(stanje == null) {
@@ -202,12 +192,19 @@ public class APIController {
 		if(psih != null && !psih.equals("nema podataka")){
 			QueryDataList.getInstance().put("izvrsilacStanje", "doveden u posebno psihicko stanje");
 		}
+		else {
+			QueryDataList.getInstance().put("izvrsilacStanje", "nema podataka");
+		}
 		
-		System.out.println(QueryDataList.getInstance().toString());
+		System.out.println(QueryDataList.getInstance().get("izvrsilacStanje").toString());
 		KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession kSession =  kContainer.newKieSession("ksession-rules");
         
+        List<Tuzilac> tuzioci = tuzilacService.findAll();
+ 		for(Tuzilac t : tuzioci) {
+ 			kSession.insert(t);
+ 		}
        //QueryDataList qdl = QueryDataList.getInstance();
         kSession.insert(QueryDataList.getInstance());
         if(KSessionModel.getInstance().getkSession() != null) {
@@ -224,10 +221,6 @@ public class APIController {
     		for(Dokaz d : dokazi) {
     			KSessionModel.getInstance().getkSession().insert(d);
     		}
-    		List<Tuzilac> tuzioci = tuzilacService.findAll();
-    		for(Tuzilac t : tuzioci) {
-    			KSessionModel.getInstance().getkSession().insert(t);
-    		}
     		
 			int fired1 = KSessionModel.getInstance().getkSession().fireAllRules();
 			System.out.println("##" + fired1);
@@ -240,73 +233,50 @@ public class APIController {
 			
 			@SuppressWarnings("unchecked")
 			Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
-			String odgovor = "";
 			ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
 			for (PodaciODelu p : podaci) {
 				podaciODelu.add(p);
+				if (p.getStanje() != null)
+					System.out.println(p.getStanje());
+				else 
+					System.out.println("###null");
+				
 				kSession.insert(p);
 			}
 			System.out.println("###" + podaci.size());
-			if(podaciODelu.size() >= 1) {
-				PodaciODelu p = podaciODelu.get(podaciODelu.size() - 1);
-				odgovor += "Za ovo krivično delo neophodno je pozvati ";
-				/*if (p.getTuzilac().getTip().equals(TipTuzioca.OSNOVNI_JAVNI_TUZILAC)) {
-					odgovor += "osnovnog javnog tužioca";
-				} else if (p.getTuzilac().getTip().equals(TipTuzioca.VISI_JAVNI_TUZILAC)) {
-					odgovor += "višeg javnog tužioca";
-				} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_MALOLETNIKE)) {
-					odgovor += "tužioca za maloletnike";
-				} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_ORGANIZOVANI_KRIMINAL)) {
-					odgovor += "tužioca za organizovani kriminal";
-				}*/
-				odgovor += ".&";
-				odgovor += "Neophodno je prikupiti sledeće dokaze: ";
-				for (Dokaz d : p.getDokazi()) {
-					odgovor += d.getOpis();
-					odgovor += " ";
-				}
-				odgovor += ".&";
-				odgovor += "U pitanju je krivično delo sa nazivom: \"" + p.getDelo().getNaziv() + "\"";
-				odgovor += ".&";
-				odgovor += "Predviđena je maksimalna kazna do: " + p.getDelo().getMaxKazna() + " godina zatvora.";
-			}
-			System.out.println("############" + odgovor);
+			
         }
         else {
         	System.out.println("###null");
+        	 System.out.println(QueryDataList.getInstance().toString());
+             List<Obelezje> obelezja = obelezjeService.findAll();
+     		for(Obelezje o : obelezja) {
+     			kSession.insert(o);
+     		}
+     		
+     		List<Delo> dela = deloService.findAll();
+     		for(Delo d : dela) {
+     			kSession.insert(d);
+     		}
+     		
+     		List<Dokaz> dokazi = dokazService.findAll();
+     		for(Dokaz d : dokazi) {
+     			kSession.insert(d);
+     		}
+     		
+     		
         }
         
-        System.out.println(QueryDataList.getInstance().toString());
-        List<Obelezje> obelezja = obelezjeService.findAll();
-		for(Obelezje o : obelezja) {
-			kSession.insert(o);
-		}
+        int fired = kSession.fireAllRules();
+ 		System.out.println("##" + fired);
+ 		Collection<KiePackage> packages = kSession.getKieBase().getKiePackages();
+ 		int rules = 0;
+ 		for(KiePackage p : packages) {
+ 			rules += p.getRules().size();
+ 		}
+ 		System.out.println("Num: " + rules);
 		
-		List<Delo> dela = deloService.findAll();
-		for(Delo d : dela) {
-			kSession.insert(d);
-		}
-		
-		List<Dokaz> dokazi = dokazService.findAll();
-		for(Dokaz d : dokazi) {
-			kSession.insert(d);
-		}
-		
-		List<Tuzilac> tuzioci = tuzilacService.findAll();
-		for(Tuzilac t : tuzioci) {
-			kSession.insert(t);
-		}
-		
-		int fired = kSession.fireAllRules();
-		System.out.println("##" + fired);
-		Collection<KiePackage> packages = kSession.getKieBase().getKiePackages();
-		int rules = 0;
-		for(KiePackage p : packages) {
-			rules += p.getRules().size();
-		}
-		System.out.println("Num: " + rules);
-		
-		@SuppressWarnings("unchecked")
+ 		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
 		String odgovor = "";
 		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
