@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
 import com.sample.model.Dokaz;
+import com.sample.model.KSessionModel;
 import com.sample.model.Obelezje;
 import com.sample.model.PodaciODelu;
 import com.sample.model.QueryDataList;
@@ -53,7 +54,7 @@ public class APIController {
 	
 	@RequestMapping(value = "/sendData", method = RequestMethod.POST)
 	public ResponseEntity<String> sendData(HttpEntity<String> json) throws ParseException{
-		System.out.println("#######");
+
 		String jString = json.getBody();
 		System.out.println(jString);
 		QueryDataList.getInstance().clear();
@@ -70,15 +71,7 @@ public class APIController {
 		JSONArray jArrBroj = (JSONArray) jObj.get("broj");
 		JSONArray jArrStatus = (JSONArray) jObj.get("status");
 		JSONArray jArrPsih = (JSONArray) jObj.get("psih");
-	/*	JSONArray jArr = (JSONArray) jObj.get("subOdnos");
-		
-		String subOdnos = jArr.get(0).toString();
-		if(jObj.get("subOdnos") != null) {
-			QueryDataList.getInstance().put("subjektivni_odnos",  subOdnos);
-		}else if(jObj.get("starostZrtve") != null) {
-		}
-		System.out.println(QueryDataList.getInstance().toString());*/
-		System.out.println("###" + jArrRadnja);
+	
 		String age1 = null;
 		String age2 = null;
 		String subOdnos = null;
@@ -135,8 +128,6 @@ public class APIController {
 				radnja += o.toString();
 			}
 		}
-		
-		System.out.println("####" + radnja);
 		
 		for(Object o : jArrStanje) {
 			if(stanje == null) {
@@ -201,51 +192,91 @@ public class APIController {
 		if(psih != null && !psih.equals("nema podataka")){
 			QueryDataList.getInstance().put("izvrsilacStanje", "doveden u posebno psihicko stanje");
 		}
+		else {
+			QueryDataList.getInstance().put("izvrsilacStanje", "nema podataka");
+		}
 		
-		System.out.println(QueryDataList.getInstance().toString());
+		System.out.println(QueryDataList.getInstance().get("izvrsilacStanje").toString());
 		KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession kSession =  kContainer.newKieSession("ksession-rules");
-        KieSession kSession1 =  kContainer.newKieSession("ksession");
         
+        List<Tuzilac> tuzioci = tuzilacService.findAll();
+ 		for(Tuzilac t : tuzioci) {
+ 			kSession.insert(t);
+ 		}
        //QueryDataList qdl = QueryDataList.getInstance();
         kSession.insert(QueryDataList.getInstance());
+        if(KSessionModel.getInstance().getkSession() != null) {
+        	KSessionModel.getInstance().getkSession().insert(QueryDataList.getInstance());
+        	List<Obelezje> obelezja = obelezjeService.findAll();
+    		for(Obelezje o : obelezja) {
+    			KSessionModel.getInstance().getkSession().insert(o);
+    		}
+    		List<Delo> dela = deloService.findAll();
+    		for(Delo d : dela) {
+    			KSessionModel.getInstance().getkSession().insert(d);
+    		}
+    		List<Dokaz> dokazi = dokazService.findAll();
+    		for(Dokaz d : dokazi) {
+    			KSessionModel.getInstance().getkSession().insert(d);
+    		}
+    		
+			int fired1 = KSessionModel.getInstance().getkSession().fireAllRules();
+			System.out.println("##" + fired1);
+			Collection<KiePackage> packagess = KSessionModel.getInstance().getkSession().getKieBase().getKiePackages();
+			int rule = 0;
+			for(KiePackage p : packagess) {
+				rule += p.getRules().size();
+			}
+			System.out.println("Num: " + rule);
+			
+			@SuppressWarnings("unchecked")
+			Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
+			ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
+			for (PodaciODelu p : podaci) {
+				podaciODelu.add(p);
+				if (p.getStanje() != null)
+					System.out.println(p.getStanje());
+				else 
+					System.out.println("###null");
+				
+				kSession.insert(p);
+			}
+			System.out.println("###" + podaci.size());
+			
+        }
+        else {
+        	System.out.println("###null");
+        	 System.out.println(QueryDataList.getInstance().toString());
+             List<Obelezje> obelezja = obelezjeService.findAll();
+     		for(Obelezje o : obelezja) {
+     			kSession.insert(o);
+     		}
+     		
+     		List<Delo> dela = deloService.findAll();
+     		for(Delo d : dela) {
+     			kSession.insert(d);
+     		}
+     		
+     		List<Dokaz> dokazi = dokazService.findAll();
+     		for(Dokaz d : dokazi) {
+     			kSession.insert(d);
+     		}
+     		
+     		
+        }
         
-        List<Obelezje> obelezja = obelezjeService.findAll();
-		for(Obelezje o : obelezja) {
-			kSession.insert(o);
-			kSession1.insert(o);
-		}
+        int fired = kSession.fireAllRules();
+ 		System.out.println("##" + fired);
+ 		Collection<KiePackage> packages = kSession.getKieBase().getKiePackages();
+ 		int rules = 0;
+ 		for(KiePackage p : packages) {
+ 			rules += p.getRules().size();
+ 		}
+ 		System.out.println("Num: " + rules);
 		
-		List<Delo> dela = deloService.findAll();
-		for(Delo d : dela) {
-			kSession.insert(d);
-			kSession1.insert(d);
-		}
-		
-		List<Dokaz> dokazi = dokazService.findAll();
-		for(Dokaz d : dokazi) {
-			kSession.insert(d);
-			kSession1.insert(d);
-		}
-		
-		List<Tuzilac> tuzioci = tuzilacService.findAll();
-		for(Tuzilac t : tuzioci) {
-			kSession.insert(t);
-			kSession1.insert(t);
-		}
-        
-		int fired = kSession.fireAllRules();
-		System.out.println("##" + fired);
-		Collection<KiePackage> packages = kSession.getKieBase().getKiePackages();
-		int rules = 0;
-		for(KiePackage p : packages) {
-			rules += p.getRules().size();
-		}
-		System.out.println("Num: " + rules);
-		int fired1 = kSession1.fireAllRules();
-		System.out.println("##" + fired1);
-		@SuppressWarnings("unchecked")
+ 		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
 		String odgovor = "";
 		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
@@ -263,6 +294,8 @@ public class APIController {
 				odgovor += "tužioca za maloletnike";
 			} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_ORGANIZOVANI_KRIMINAL)) {
 				odgovor += "tužioca za organizovani kriminal";
+			} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_RATNE_ZLOCINE)) {
+				odgovor += "tužioca za ratne zlocine";
 			}
 			odgovor += ".&";
 			odgovor += "Neophodno je prikupiti sledeće dokaze: ";

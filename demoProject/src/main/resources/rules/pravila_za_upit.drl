@@ -141,11 +141,23 @@ rule "115"
 		insert($pd);
 end
 
+rule "tuzilac za ratne zlocine"
+	no-loop true
+	when
+		$pd : PodaciODelu(tuzilac == null, stanje == "Ratno stanje");
+		$t : Tuzilac(tip == TipTuzioca.TUZILAC_ZA_RATNE_ZLOCINE);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+		
+end
+
 rule "tuzilac za maloletnike"
 	no-loop true
 	when
 		$queryMap : QueryDataList(this["age1"] == "Izmedju 18 i 14");
-		$pd : PodaciODelu(tuzilac == null);
+		$pd : PodaciODelu(tuzilac == null, stanje != "Ratno stanje");
 		$t : Tuzilac(tip == TipTuzioca.TUZILAC_ZA_MALOLETNIKE);
 	then
 		$pd.setTuzilac($t);
@@ -157,7 +169,7 @@ rule "tuzilac za organizovani kriminal"
 	no-loop true
 	when
 		$d : Delo(clan == 310);
-		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
+		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null, stanje != "Ratno stanje");
 		$t : Tuzilac(tip == TipTuzioca.TUZILAC_ZA_ORGANIZOVANI_KRIMINAL);
 	then
 		$pd.setTuzilac($t);
@@ -169,7 +181,7 @@ rule "tuzilac maksimalna kazna manja od 10"
 	no-loop true
 	when
 		$d : Delo(maxKazna < 10);
-		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
+		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null, stanje != "Ratno stanje");
 		$t : Tuzilac(tip == TipTuzioca.OSNOVNI_JAVNI_TUZILAC);
 	then
 		$pd.setTuzilac($t);
@@ -183,7 +195,7 @@ rule "tuzilac maksimalna kazna veca od 10"
 	no-loop true
 	when
 		$d : Delo(maxKazna > 10);
-		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null);
+		$pd : PodaciODelu(this.compareDelo($d) && tuzilac == null, stanje != "Ratno stanje");
 		$t : Tuzilac(tip == TipTuzioca.VISI_JAVNI_TUZILAC);
 	then
 		$pd.setTuzilac($t);

@@ -51,7 +51,12 @@ function submit() {
         brZrtava = "";
         
     let psihickoStanje = $('#psihicko_stanje').val();
+    if (psihickoStanje == "")
+        psihickoStanje = "nema podataka";
+
     let dokazi = $('#dokazi').val();
+    if (dokazi == "")
+        dokazi = "";
 
     $.ajax({
         url: 'delo/dodajNovo',

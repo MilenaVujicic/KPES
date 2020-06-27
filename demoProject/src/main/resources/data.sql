@@ -6,6 +6,7 @@ insert into tuzilac(tip) values('OSNOVNI_JAVNI_TUZILAC');
 insert into tuzilac(tip) values('VISI_JAVNI_TUZILAC');
 insert into tuzilac(tip) values('TUZILAC_ZA_MALOLETNIKE');
 insert into tuzilac(tip) values('TUZILAC_ZA_ORGANIZOVANI_KRIMINAL');
+insert into tuzilac(tip) values ('TUZILAC_ZA_RATNE_ZLOCINE');
 
 /*
  * 113 
