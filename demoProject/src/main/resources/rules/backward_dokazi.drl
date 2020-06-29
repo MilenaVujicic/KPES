@@ -15,13 +15,19 @@ import com.sample.model.DokazRoot;
 query Root(String d, int clan, int stav, int tacka)
 	DokazRoot(clan, stav, tacka, d;)
 end
-
+/*
 query Leaf(DokazRoot dokazParent, DokazLeaf opisParent )
 	DokazLeaf(dokazParent, opisParent;)
 	or
 	DokazLeaf(dokazParent, null;)
 	or
 	DokazLeaf(null, opisParent;)
+end*/
+
+query Leaf(DokazRoot dokazParent, DokazLeaf $opisParent )
+	DokazLeaf(dokazParent,$opisParent;)
+	or
+	DokazLeaf(dokazParent,$opisParent;) and Leaf(null,null;)
 end
 
 /*
@@ -50,9 +56,8 @@ rule "Leaf dokaz"
 lock-on-active true
 when
 	$root: DokazRoot(  );
-	Leaf($root, opisParent;)
+	Leaf($root, $opisParent;)	
 then
-	//System.out.println("Dokaz \"" +$root.getOsnovniOpis()+"\" zahteva dokaz: ");
 	System.out.println("Dokaz \""+$root.getOsnovniOpis()+"\" zahteva dokaz: ");
 end
 
