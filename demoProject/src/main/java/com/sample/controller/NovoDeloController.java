@@ -1,14 +1,5 @@
 package com.sample.controller;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.drools.template.ObjectDataCompiler;
-import org.kie.api.builder.Message;
-import org.kie.api.builder.Results;
-import org.kie.api.io.ResourceType;
-import org.kie.internal.utils.KieHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,32 +60,7 @@ public class NovoDeloController {
 		deloService.save(delo);
 		dokazService.save(dokaz);
 		
-		
-		InputStream template = NovoDeloController.class.getResourceAsStream("/dtables/templates.drt");
-		if (template == null)
-			System.out.println("null");
-		
-		ArrayList<NovoDelo> nList = new ArrayList<NovoDelo>();
-		nList.add(novoDelo);
-        ObjectDataCompiler converter = new ObjectDataCompiler();
-
-        String drl = converter.compile(nList, template);
+		KSessionModel.getInstance().addNovoDelo(novoDelo);
         
-        KieHelper kieHelper = new KieHelper();
-        kieHelper.addContent(drl, ResourceType.DRL);
-        
-        Results results = kieHelper.verify();
-        
-        if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)){
-            List<Message> messages = results.getMessages(Message.Level.WARNING, Message.Level.ERROR);
-            for (Message message : messages) {
-                System.out.println("Error: "+message.getText());
-            }
-            
-            throw new IllegalStateException("Compilation errors were found. Check the logs.");
-        }
-        KSessionModel.getInstance().setkSession(kieHelper.build().newKieSession());
-        
-        System.out.println(drl);
 	}
 }

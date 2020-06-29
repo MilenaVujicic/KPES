@@ -8,7 +8,6 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
 import com.sample.model.Dokaz;
-
 import com.sample.model.LinkD;
 import com.sample.model.LinkDAnswer;
 import com.sample.model.LinkT;
@@ -30,12 +28,6 @@ import com.sample.service.DeloService;
 import com.sample.service.DokazService;
 import com.sample.service.LinkDService;
 import com.sample.service.LinkTService;
-
-import com.sample.model.Obelezje;
-import com.sample.model.Tuzilac;
-import com.sample.service.DeloService;
-import com.sample.service.DokazService;
-
 import com.sample.service.TuzilacService;
 
 @RestController

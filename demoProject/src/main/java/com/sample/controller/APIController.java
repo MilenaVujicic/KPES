@@ -109,7 +109,6 @@ public class APIController {
 			}
 		}
 		
-		
 		for(Object o : jArrMesto) {
 			if(mesto == null) {
 				mesto = o.toString();
@@ -118,7 +117,6 @@ public class APIController {
 				mesto += o.toString();
 			}
 		}
-		
 		
 		for(Object o : jArrRadnja) {
 			if(radnja == null) {
@@ -137,7 +135,6 @@ public class APIController {
 				stanje += o.toString();
 			}
 		}
-		
 		
 		for(Object o : jArrBroj) {
 			if(broj == null) {
@@ -165,33 +162,43 @@ public class APIController {
 				psih += o.toString();
 			}
 		}
+		
 		if(age1 != null && !age1.equals("nema podataka")) {
 			QueryDataList.getInstance().put("age1", age1);
 		}
+		
 		if(age2 != null && !age2.equals("nema podataka")) {
 			QueryDataList.getInstance().put("age2", age2);
 		}
+		
 		if(subOdnos != null && !subOdnos.equals("nema podataka")) {
 			QueryDataList.getInstance().put("subOdnos", subOdnos);
 		}
+		
 		if(mesto != null && !mesto.equals("nema podataka")) {
 			QueryDataList.getInstance().put("mesto", mesto);
 		}
+		
 		if(radnja != null && !radnja.equals("nema podataka")) {
 			QueryDataList.getInstance().put("radnja", radnja);
 		}
+		
 		if(stanje != null && !stanje.equals("nema podataka")) {
 			QueryDataList.getInstance().put("stanje", stanje);
 		}
+		
 		if(broj != null && !broj.equals("nema podataka")) {
 			QueryDataList.getInstance().put("broj", broj);
 		}
+		
 		if(status != null && !status.equals("nema podataka")) {
 			QueryDataList.getInstance().put("zrtva", "poseban status");
 		}
+		
 		if(psih != null && !psih.equals("nema podataka")){
 			QueryDataList.getInstance().put("izvrsilacStanje", "doveden u posebno psihicko stanje");
 		}
+		
 		else {
 			QueryDataList.getInstance().put("izvrsilacStanje", "nema podataka");
 		}
@@ -200,73 +207,56 @@ public class APIController {
 		KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession kSession =  kContainer.newKieSession("ksession-rules");
-        
-        List<Tuzilac> tuzioci = tuzilacService.findAll();
+ 		
+ 		//QueryDataList qdl = QueryDataList.getInstance();
+        kSession.insert(QueryDataList.getInstance());
+        KSessionModel.getInstance().createDRL();
+    	KSessionModel.getInstance().getkSession().insert(QueryDataList.getInstance());
+    	List<Obelezje> obelezja = obelezjeService.findAll();
+		for(Obelezje o : obelezja) {
+			KSessionModel.getInstance().getkSession().insert(o);
+			kSession.insert(o);
+		}
+		
+		List<Delo> dela = deloService.findAll();
+		for(Delo d : dela) {
+			KSessionModel.getInstance().getkSession().insert(d);
+			kSession.insert(d);
+		}
+		
+		List<Dokaz> dokazi = dokazService.findAll();
+		for(Dokaz d : dokazi) {
+			KSessionModel.getInstance().getkSession().insert(d);
+			kSession.insert(d);
+		}
+		
+		List<Tuzilac> tuzioci = tuzilacService.findAll();
  		for(Tuzilac t : tuzioci) {
+ 			KSessionModel.getInstance().getkSession().insert(t);
  			kSession.insert(t);
  		}
-       //QueryDataList qdl = QueryDataList.getInstance();
-        kSession.insert(QueryDataList.getInstance());
-        if(KSessionModel.getInstance().getkSession() != null) {
-        	KSessionModel.getInstance().getkSession().insert(QueryDataList.getInstance());
-        	List<Obelezje> obelezja = obelezjeService.findAll();
-    		for(Obelezje o : obelezja) {
-    			KSessionModel.getInstance().getkSession().insert(o);
-    		}
-    		List<Delo> dela = deloService.findAll();
-    		for(Delo d : dela) {
-    			KSessionModel.getInstance().getkSession().insert(d);
-    		}
-    		List<Dokaz> dokazi = dokazService.findAll();
-    		for(Dokaz d : dokazi) {
-    			KSessionModel.getInstance().getkSession().insert(d);
-    		}
-    		
-			int fired1 = KSessionModel.getInstance().getkSession().fireAllRules();
-			System.out.println("##" + fired1);
-			Collection<KiePackage> packagess = KSessionModel.getInstance().getkSession().getKieBase().getKiePackages();
-			int rule = 0;
-			for(KiePackage p : packagess) {
-				rule += p.getRules().size();
-			}
-			System.out.println("Num: " + rule);
-			
-			@SuppressWarnings("unchecked")
-			Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
-			ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
-			for (PodaciODelu p : podaci) {
-				podaciODelu.add(p);
-				if (p.getStanje() != null)
-					System.out.println(p.getStanje());
-				else 
-					System.out.println("###null");
-				
-				kSession.insert(p);
-			}
-			System.out.println("###" + podaci.size());
-			
-        }
-        else {
-        	System.out.println("###null");
-        	 System.out.println(QueryDataList.getInstance().toString());
-             List<Obelezje> obelezja = obelezjeService.findAll();
-     		for(Obelezje o : obelezja) {
-     			kSession.insert(o);
-     		}
-     		
-     		List<Delo> dela = deloService.findAll();
-     		for(Delo d : dela) {
-     			kSession.insert(d);
-     		}
-     		
-     		List<Dokaz> dokazi = dokazService.findAll();
-     		for(Dokaz d : dokazi) {
-     			kSession.insert(d);
-     		}
-     		
-     		
-        }
+		
+		int fired1 = KSessionModel.getInstance().getkSession().fireAllRules();
+		System.out.println("##" + fired1);
+		Collection<KiePackage> packagess = KSessionModel.getInstance().getkSession().getKieBase().getKiePackages();
+		int rule = 0;
+		for(KiePackage p : packagess) {
+			rule += p.getRules().size();
+		}
+		System.out.println("Num: " + rule);
+		
+		@SuppressWarnings("unchecked")
+		Collection<PodaciODelu> pod = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
+		ArrayList<PodaciODelu> podaciODelu1 = new ArrayList<PodaciODelu>();
+		for (PodaciODelu p : pod) {
+			podaciODelu1.add(p);
+			kSession.insert(p);
+		}
+		System.out.println("###" + pod.size());
         
+        
+        System.out.println(QueryDataList.getInstance().toString());
+		
         int fired = kSession.fireAllRules();
  		System.out.println("##" + fired);
  		Collection<KiePackage> packages = kSession.getKieBase().getKiePackages();
