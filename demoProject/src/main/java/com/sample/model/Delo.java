@@ -1,6 +1,5 @@
 package com.sample.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,9 +21,9 @@ public class Delo {
 	private double minKazna;
 	@Column
 	private int clan;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private Obelezje opsteObelezje;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private Obelezje posebnoObelezje;
 	@Column
 	private int stav;
