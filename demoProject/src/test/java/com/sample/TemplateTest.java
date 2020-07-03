@@ -100,6 +100,7 @@ public class TemplateTest {
  		}
  		
  		int templateFired = KSessionModel.getInstance().getkSession().fireAllRules();
+ 		
  		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> templatePodaci = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
 		ArrayList<PodaciODelu> templatePodaciODelu = new ArrayList<PodaciODelu>();
@@ -167,6 +168,7 @@ public class TemplateTest {
  		}
  		
  		int templateFired = KSessionModel.getInstance().getkSession().fireAllRules();
+ 		
  		@SuppressWarnings("unchecked")
 		Collection<PodaciODelu> templatePodaci = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
 		ArrayList<PodaciODelu> templatePodaciODelu = new ArrayList<PodaciODelu>();
