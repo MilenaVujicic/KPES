@@ -24,7 +24,7 @@ import com.sample.model.Obelezje;
 
 template "classification-rules"
 
-rule "Delo @{row.rowNumber}"
+rule "Delo template @{clan}.@{stav}.@{tacka}"
 	lock-on-active true
     when
        	$queryMap : QueryDataList(this["age2"] == "@{zrtva}", this["radnja"] == "@{radnja}", this["subOdnos"] == "@{subjOdnos}",
@@ -40,12 +40,12 @@ rule "Delo @{row.rowNumber}"
    	   	$oo : Obelezje(mesto == $m, radnja == $r, subjektivanOdnos == $so);
        	$d : Delo(posebnoObelezje.equals($po), opsteObelezje.equals($oo));
     then
-   	   	PodaciODelu $pd = new PodaciODelu($d, $s);
+   	   	PodaciODelu $pd = new PodaciODelu($d);
    	   	System.out.println($pd);
        	insert($pd);
 end
 
-rule "Dokazi @{row.rowNumber}"
+rule "Dokazi template @{clan}.@{stav}.@{tacka}"
 	no-loop  true
 	when
 		$d : Delo(clan == @{clan}, stav == @{stav}, tacka == @{tacka});

@@ -51,7 +51,7 @@ function submit() {
         brZrtava = "";
         
     let psihickoStanje = $('#psihicko_stanje').val();
-    if (psihickoStanje == "")
+    if (psihickoStanje == "PSIHIČKO STANJE")
         psihickoStanje = "nema podataka";
 
     let dokazi = $('#dokazi').val();

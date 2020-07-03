@@ -8,13 +8,11 @@ public class PodaciODelu {
 	private Delo delo;
 	private List<Dokaz> dokazi = new ArrayList<Dokaz>();
 	private Tuzilac tuzilac;
-	private String stanje;
 	
-	public PodaciODelu(Delo delo, List<Dokaz> dokazi, Tuzilac tuzilac, String stanje) {
+	public PodaciODelu(Delo delo, List<Dokaz> dokazi, Tuzilac tuzilac) {
 		this.tuzilac = tuzilac;
 		this.dokazi = dokazi;
 		this.delo = delo;
-		this.stanje = stanje;
 	}
 	
 	public PodaciODelu(Delo delo, List<Dokaz> dokazi) {
@@ -24,12 +22,6 @@ public class PodaciODelu {
 	
 	public PodaciODelu(Delo delo) {
 		this.delo = delo;
-	}
-	
-	public PodaciODelu(Delo delo, String stanje) {
-		super();
-		this.delo = delo;
-		this.stanje = stanje;
 	}
 
 	public PodaciODelu() {
@@ -60,14 +52,6 @@ public class PodaciODelu {
 		this.tuzilac = tuzilac;
 	}
 
-	public String getStanje() {
-		return stanje;
-	}
-
-	public void setStanje(String stanje) {
-		this.stanje = stanje;
-	}
-
 	public boolean compareDelo(Delo d) {
 		if(d.getId().equals(this.delo.getId()))
 			return true;
@@ -80,7 +64,7 @@ public class PodaciODelu {
 	}
 	@Override
 	public String toString() {
-		return "PodaciODelu [delo=" + delo + ", dokazi=" + dokazi + ", tuzilac=" + tuzilac + ", stanje=" + stanje + "]";
+		return "PodaciODelu [delo=" + delo + ", dokazi=" + dokazi + ", tuzilac=" + tuzilac + "]";
 	}
 
 	
