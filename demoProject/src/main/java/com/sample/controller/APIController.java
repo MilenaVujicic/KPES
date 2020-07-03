@@ -198,7 +198,6 @@ public class APIController {
 		if(psih != null && !psih.equals("nema podataka")){
 			QueryDataList.getInstance().put("izvrsilacStanje", "doveden u posebno psihicko stanje");
 		}
-		
 		else {
 			QueryDataList.getInstance().put("izvrsilacStanje", "nema podataka");
 		}
@@ -236,8 +235,8 @@ public class APIController {
  			kSession.insert(t);
  		}
 		
-		int fired1 = KSessionModel.getInstance().getkSession().fireAllRules();
-		System.out.println("##" + fired1);
+		int templateFired = KSessionModel.getInstance().getkSession().fireAllRules();
+		System.out.println("##" + templateFired);
 		Collection<KiePackage> packagess = KSessionModel.getInstance().getkSession().getKieBase().getKiePackages();
 		int rule = 0;
 		for(KiePackage p : packagess) {
