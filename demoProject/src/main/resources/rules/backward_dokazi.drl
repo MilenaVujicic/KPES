@@ -8,33 +8,58 @@ import com.sample.model.Dokaz;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
 import com.sample.model.Obelezje;
+import com.sample.model.DokazLeaf;
+import com.sample.model.DokazRoot;
 
 
-query "Treba pribaviti dokaz o tome da je zrtva dete u vidu izvoda iz maticne knjige rodjenih, odnosno da je zrtva bremenita zena u vidu sudskomedicinskog vestacenja sa posebnim akcentom na tu okolnost."
-	$delo : Delo ( clan == 114, stav == 1 , tacka == 9  )
+query Root(String d, int clan, int stav, int tacka)
+	DokazRoot(clan, stav, tacka, d;)
+end
+/*
+query Leaf(DokazRoot dokazParent, DokazLeaf opisParent )
+	DokazLeaf(dokazParent, opisParent;)
+	or
+	DokazLeaf(dokazParent, null;)
+	or
+	DokazLeaf(null, opisParent;)
+end*/
+
+query Leaf(DokazRoot dokazParent, DokazLeaf $opisParent )
+	DokazLeaf(dokazParent,$opisParent;)
+	or
+	DokazLeaf(dokazParent,$opisParent;) and Leaf(null,null;)
 end
 
-query "Treba privaviti sudskopsihijatrisko i psiholosko vestacenje radi utvrdjivanja da li je ucinilac u vremeizvrsenja krivicnog dela bio u stanju jake razdrazenosti izazvane postupkom zrtve."
-	$delo : Delo ( clan == 115, stav == 0 , tacka == 0  )
+/*
+rule "Root dokaz" //Uvidjaj na licu mesta u testu
+lock-on-active true
+when
+	$queryMap: QueryDataList();
+	$d: String() from  $queryMap.get("dokaz");
+	Root($d, 0, 0, 0;)
+then
+	System.out.println("Delo zahteva dokaz: " + $d);
+end*/
+
+rule "Root dokaz" //Uvidjaj na licu mesta u testu
+lock-on-active true
+when
+	$queryMap: QueryDataList();
+	$dr : DokazRoot( );
+	$d: String() from  $dr.getOsnovniOpis();
+	Root($d, 0, 0, 0;)
+then
+	System.out.println("Delo zahteva dokaz: " + $d);
 end
 
-query "Treba pribaviti dokaz o sluzbi ili funkciji koje obavljala zrtva krvicnog dela u vidu resenja o zasnivanju radnog odnosa ili odluke o izboru ili imenovanju kako bi se dokazalo da zrtva ima to posebno svojstvo."
-	$delo : Delo ( clan == 310, stav == 0 , tacka == 0  )
+rule "Leaf dokaz"
+lock-on-active true
+when
+	$root: DokazRoot(  );
+	Leaf($root, $opisParent;)	
+then
+	System.out.println("Dokaz \""+$root.getOsnovniOpis()+"\" zahteva dokaz: ");
 end
 
 
-query "Spoljasnji pregled tela izvrsioca krivicnog dela i uzimanje krvi, urina, podnokatnog sadrzaja, bukalnog brisa, kao i tragova krivicnog dela."
-	$delo : Delo (  )
-end
 
-query "Uzimanje obuce i odece od ucinioca krivicnog dela i zrtve."
-	$delo : Delo (  )
-end
-
-query "Uzimanje uredjaja za video nadzor sa lica mesta."
-	$delo : Delo (  )
-end
-
-query "Vestacenja eksperata."
-	$delo : Delo (  )
-end
