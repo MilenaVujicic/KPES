@@ -33,6 +33,7 @@ public class DokazRoot {
 	@Position(3)
 	private String osnovniOpis;
 
+	@OneToMany(mappedBy = "dokazParent", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<DokazLeaf> dodatniOpis;
 	
