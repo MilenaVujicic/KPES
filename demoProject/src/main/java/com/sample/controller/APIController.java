@@ -18,15 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
-import com.sample.model.Dokaz;
+import com.sample.model.DokazLeaf;
+import com.sample.model.DokazRoot;
 import com.sample.model.KSessionModel;
 import com.sample.model.Obelezje;
-import com.sample.model.PodaciODelu;
+import com.sample.model.PodaciODeluTree;
 import com.sample.model.QueryDataList;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
-import com.sample.service.DokazService;
+import com.sample.service.DokazRootService;
 import com.sample.service.ObelezjeService;
 import com.sample.service.TuzilacService;
 
@@ -46,7 +47,7 @@ public class APIController {
 	ObelezjeService obelezjeService;
 	
 	@Autowired
-	DokazService dokazService;
+	DokazRootService dokazRootService;
 	
 	@Autowired
 	TuzilacService tuzilacService;
@@ -223,8 +224,8 @@ public class APIController {
 			kSession.insert(d);
 		}
 		
-		List<Dokaz> dokazi = dokazService.findAll();
-		for(Dokaz d : dokazi) {
+		List<DokazRoot> dokazi = dokazRootService.findAll();
+		for(DokazRoot d : dokazi) {
 			KSessionModel.getInstance().getkSession().insert(d);
 			kSession.insert(d);
 		}
@@ -245,9 +246,9 @@ public class APIController {
 		System.out.println("Num: " + rule);
 		
 		@SuppressWarnings("unchecked")
-		Collection<PodaciODelu> pod = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
-		ArrayList<PodaciODelu> podaciODelu1 = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : pod) {
+		Collection<PodaciODeluTree> pod = (Collection<PodaciODeluTree>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODeluTree.class));
+		ArrayList<PodaciODeluTree> podaciODelu1 = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : pod) {
 			podaciODelu1.add(p);
 			kSession.insert(p);
 		}
@@ -266,39 +267,73 @@ public class APIController {
  		System.out.println("Num: " + rules);
 		
  		@SuppressWarnings("unchecked")
-		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
+		Collection<PodaciODeluTree> podaci = (Collection<PodaciODeluTree>) kSession.getObjects(new ClassObjectFilter(PodaciODeluTree.class));
 		String odgovor = "";
-		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : podaci)
+		ArrayList<PodaciODeluTree> podaciODelu = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : podaci)
 			podaciODelu.add(p);
 		
+		System.out.println(podaciODelu);
 		if(podaciODelu.size() >= 1) {
-			PodaciODelu p = podaciODelu.get(podaciODelu.size() - 1);
+			PodaciODeluTree p = podaciODelu.get(podaciODelu.size() - 1);
 			odgovor += "Za ovo krivično delo neophodno je pozvati ";
-			if (p.getTuzilac().getTip().equals(TipTuzioca.OSNOVNI_JAVNI_TUZILAC)) {
-				odgovor += "osnovnog javnog tužioca";
-			} else if (p.getTuzilac().getTip().equals(TipTuzioca.VISI_JAVNI_TUZILAC)) {
-				odgovor += "višeg javnog tužioca";
-			} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_MALOLETNIKE)) {
-				odgovor += "tužioca za maloletnike";
-			} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_ORGANIZOVANI_KRIMINAL)) {
-				odgovor += "tužioca za organizovani kriminal";
-			} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_RATNE_ZLOCINE)) {
+			if (p.getTuzilac() == null) {
 				odgovor += "tužioca za ratne zlocine";
+			}
+			else {
+				if (p.getTuzilac().getTip().equals(TipTuzioca.OSNOVNI_JAVNI_TUZILAC)) {
+					odgovor += "osnovnog javnog tužioca";
+				} else if (p.getTuzilac().getTip().equals(TipTuzioca.VISI_JAVNI_TUZILAC)) {
+					odgovor += "višeg javnog tužioca";
+				} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_MALOLETNIKE)) {
+					odgovor += "tužioca za maloletnike";
+				} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_ORGANIZOVANI_KRIMINAL)) {
+					odgovor += "tužioca za organizovani kriminal";
+				} else if (p.getTuzilac().getTip().equals(TipTuzioca.TUZILAC_ZA_RATNE_ZLOCINE)) {
+					odgovor += "tužioca za ratne zlocine";
+				}
 			}
 			odgovor += ".&";
 			odgovor += "Neophodno je prikupiti sledeće dokaze: ";
-			for (Dokaz d : p.getDokazi()) {
-				odgovor += d.getOpis();
+			for (DokazRoot d : p.getDokazi()) {
+				odgovor += d.getOsnovniOpis();
+				if (d.getDodatniOpis().size() != 0)
+					odgovor += " (";
+				for (DokazLeaf dl : d.getDodatniOpis()) {
+					odgovor += dl.getOpis();
+					odgovor += " ";
+					if (dl.getOpisChild().size() != 0) {
+						for (DokazLeaf dl1 : dl.getOpisChild()) {
+							odgovor += dl1.getOpis();
+							odgovor += " ";
+							if (dl1.getOpisChild().size() != 0) {
+								for (DokazLeaf dl2 : dl1.getOpisChild()) {
+									odgovor += dl2.getOpis();
+									odgovor += " ";
+								}
+							}
+							else
+								break;
+						}
+					}
+					else
+						break;
+				}
+				if (d.getDodatniOpis().size() != 0)
+					odgovor += ")";
+				
 				odgovor += " ";
 			}
 			odgovor += ".&";
-			odgovor += "U pitanju je krivično delo sa nazivom: \"" + p.getDelo().getNaziv() + "\"";
+			odgovor += "U pitanju je krivično delo sa nazivom: \"" + p.getDelo().getNaziv() + "\"" 
+				    +  " (" + p.getDelo().getClan() + "." + p.getDelo().getStav() + "." + p.getDelo().getTacka() + ")";
 			odgovor += ".&";
 			odgovor += "Predviđena je maksimalna kazna do: " + p.getDelo().getMaxKazna() + " godina zatvora.";
 		}
 	
 		return new ResponseEntity<String>(odgovor, HttpStatus.OK);
 	}
+	
+	
 	
 }

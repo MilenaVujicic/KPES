@@ -35,9 +35,9 @@ function proveriDokaze() {
 		success: function(dokazi) {
 			let url = "list/sendDokazi/dokazi";
 			for (let dokaz of dokazi) {
-				let checked = $('input[name="'+dokaz.opis+'"]:checked').val();
+				let checked = $('input[name="'+dokaz.osnovniOpis+'"]:checked').val();
 				if(checked == 'on')
-					url += "&" + dokaz.opis;
+					url += "&" + dokaz.osnovniOpis;
 			}
 			
 			$.ajax({
@@ -167,8 +167,8 @@ function prikaziDelo(delo) {
 }
 
 function prikaziDokaz(dokaz) {
-	let dokazLabel = $('<label class="container custom-container" for="'+ dokaz.opis +'">' + dokaz.opis +
-					   '<input type="checkbox" name="'+dokaz.opis+'" id="'+ dokaz.opis +'">' +
+	let dokazLabel = $('<label class="container custom-container" for="'+ dokaz.osnovniOpis +'">' + dokaz.osnovniOpis +
+					   '<input type="checkbox" name="'+dokaz.osnovniOpis+'" id="'+ dokaz.osnovniOpis +'">' +
 					   '<span class="checkmark"></span></label>');
 	$('#dokazi').append(dokazLabel);
 }

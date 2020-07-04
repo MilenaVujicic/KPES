@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 
 import org.kie.api.definition.type.Position;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class DokazRoot {
 
@@ -29,6 +31,7 @@ public class DokazRoot {
 	@Column
 	@Position(3)
 	private String osnovniOpis;
+	@JsonIgnore
 	@OneToMany(mappedBy = "dokazParent")
 	private Set<DokazLeaf> dodatniOpis;
 	
@@ -95,7 +98,7 @@ public class DokazRoot {
 	@Override
 	public String toString() {
 		return "DokazRoot [id=" + id + ", clan=" + clan + ", stav=" + stav + ", tacka=" + tacka + ", osnovniOpis="
-				+ osnovniOpis + ", dodatniOpis=" + dodatniOpis + "]";
+				+ osnovniOpis + "]";
 	}
 	
 	

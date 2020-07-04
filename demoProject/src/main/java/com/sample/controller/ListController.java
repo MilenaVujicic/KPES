@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
-import com.sample.model.Dokaz;
+import com.sample.model.DokazRoot;
 import com.sample.model.LinkD;
 import com.sample.model.LinkDAnswer;
 import com.sample.model.LinkT;
@@ -25,7 +25,7 @@ import com.sample.model.LinkTAnswer;
 import com.sample.model.QueryDataList;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
-import com.sample.service.DokazService;
+import com.sample.service.DokazRootService;
 import com.sample.service.LinkDService;
 import com.sample.service.LinkTService;
 import com.sample.service.TuzilacService;
@@ -41,7 +41,7 @@ public class ListController {
 	private DeloService deloService;
 	
 	@Autowired
-	private DokazService dokazService;
+	private DokazRootService dokazService;
 	
 	@Autowired
 	private LinkTService linkTService;
@@ -71,7 +71,7 @@ public class ListController {
 	}
 	
 	@GetMapping(value = "/dokazi")
-	public List<Dokaz> getDokazi() {
+	public List<DokazRoot> getDokazi() {
 		return dokazService.findAll();
 	}
 	
@@ -112,9 +112,10 @@ public class ListController {
 	        	Delo novoDelo = deloService.findByClanTackaStav(t.getClan(),t.getStav(),t.getTacka());
 	        	if (!odg.contains(novoDelo.getNaziv().toUpperCase()))
 			    	odg += novoDelo.getNaziv().toUpperCase() + ", ";
+	        	
 	        }
 	        
-	        odgovor += odg.substring(0, odg.length() - 2);
+	        //odgovor += odg.substring(0, odg.length() - 2);
 			if (i < splitter.length - 1)
 				odgovor += "&";
 	        
@@ -169,7 +170,7 @@ public class ListController {
 	        	
 	        }
         	
-        	odgovor += odg.substring(0, odg.length() - 2);
+        	//odgovor += odg.substring(0, odg.length() - 2);
 			if (i < splitter.length - 1)
 				odgovor += "&";
 	        
