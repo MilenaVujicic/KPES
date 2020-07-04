@@ -148,10 +148,58 @@ public class Obelezje {
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
 		Obelezje o = (Obelezje) obj;
-		if(o.getId().equals(id))
+		
+		if(o.getId() != null && o.getId().equals(id))
 			return true;
-			
-		return false;
+	
+		if(o.getIzvrsilac() != null && !o.getIzvrsilac().equals(izvrsilac))
+			return false;
+		else if(o.getIzvrsilac() == null && izvrsilac != null)
+			return false;
+		
+		if(o.getMesto() != null && !o.getMesto().equals(mesto))
+			return false;
+		else if(o.getMesto() == null && mesto != null)
+			return false;
+		
+		if(o.getNacin() != null && !o.getNacin().equals(nacin))
+			return false;
+		else if(o.getNacin() == null && nacin != null)
+			return false;
+		
+		if(o.getPosledica() != null && !o.getPosledica().equals(posledica))
+			return false;
+		else if(o.getPosledica() == null && posledica != null)
+			return false;
+		
+		if(o.getRadnja() != null && !o.getRadnja().equals(radnja))
+			return false;
+		else if(o.getRadnja() == null && radnja != null)
+			return false;
+		
+		if(o.getSubjektivanOdnos() != null && !o.getSubjektivanOdnos().equals(subjektivanOdnos))
+			return false;
+		else if(o.getSubjektivanOdnos() == null && subjektivanOdnos != null)
+			return false;
+		
+		if(o.getVreme() != null && !o.getVreme().equals(vreme))
+			return false;
+		else if(o.getVreme() == null && vreme != null)
+			return false;
+		
+		if(o.getZrtva() != null && !o.getZrtva().equals(zrtva))
+			return false;
+		else if(o.getZrtva() == null && zrtva != null)
+			return false;
+		
+		/*if((o.getIzvrsilac().equals(izvrsilac) && o.getMesto().equals(mesto) &&
+				o.getNacin().equals(nacin) && o.getPosledica().equals(posledica) && o.getRadnja().equals(radnja) &&
+				o.getSubjektivanOdnos().equals(subjektivanOdnos) && o.getVreme().equals(vreme) && o.getZrtva().equals(zrtva))
+				|| o.getId().equals(id))
+			return true;
+			*/
+		
+		return true;
 	}
 	
 	

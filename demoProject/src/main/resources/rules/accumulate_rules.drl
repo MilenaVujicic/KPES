@@ -1,0 +1,44 @@
+package rules
+import com.sample.DroolsTest;
+import com.sample.model.TipTuzioca;
+import com.sample.model.Tuzilac;
+import com.sample.model.DokazRoot;
+import com.sample.model.DokazLeaf;
+import com.sample.model.PodaciODeluTree;
+import java.util.List;
+
+
+
+rule "Dela"
+	lock-on-active true
+	when
+		$o: Obelezje(id == null, zrtva == null);
+		$po: Obelezje(id == null, vreme == null);
+		$ob: List() from accumulate(
+			Obelezje($oo:this, id != null, this.equals($o) || this.equals($po)),
+			collectList($oo)
+		)
+		
+		
+		$delo: Delo(opsteObelezje memberOf $ob, posebnoObelezje memberOf $ob, $clan: clan, $tacka: tacka, $stav: stav, $maxKazna: maxKazna);
+		
+		$dokaz: List() from accumulate(
+			DokazRoot($dk: this, clan == 0 || clan == $clan, tacka == $tacka, stav == $stav),
+			collectList($dk)
+		)
+	then
+		System.out.println($dokaz);
+		System.out.println($delo);
+		PodaciODeluTree $pd = new PodaciODeluTree($delo);
+		$pd.setDokazi($dokaz);
+		System.out.println($pd);
+		insert($pd);
+		
+end
+
+rule "Tuzilac"
+	lock-on-active true
+	when
+	then
+end
+

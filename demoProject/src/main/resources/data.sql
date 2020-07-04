@@ -133,11 +133,10 @@ insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_
 * 310
 */
 
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, zrtva, subjektivan_odnos) values ('svako', 'svako', 'svako','podobna da prouzrokuje smrt', 'smrt', 'Vise od 18', 'umisljaj');
+insert into obelezje(zrtva, radnja) values ('poseban status', 'ugrozavanje ustavnog uredjenja');
 
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'smrt, odmah ili kasnije');
-insert into obelezje(subjektivan_odnos, zrtva) values ('Nehat', 'svako');
-
-insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values ('Nehatno lisenje zivota', 0.5, 5, 118, 0, 0, 29, 30);
+insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values ('Ubistvo predstavnika najvisih drzavnih organa', 10, 100, 310, 0, 0, 29, 30);
 
 /*
  * Dokazi
