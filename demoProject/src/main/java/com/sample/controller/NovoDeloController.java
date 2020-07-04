@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
-import com.sample.model.Dokaz;
 import com.sample.model.DokazRoot;
 import com.sample.model.KSessionModel;
 import com.sample.model.NovoDelo;

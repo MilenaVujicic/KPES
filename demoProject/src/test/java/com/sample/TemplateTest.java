@@ -18,16 +18,18 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sample.model.Delo;
-import com.sample.model.Dokaz;
+import com.sample.model.DokazLeaf;
+import com.sample.model.DokazRoot;
 import com.sample.model.KSessionModel;
 import com.sample.model.NovoDelo;
 import com.sample.model.Obelezje;
-import com.sample.model.PodaciODelu;
+import com.sample.model.PodaciODeluTree;
 import com.sample.model.QueryDataList;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
-import com.sample.service.DokazService;
+import com.sample.service.DokazLeafService;
+import com.sample.service.DokazRootService;
 import com.sample.service.ObelezjeService;
 import com.sample.service.TuzilacService;
 import com.sample.unit.KnowledgeSessionHelper;
@@ -43,10 +45,13 @@ public class TemplateTest {
 	ObelezjeService obelezjeService;
 	
 	@Autowired
-	DokazService dokazService;
+	TuzilacService tuzilacService;
 	
 	@Autowired
-	TuzilacService tuzilacService;
+	DokazRootService dokazRootService;
+	
+	@Autowired
+	DokazLeafService dokazLeafService;
 	
 	KieSession kieSession = null;
 	static KieContainer kieContainer;
@@ -70,7 +75,38 @@ public class TemplateTest {
 		QueryDataList.getInstance().put("izvrsilacStanje", novoDelo.getPsihickoStanje());
 		
 		KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kieContainer, "ksession-rules");
-		kSession.insert(QueryDataList.getInstance());
+		String oIzvrsilac = "Vise od 18";
+        String oVreme = null;
+		String oMesto = novoDelo.getMesto();
+		String oRadnja = novoDelo.getRadnja();
+		String oPosledica = "smrt, odmah ili kasnije";
+		String oSubOdnos =  novoDelo.getSubjOdnos();
+		String oZrtva =null;
+		
+		String pZrtva = novoDelo.getZrtva();
+		String pNacin = null;
+		String pRadnja = "bezobzirno nasilnicko ponasanje";
+		String pIzvrsilac = null;
+		String pSubOdnos = null;
+		
+		Obelezje ob = new Obelezje();
+		//o.setIzvrsilac(oIzvrsilac);
+		ob.setIzvrsilac(oIzvrsilac);
+		ob.setVreme(oVreme);
+		ob.setMesto(oMesto);
+		ob.setRadnja(oRadnja);
+		ob.setPosledica(oPosledica);
+		ob.setSubjektivanOdnos(oSubOdnos);
+		ob.setZrtva(oZrtva);
+		kSession.insert(ob);
+		
+		Obelezje po = new Obelezje();
+		po.setZrtva(pZrtva);
+		po.setNacin(pNacin);
+		po.setRadnja(pRadnja);
+		po.setIzvrsilac(pIzvrsilac);
+		po.setSubjektivanOdnos(pSubOdnos);
+		kSession.insert(po);
 		
         KSessionModel.getInstance().createDRL();
     	KSessionModel.getInstance().getkSession().insert(QueryDataList.getInstance());
@@ -87,11 +123,15 @@ public class TemplateTest {
 			kSession.insert(d);
 		}
 		
-		List<Dokaz> dokazi = dokazService.findAll();
-		for(Dokaz d : dokazi) {
+		List<DokazRoot> dokazi = dokazRootService.findAll();
+		for(DokazRoot d : dokazi) {
 			KSessionModel.getInstance().getkSession().insert(d);
 			kSession.insert(d);
 		}
+		
+		List<DokazLeaf> dokazLeaves = dokazLeafService.findAll();
+		for(DokazLeaf dl : dokazLeaves)
+			kSession.insert(dl);
 		
 		List<Tuzilac> tuzioci = tuzilacService.findAll();
  		for(Tuzilac t : tuzioci) {
@@ -102,9 +142,9 @@ public class TemplateTest {
  		int templateFired = KSessionModel.getInstance().getkSession().fireAllRules();
  		
  		@SuppressWarnings("unchecked")
-		Collection<PodaciODelu> templatePodaci = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
-		ArrayList<PodaciODelu> templatePodaciODelu = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : templatePodaci) {
+		Collection<PodaciODeluTree> templatePodaci = (Collection<PodaciODeluTree>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODeluTree.class));
+		ArrayList<PodaciODeluTree> templatePodaciODelu = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : templatePodaci) {
 			templatePodaciODelu.add(p);
 			kSession.insert(p);
 		}
@@ -112,15 +152,16 @@ public class TemplateTest {
         int fired = kSession.fireAllRules();
         
         @SuppressWarnings("unchecked")
-		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
-		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : podaci)
+		Collection<PodaciODeluTree> podaci = (Collection<PodaciODeluTree>) kSession.getObjects(new ClassObjectFilter(PodaciODeluTree.class));
+		ArrayList<PodaciODeluTree> podaciODelu = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : podaci)
 			podaciODelu.add(p);
 		
-		assertEquals(2, templateFired);
+		System.out.println("####" + podaciODelu);
+		assertEquals(8, templateFired);
 		assertEquals(1, fired);
-		assertEquals("Genocid", podaciODelu.get(0).getDelo().getNaziv());
-		assertEquals(TipTuzioca.TUZILAC_ZA_RATNE_ZLOCINE, podaciODelu.get(0).getTuzilac().getTip());
+		assertEquals("Čedomorstvo", podaciODelu.get(0).getDelo().getNaziv());
+		assertEquals(TipTuzioca.VISI_JAVNI_TUZILAC, podaciODelu.get(0).getTuzilac().getTip());
 	}
 	
 	@Test
@@ -138,7 +179,39 @@ public class TemplateTest {
 		QueryDataList.getInstance().put("izvrsilacStanje", novoDelo.getPsihickoStanje());
 		
 		KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kieContainer, "ksession-rules");
-		kSession.insert(QueryDataList.getInstance());
+		
+		String oIzvrsilac = "Vise od 18";
+        String oVreme = null;
+		String oMesto = novoDelo.getMesto();
+		String oRadnja = novoDelo.getRadnja();
+		String oPosledica = "smrt, odmah ili kasnije";
+		String oSubOdnos =  novoDelo.getSubjOdnos();
+		String oZrtva =null;
+		
+		String pZrtva = novoDelo.getZrtva();
+		String pNacin = null;
+		String pRadnja = "bezobzirno nasilnicko ponasanje";
+		String pIzvrsilac = null;
+		String pSubOdnos = null;
+		
+		Obelezje ob = new Obelezje();
+		//o.setIzvrsilac(oIzvrsilac);
+		ob.setIzvrsilac(oIzvrsilac);
+		ob.setVreme(oVreme);
+		ob.setMesto(oMesto);
+		ob.setRadnja(oRadnja);
+		ob.setPosledica(oPosledica);
+		ob.setSubjektivanOdnos(oSubOdnos);
+		ob.setZrtva(oZrtva);
+		kSession.insert(ob);
+		
+		Obelezje po = new Obelezje();
+		po.setZrtva(pZrtva);
+		po.setNacin(pNacin);
+		po.setRadnja(pRadnja);
+		po.setIzvrsilac(pIzvrsilac);
+		po.setSubjektivanOdnos(pSubOdnos);
+		kSession.insert(po);
 		
 		KSessionModel.getInstance().createDRL();
     	KSessionModel.getInstance().getkSession().insert(QueryDataList.getInstance());
@@ -155,11 +228,15 @@ public class TemplateTest {
 			kSession.insert(d);
 		}
 		
-		List<Dokaz> dokazi = dokazService.findAll();
-		for(Dokaz d : dokazi) {
+		List<DokazRoot> dokazi = dokazRootService.findAll();
+		for(DokazRoot d : dokazi) {
 			KSessionModel.getInstance().getkSession().insert(d);
 			kSession.insert(d);
 		}
+		
+		List<DokazLeaf> dokazLeaves = dokazLeafService.findAll();
+		for(DokazLeaf dl : dokazLeaves)
+			kSession.insert(dl);
 		
 		List<Tuzilac> tuzioci = tuzilacService.findAll();
  		for(Tuzilac t : tuzioci) {
@@ -170,9 +247,9 @@ public class TemplateTest {
  		int templateFired = KSessionModel.getInstance().getkSession().fireAllRules();
  		
  		@SuppressWarnings("unchecked")
-		Collection<PodaciODelu> templatePodaci = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
-		ArrayList<PodaciODelu> templatePodaciODelu = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : templatePodaci) {
+		Collection<PodaciODeluTree> templatePodaci = (Collection<PodaciODeluTree>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODeluTree.class));
+		ArrayList<PodaciODeluTree> templatePodaciODelu = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : templatePodaci) {
 			templatePodaciODelu.add(p);
 			kSession.insert(p);
 		}
@@ -180,9 +257,9 @@ public class TemplateTest {
         int fired = kSession.fireAllRules();
         
         @SuppressWarnings("unchecked")
-		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
-		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : podaci)
+		Collection<PodaciODeluTree> podaci = (Collection<PodaciODeluTree>) kSession.getObjects(new ClassObjectFilter(PodaciODeluTree.class));
+		ArrayList<PodaciODeluTree> podaciODelu = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : podaci)
 			podaciODelu.add(p);
 		
 		assertEquals(0, templateFired);
@@ -212,15 +289,14 @@ public class TemplateTest {
 		delo.setOpsteObelezje(oobelezje);
 		delo.setPosebnoObelezje(pobelezje);
 		
-		Dokaz dokaz = new Dokaz();
-		dokaz.setOpis(novoDelo.getDokazi());
+		DokazRoot dokaz = new DokazRoot();
+		dokaz.setOsnovniOpis(novoDelo.getDokazi());
 		dokaz.setClan(Integer.parseInt(novoDelo.getClan()));
 		dokaz.setStav(Integer.parseInt(novoDelo.getStav()));
 		dokaz.setTacka(Integer.parseInt(novoDelo.getTacka()));
 		System.out.println(dokaz);
 		
 		deloService.save(delo);
-		dokazService.save(dokaz);
 		
 		KSessionModel.getInstance().addNovoDelo(novoDelo);
 		return novoDelo;
@@ -228,18 +304,18 @@ public class TemplateTest {
 	
 	private NovoDelo generateNovoDelo() {
 		NovoDelo novoDelo = new NovoDelo();
-		novoDelo.setNaziv("Genocid");
+		novoDelo.setNaziv("Čedomorstvo");
 		novoDelo.setMin_kazna("12");
 		novoDelo.setMax_kazna("100");
-		novoDelo.setClan("6");
-		novoDelo.setStav("5");
-		novoDelo.setTacka("4");
-		novoDelo.setZrtva("Vise od 18");
+		novoDelo.setClan("67");
+		novoDelo.setStav("56");
+		novoDelo.setTacka("47");
+		novoDelo.setZrtva("Manje od 18 ili bremenita žena");
 		novoDelo.setSubjOdnos("Umisljaj");
-		novoDelo.setStanje("Ratno stanje");
-		novoDelo.setMesto("Napolju");
-		novoDelo.setRadnja("Udarac");
-		novoDelo.setBrZrtava("Vise");
+		novoDelo.setStanje("Redovno stanje");
+		novoDelo.setMesto("Privatna kuca");
+		novoDelo.setRadnja("Ubod");
+		novoDelo.setBrZrtava("1");
 		novoDelo.setPsihickoStanje("nema podataka");
 		novoDelo.setDokazi("");
 		
