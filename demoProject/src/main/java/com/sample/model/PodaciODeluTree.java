@@ -3,28 +3,28 @@ package com.sample.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PodaciODelu {
-
+public class PodaciODeluTree {
+	
 	private Delo delo;
-	private List<Dokaz> dokazi = new ArrayList<Dokaz>();
+	private List<DokazRoot> dokazi = new ArrayList<DokazRoot>();
 	private Tuzilac tuzilac;
 	
-	public PodaciODelu(Delo delo, List<Dokaz> dokazi, Tuzilac tuzilac) {
+	public PodaciODeluTree(Delo delo, List<DokazRoot> dokazi, Tuzilac tuzilac) {
 		this.tuzilac = tuzilac;
 		this.dokazi = dokazi;
 		this.delo = delo;
 	}
 	
-	public PodaciODelu(Delo delo, List<Dokaz> dokazi) {
+	public PodaciODeluTree(Delo delo, List<DokazRoot> dokazi) {
 		this.delo = delo;
 		this.dokazi = dokazi;
 	}
 	
-	public PodaciODelu(Delo delo) {
+	public PodaciODeluTree(Delo delo) {
 		this.delo = delo;
 	}
 
-	public PodaciODelu() {
+	public PodaciODeluTree() {
 		
 	}
 
@@ -36,11 +36,11 @@ public class PodaciODelu {
 		this.delo = delo;
 	}
 
-	public List<Dokaz> getDokazi() {
+	public List<DokazRoot> getDokazi() {
 		return dokazi;
 	}
 
-	public void setDokazi(List<Dokaz> dokazi) {
+	public void setDokazi(List<DokazRoot> dokazi) {
 		this.dokazi = dokazi;
 	}
 
@@ -58,7 +58,7 @@ public class PodaciODelu {
 		return false;
 	}
 	
-	public void addToList(Dokaz d) {
+	public void addToList(DokazRoot d) {
 		if(d != null)
 			this.dokazi.add(d);
 	}
@@ -66,8 +66,4 @@ public class PodaciODelu {
 	public String toString() {
 		return "PodaciODelu [delo=" + delo + ", dokazi=" + dokazi + ", tuzilac=" + tuzilac + "]";
 	}
-
-	
-
-	
 }

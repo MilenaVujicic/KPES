@@ -22,7 +22,7 @@ import com.sample.model.DokazLeaf;
 import com.sample.model.DokazRoot;
 import com.sample.model.KSessionModel;
 import com.sample.model.Obelezje;
-import com.sample.model.PodaciODelu;
+import com.sample.model.PodaciODeluTree;
 import com.sample.model.QueryDataList;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
@@ -246,9 +246,9 @@ public class APIController {
 		System.out.println("Num: " + rule);
 		
 		@SuppressWarnings("unchecked")
-		Collection<PodaciODelu> pod = (Collection<PodaciODelu>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODelu.class));
-		ArrayList<PodaciODelu> podaciODelu1 = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : pod) {
+		Collection<PodaciODeluTree> pod = (Collection<PodaciODeluTree>) KSessionModel.getInstance().getkSession().getObjects(new ClassObjectFilter(PodaciODeluTree.class));
+		ArrayList<PodaciODeluTree> podaciODelu1 = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : pod) {
 			podaciODelu1.add(p);
 			kSession.insert(p);
 		}
@@ -267,15 +267,15 @@ public class APIController {
  		System.out.println("Num: " + rules);
 		
  		@SuppressWarnings("unchecked")
-		Collection<PodaciODelu> podaci = (Collection<PodaciODelu>) kSession.getObjects(new ClassObjectFilter(PodaciODelu.class));
+		Collection<PodaciODeluTree> podaci = (Collection<PodaciODeluTree>) kSession.getObjects(new ClassObjectFilter(PodaciODeluTree.class));
 		String odgovor = "";
-		ArrayList<PodaciODelu> podaciODelu = new ArrayList<PodaciODelu>();
-		for (PodaciODelu p : podaci)
+		ArrayList<PodaciODeluTree> podaciODelu = new ArrayList<PodaciODeluTree>();
+		for (PodaciODeluTree p : podaci)
 			podaciODelu.add(p);
 		
 		System.out.println(podaciODelu);
 		if(podaciODelu.size() >= 1) {
-			PodaciODelu p = podaciODelu.get(podaciODelu.size() - 1);
+			PodaciODeluTree p = podaciODelu.get(podaciODelu.size() - 1);
 			odgovor += "Za ovo krivično delo neophodno je pozvati ";
 			if (p.getTuzilac() == null) {
 				odgovor += "tužioca za ratne zlocine";

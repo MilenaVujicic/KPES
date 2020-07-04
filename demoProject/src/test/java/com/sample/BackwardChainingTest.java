@@ -93,7 +93,6 @@ public class BackwardChainingTest {
 
 		
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC"));
-		
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 113, 0, 0));
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 114, 1, 4));
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 114, 1, 9));

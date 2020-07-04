@@ -16,7 +16,7 @@ package rules;
 
 import com.sample.model.QueryDataList;
 import com.sample.model.Delo;
-import com.sample.model.PodaciODelu;
+import com.sample.model.PodaciODeluTree;
 import com.sample.model.DokazRoot;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
@@ -40,7 +40,7 @@ rule "Delo template @{clan}.@{stav}.@{tacka}"
    	   	$oo : Obelezje(mesto == $m, radnja == $r, subjektivanOdnos == $so);
        	$d : Delo(posebnoObelezje.equals($po), opsteObelezje.equals($oo));
     then
-   	   	PodaciODelu $pd = new PodaciODelu($d);
+   	   	PodaciODeluTree $pd = new PodaciODeluTree($d);
    	   	System.out.println($pd);
        	insert($pd);
 end
@@ -49,7 +49,7 @@ rule "Dokazi template @{clan}.@{stav}.@{tacka}"
 	no-loop  true
 	when
 		$d : Delo(clan == @{clan}, stav == @{stav}, tacka == @{tacka});
-		$pd : PodaciODelu(this.compareDelo($d));
+		$pd : PodaciODeluTree(this.compareDelo($d));
 		$dk : DokazRoot(clan == 0 || clan == @{clan} && stav == @{stav} && tacka == @{tacka});
 	then
 		$pd.addToList($dk);
