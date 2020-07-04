@@ -1,0 +1,88 @@
+package rules
+import com.sample.DroolsTest;
+import com.sample.model.TipTuzioca;
+import com.sample.model.Tuzilac;
+import com.sample.model.DokazRoot;
+import com.sample.model.DokazLeaf;
+import com.sample.model.PodaciODeluTree;
+import java.util.List;
+
+rule "Nehat"
+	lock-on-active true
+	salience 100
+	when
+		$po: Obelezje(id == null, subjektivanOdnos=="Nehat");
+		$delo: Delo(clan == 118);
+		
+		$dokaz: List() from accumulate(
+			DokazRoot($dk: this, clan == 0 || clan == 118),
+			collectList($dk)
+		)
+	then
+		System.out.println($dokaz);
+		System.out.println("Nehat " +  $delo);
+		PodaciODeluTree $pd = new PodaciODeluTree($delo);
+		$pd.setDokazi($dokaz);
+		System.out.println($pd);
+		insert($pd);
+end
+
+
+rule "Dela"
+	lock-on-active true
+	salience 50
+	when
+		$o: Obelezje(id == null, zrtva == null);
+		$po: Obelezje(id == null, vreme == null);
+		
+		
+		$ob: List() from accumulate(
+			Obelezje($oo:this, id != null, this.equals($o) || this.equals($po)),
+			collectList($oo)
+		)
+		
+		$podaci: List() from accumulate(
+			PodaciODeluTree($pod: this),
+			collectList($pod)
+		)
+		
+		eval($podaci.size() == 0)
+		
+
+		$delo: Delo(posebnoObelezje memberOf $ob, $clan: clan, $tacka: tacka, $stav: stav, $maxKazna: maxKazna);
+		
+		$dokaz: List() from accumulate(
+			DokazRoot($dk: this, clan == 0 || clan == $clan, tacka == $tacka || tacka == 0, stav == $stav || tacka == 0),
+			collectList($dk)
+		)
+	then
+		System.out.println($dokaz);
+		System.out.println($delo);
+		PodaciODeluTree $pd = new PodaciODeluTree($delo);
+		$pd.setDokazi($dokaz);
+		System.out.println($pd);
+		insert($pd);
+		
+end
+
+rule "Osnovni tuzilac"
+	when
+		$pd : PodaciODeluTree(tuzilac == null, $d:delo);
+		eval($d.getMaxKazna() < 10);
+		$t : Tuzilac(tip == TipTuzioca.OSNOVNI_JAVNI_TUZILAC);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+end
+
+rule "Visi tuzilac"
+	when
+		$pd : PodaciODeluTree(tuzilac == null, $d:delo);
+		eval($d.getMaxKazna() > 10);
+		$t : Tuzilac(tip == TipTuzioca.VISI_JAVNI_TUZILAC);
+	then
+		$pd.setTuzilac($t);
+		System.out.println($pd);
+		update($pd);
+end

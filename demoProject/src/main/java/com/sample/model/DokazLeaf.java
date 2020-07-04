@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,10 +23,11 @@ public class DokazLeaf {
 	@ManyToOne
 	@Position(0)
 	private DokazRoot dokazParent;
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	@Position(1)
 	private DokazLeaf opisParent;
-	@OneToMany(mappedBy = "opisParent")
+	@OneToMany(mappedBy = "opisParent", fetch = FetchType.EAGER)
 	private Set<DokazLeaf> opisChild;
 	
 	public DokazLeaf() {
@@ -79,13 +81,20 @@ public class DokazLeaf {
 		this.opisChild = opisChild;
 	}
 
-
+/*
 	@Override
 	public String toString() {
 		return "DokazLeaf [id=" + id + ", opis=" + opis + ", dokazParent=" + dokazParent + ", opisParent=" + opisParent
 				+ ", opisChild=" + opisChild + "]";
 	}
 	
+	*/
+	
+	
+	@Override
+	public String toString() {
+		return "DokazLeaf [id=" + id + "]";
+	}
 	
 	
 
