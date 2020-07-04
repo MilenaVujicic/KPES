@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.model.Delo;
 import com.sample.model.Dokaz;
+import com.sample.model.DokazRoot;
 import com.sample.model.KSessionModel;
 import com.sample.model.NovoDelo;
 import com.sample.model.Obelezje;
 import com.sample.service.DeloService;
-import com.sample.service.DokazService;
+import com.sample.service.DokazRootService;
 import com.sample.service.ObelezjeService;
 
 @RestController
@@ -23,7 +24,7 @@ public class NovoDeloController {
 	private DeloService deloService;
 	
 	@Autowired
-	private DokazService dokazService;
+	private DokazRootService dokazRootService;
 	
 	@Autowired
 	private ObelezjeService obelezjeService;
@@ -50,15 +51,15 @@ public class NovoDeloController {
 		delo.setOpsteObelezje(oobelezje);
 		delo.setPosebnoObelezje(pobelezje);
 		
-		Dokaz dokaz = new Dokaz();
-		dokaz.setOpis(novoDelo.getDokazi());
-		dokaz.setClan(Integer.parseInt(novoDelo.getClan()));
-		dokaz.setStav(Integer.parseInt(novoDelo.getStav()));
-		dokaz.setTacka(Integer.parseInt(novoDelo.getTacka()));
-		System.out.println(dokaz);
+		DokazRoot dokazRoot = new DokazRoot(Integer.parseInt(novoDelo.getClan()), 
+											Integer.parseInt(novoDelo.getStav()), 
+											Integer.parseInt(novoDelo.getTacka()), 
+											novoDelo.getDokazi());
+		
+		System.out.println(dokazRoot);
 		
 		deloService.save(delo);
-		dokazService.save(dokaz);
+		dokazRootService.save(dokazRoot);
 		
 		KSessionModel.getInstance().addNovoDelo(novoDelo);
         
