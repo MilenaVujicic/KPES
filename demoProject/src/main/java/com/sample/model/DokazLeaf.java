@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.kie.api.definition.type.Position;
+
 @Entity
 public class DokazLeaf {
 	@Id
@@ -19,14 +21,22 @@ public class DokazLeaf {
 	@Column
 	private String opis;
 	@ManyToOne
+	@Position(0)
 	private DokazRoot dokazParent;
+
 	@ManyToOne(fetch = FetchType.EAGER)
+	@Position(1)
 	private DokazLeaf opisParent;
 	@OneToMany(mappedBy = "opisParent", fetch = FetchType.EAGER)
 	private Set<DokazLeaf> opisChild;
 	
 	public DokazLeaf() {
 		
+	}
+	
+	public DokazLeaf(String opis) {
+		super();
+		this.opis = opis;
 	}
 	
 	

@@ -1,6 +1,8 @@
 package com.sample;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sample.model.Delo;
 import com.sample.model.Dokaz;
+import com.sample.model.DokazLeaf;
+import com.sample.model.DokazRoot;
 import com.sample.model.LinkD;
 import com.sample.model.LinkT;
 import com.sample.model.Obelezje;
@@ -53,7 +57,7 @@ public class BackwardChainingTest {
 		KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kieContainer, "ksession-rules");
 		QueryDataList qdl = QueryDataList.getInstance();
 		qdl.put("tuzilac", "VISI_JAVNI_TUZILAC");
-		qdl.put("dokaz", "Vestacenja eksperata");
+		qdl.put("dokaz", "Uvidjaj na licu mesta");
 		kSession.insert(qdl);
 		
 		List<Obelezje> obelezja = obelezjeService.findAll();
@@ -72,8 +76,23 @@ public class BackwardChainingTest {
 		for(Tuzilac t : tuzioci)
 			kSession.insert(t);
 		
-		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC"));
+		//test stablo za backwards chaining za dokaze
+		DokazRoot rootDokaz1 = makeTree();
+		kSession.insert(rootDokaz1);
 		
+		for(DokazLeaf dl : rootDokaz1.getDodatniOpis()) {
+			kSession.insert(dl);
+		}
+		
+		for(DokazLeaf dl : rootDokaz1.getDodatniOpis()) {
+			for(DokazLeaf dl2: dl.getOpisChild()) {
+				kSession.insert(dl2);
+			}
+		}
+
+
+		
+		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC"));
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 113, 0, 0));
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 114, 1, 4));
 		kSession.insert(new LinkT("VISI_JAVNI_TUZILAC", 114, 1, 9));
@@ -85,6 +104,29 @@ public class BackwardChainingTest {
 		kSession.insert(new LinkD("Vestacenja eksperata", 113,0,0));
 		int fired = kSession.fireAllRules();
 		System.out.println("FIRED: " + fired);
+	}
+	
+	public DokazRoot makeTree() {
+		DokazRoot root = new DokazRoot(1L, 0, 0, 0, "Uvidjaj na licu mesta", null);
+		Set<DokazLeaf> dodatniOpis = new HashSet<DokazLeaf>();
+		
+		
+		DokazLeaf leaf1 = new DokazLeaf(1L, "Pravljenje zapisnika", root, null, dodatniOpis);
+		DokazLeaf leaf2 = new DokazLeaf(2L,"Pravljenje video snimka lica mesta", null, leaf1, null);
+		DokazLeaf leaf3 = new DokazLeaf(3L,"Pravljenje fotografija lica mesta", null, leaf1, null);
+		DokazLeaf leaf4 = new DokazLeaf(4L,"Pravljenje skice lica mesta", null, leaf1, null);
+		
+		//dodajem u set prvog leaf-a
+		leaf1.getOpisChild().add(leaf2);
+		leaf1.getOpisChild().add(leaf3);
+		leaf1.getOpisChild().add(leaf4);
+		
+		//dodajem set za root
+		Set<DokazLeaf> dodatniOpisRoot = new HashSet<DokazLeaf>();
+		dodatniOpisRoot.add(leaf1);
+		root.setDodatniOpis(dodatniOpisRoot);
+		return root;
+		
 	}
 
 }

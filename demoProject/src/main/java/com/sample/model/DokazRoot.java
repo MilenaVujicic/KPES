@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.kie.api.definition.type.Position;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class DokazRoot {
 
@@ -17,21 +21,32 @@ public class DokazRoot {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column
+	@Position(0)
 	private int clan;
 	@Column
+	@Position(1)
 	private int stav;
 	@Column
+	@Position(2)
 	private int tacka;
 	@Column
+	@Position(3)
 	private String osnovniOpis;
-	@OneToMany(mappedBy = "dokazParent", fetch = FetchType.EAGER)
+
+	@JsonIgnore
 	private Set<DokazLeaf> dodatniOpis;
 	
 	public DokazRoot() {
 		
 	}
 	
-	
+	public DokazRoot(int clan, int stav, int tacka, String osnovniOpis) {
+		super();
+		this.clan = clan;
+		this.stav = stav;
+		this.tacka = tacka;
+		this.osnovniOpis = osnovniOpis;
+	}
 	
 	public DokazRoot(Long id, int clan, int stav, int tacka, String osnovniOpis, Set<DokazLeaf> dodatniOpis) {
 		super();
@@ -84,7 +99,7 @@ public class DokazRoot {
 	@Override
 	public String toString() {
 		return "DokazRoot [id=" + id + ", clan=" + clan + ", stav=" + stav + ", tacka=" + tacka + ", osnovniOpis="
-				+ osnovniOpis + ", dodatniOpis=" + dodatniOpis + "]";
+				+ osnovniOpis + "]";
 	}
 	
 	

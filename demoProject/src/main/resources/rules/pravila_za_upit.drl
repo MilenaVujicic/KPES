@@ -1,4 +1,4 @@
-//created on: May 14, 2020
+/*//created on: May 14, 2020
 package rules
 //list any import classes here.
 import com.sample.DroolsTest;
@@ -254,5 +254,5 @@ rule "115 dokazi"
 		System.out.println($pd);
 		update($pd);
 end
-
+*/
 

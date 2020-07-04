@@ -1,7 +1,9 @@
 package com.sample.service;
 
 import java.util.List;
+
 import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,17 @@ public class DokazRootService {
 	@Autowired
 	private DokazRootRepository dokazRootRepository;
 	
-	public List<DokazRoot> findAll(){
-		return dokazRootRepository.findAll();
-	}
+
 	
 	public Optional<DokazRoot> findById(Long id){
 		return dokazRootRepository.findById(id);
+
+	public DokazRoot save(DokazRoot dokazRoot) {
+		return dokazRootRepository.save(dokazRoot);
+	}
+	
+	public List<DokazRoot> findAll() {
+		return dokazRootRepository.findAll();
+
 	}
 }
