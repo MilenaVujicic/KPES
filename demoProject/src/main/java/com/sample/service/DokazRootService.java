@@ -21,7 +21,7 @@ public class DokazRootService {
 	
 	public Optional<DokazRoot> findById(Long id){
 		return dokazRootRepository.findById(id);
-
+	}
 	public DokazRoot save(DokazRoot dokazRoot) {
 		return dokazRootRepository.save(dokazRoot);
 	}
