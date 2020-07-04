@@ -27,6 +27,7 @@ import com.sample.model.QueryDataList;
 import com.sample.model.TipTuzioca;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
+import com.sample.service.DokazLeafService;
 import com.sample.service.DokazRootService;
 import com.sample.service.ObelezjeService;
 import com.sample.service.TuzilacService;
@@ -51,6 +52,9 @@ public class APIController {
 	
 	@Autowired
 	TuzilacService tuzilacService;
+	
+	@Autowired
+	DokazLeafService dokazLeafService;
 
 	
 	@RequestMapping(value = "/sendData", method = RequestMethod.POST)
@@ -209,7 +213,43 @@ public class APIController {
         KieSession kSession =  kContainer.newKieSession("ksession-rules");
  		
  		//QueryDataList qdl = QueryDataList.getInstance();
-        kSession.insert(QueryDataList.getInstance());
+        //kSession.insert(QueryDataList.getInstance());
+        
+        
+        String oIzvrsilac = age1;
+        String oVreme = null;
+		String oMesto = mesto;
+		String oRadnja = radnja;
+		String oPosledica = "smrt, odmah ili kasnije";
+		String oSubOdnos =  subOdnos;
+		String oZrtva =null;
+		
+		String pZrtva = age2;
+		String pNacin = null;
+		String pRadnja = "bezobzirno nasilnicko ponasanje";
+		String pIzvrsilac = null;
+		String pSubOdnos = null;
+		
+		Obelezje ob = new Obelezje();
+		//o.setIzvrsilac(oIzvrsilac);
+		ob.setIzvrsilac(oIzvrsilac);
+		ob.setVreme(oVreme);
+		ob.setMesto(oMesto);
+		ob.setRadnja(oRadnja);
+		ob.setPosledica(oPosledica);
+		ob.setSubjektivanOdnos(oSubOdnos);
+		ob.setZrtva(oZrtva);
+		kSession.insert(ob);
+		
+		Obelezje po = new Obelezje();
+		po.setZrtva(pZrtva);
+		po.setNacin(pNacin);
+		po.setRadnja(pRadnja);
+		po.setIzvrsilac(pIzvrsilac);
+		po.setSubjektivanOdnos(pSubOdnos);
+		kSession.insert(po);
+        
+        
         KSessionModel.getInstance().createDRL();
     	KSessionModel.getInstance().getkSession().insert(QueryDataList.getInstance());
     	List<Obelezje> obelezja = obelezjeService.findAll();
@@ -229,6 +269,10 @@ public class APIController {
 			KSessionModel.getInstance().getkSession().insert(d);
 			kSession.insert(d);
 		}
+		
+		List<DokazLeaf> dokazLeaves = dokazLeafService.findAll();
+		for(DokazLeaf dl : dokazLeaves)
+			kSession.insert(dl);
 		
 		List<Tuzilac> tuzioci = tuzilacService.findAll();
  		for(Tuzilac t : tuzioci) {
@@ -273,7 +317,7 @@ public class APIController {
 		for (PodaciODeluTree p : podaci)
 			podaciODelu.add(p);
 		
-		System.out.println(podaciODelu);
+		System.out.println("#####" + podaciODelu);
 		if(podaciODelu.size() >= 1) {
 			PodaciODeluTree p = podaciODelu.get(podaciODelu.size() - 1);
 			odgovor += "Za ovo krivično delo neophodno je pozvati ";
