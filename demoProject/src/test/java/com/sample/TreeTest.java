@@ -56,18 +56,34 @@ public class TreeTest {
 		KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kieContainer, "ksession-rules");
 		
 		
+		/*String oIzvrsilac = "svako";
+		String oVreme = "svako";
+		String oMesto = "svako";
+		String oRadnja = "podobna da prouzrokuje smrt";
+		String oPosledica = "smrt, odmah ili kasnije";
+		String oSubOdnos =  "umisljaj";
+		String oZrtva = "Vise od 18";
+		
+		String pZrtva = "poseban status";
+		String pNacin = null;
+		String pRadnja = null;
+		String pIzvrsilac = null;
+		String pSubOdnos = "ugrozavanje ustavnog uredjenja";*/
+		
+		
 		String oIzvrsilac = "svako";
 		String oVreme = "svako";
 		String oMesto = "svako";
 		String oRadnja = "podobna da prouzrokuje smrt";
 		String oPosledica = "smrt, odmah ili kasnije";
-		String oSubOdnos = null;
+		String oSubOdnos =  "umisljaj";
+		String oZrtva =null;
 		
-		String pZrtva = "svako";
+		String pZrtva = "Vise od 18";
 		String pNacin = null;
-		String pRadnja = null;
+		String pRadnja = "bezobzirno nasilnicko ponasanje";
 		String pIzvrsilac = null;
-		String pSubOdnos = "Nehat";
+		String pSubOdnos = null;
 		
 		Obelezje ob = new Obelezje();
 		//o.setIzvrsilac(oIzvrsilac);
@@ -77,6 +93,7 @@ public class TreeTest {
 		ob.setRadnja(oRadnja);
 		ob.setPosledica(oPosledica);
 		ob.setSubjektivanOdnos(oSubOdnos);
+		ob.setZrtva(oZrtva);
 		kSession.insert(ob);
 		
 		Obelezje po = new Obelezje();
@@ -137,6 +154,7 @@ public class TreeTest {
 		System.out.println(end);
 	*/
 		int firedFirstTime = kSession.fireAllRules();
+		System.out.println(firedFirstTime);
 	}
 	
 }

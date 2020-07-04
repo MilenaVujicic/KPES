@@ -30,8 +30,8 @@ insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_
 * 114 1 2
 */
 
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, zrtva, subjektivan_odnos) values('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'smrt, odmah ili kasije', 'Vise od 18', 'umisljaj');
-insert into obelezje(radnja) values('bezobzirno nasilnicko ponasanje');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos) values('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'smrt, odmah ili kasije', 'umisljaj');
+insert into obelezje(radnja, zrtva) values('bezobzirno nasilnicko ponasanje','Vise od 18');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values ('Tesko ubistvo', 5, 100, 114, 1, 2, 5, 6);
 
@@ -39,16 +39,16 @@ insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_
 * 114 1 3
 */
 
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, zrtva, subjektivan_odnos) values('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'smrt, odmah ili kasije', 'Vise od 18', 'umisljaj');
-insert into obelezje(radnja) values('u opasnost doveden zivot jos nekog lica');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica,  subjektivan_odnos) values('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'smrt, odmah ili kasije', 'umisljaj');
+insert into obelezje(zrtva, radnja) values('Vise od 18', 'u opasnost doveden zivot jos nekog lica');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values('Tesko ubistvo', 5, 100, 114, 1, 3, 7, 8);
 
 /*
 * 114 1 4
 */
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos, zrtva) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj','Vise od 18');
-insert into obelezje(radnja) values ( 'Razbojnistvo&Kradja');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj');
+insert into obelezje(radnja, zrtva) values ( 'Razbojnistvo&Kradja','Vise od 18');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values ('Tesko ubistvo', 10, 100, 114, 1, 4, 9, 10);
 
@@ -56,24 +56,24 @@ insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_
 * 114 1 5
 */
 
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos, zrtva) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj','Vise od 18');
-insert into obelezje(radnja) values ('radnja izvrsenja je preduzeta iz niskih pobuda');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj');
+insert into obelezje(radnja, zrtva) values ('radnja izvrsenja je preduzeta iz niskih pobuda','Vise od 18');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values('Tesko ubistvo', 10, 100, 114, 1, 5, 11, 12);
 
 /*
 * 114 1 6
 */
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos, zrtva) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj','Vise od 18');
-insert into obelezje(zrtva) values('status sluzbenog ili vojnog lica koje vrsi svoju duznost');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj');
+insert into obelezje(nacin, zrtva) values('status sluzbenog ili vojnog lica koje vrsi svoju duznost','Vise od 18');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values('Tesko ubistvo', 10, 100, 114, 1, 6, 13, 14);
 
 /*
  * 114 1 7 
  */
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos, zrtva) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj','Vise od 18');
-insert into obelezje(zrtva) values('status sudije, javnog tuzioca, zamenika javnog tuzioca ili policijskog sluzbenika koji vrsi svoju duznost');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj');
+insert into obelezje(nacin, zrtva) values('status sudije, javnog tuzioca, zamenika javnog tuzioca ili policijskog sluzbenika koji vrsi svoju duznost','Vise od 18');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values('Tesko ubistvo', 10, 100, 114, 1, 7, 15, 16);
 
@@ -81,8 +81,8 @@ insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_
  * 114 1 8 
  */
 
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos, zrtva) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj','Vise od 18');
-insert into obelezje(zrtva) values('svojstvo lica koje obavlja poslove od javnog znacaja pri obavljanju tih poslova');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj');
+insert into obelezje(nacin, zrtva) values('svojstvo lica koje obavlja poslove od javnog znacaja pri obavljanju tih poslova','Vise od 18');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values('Tesko ubistvo', 10, 100, 114, 1, 8, 17, 18);
 
@@ -97,8 +97,8 @@ insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_
 /*
  * 114 1 10
  */
-insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos, zrtva) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj','Vise od 18');
-insert into obelezje(zrtva) values('svojstvo zlostavljanog clana porodice izvrisoca');
+insert into obelezje(izvrsilac, vreme, mesto, radnja, posledica, subjektivan_odnos) values ('svako', 'svako', 'svako', 'podobna da prouzrokuje smrt', 'srmt, odmah ili kasnije', 'umisljaj');
+insert into obelezje(nacin, zrtva) values('svojstvo zlostavljanog clana porodice izvrisoca', 'Vise od 18');
 
 insert into delo(naziv, min_kazna, max_kazna, clan, stav, tacka, opste_obelezje_id, posebno_obelezje_id) values('Tesko ubistvo', 10, 100, 114, 1, 10, 21, 22);
 
