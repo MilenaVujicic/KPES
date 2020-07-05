@@ -86,8 +86,12 @@ public class BackwardChainingTest {
 		
 		
 		List<DokazRoot> dokaziRoot = dokazRootService.findAll();
-		for(DokazRoot dr:dokaziRoot)
-			kSession.insert(dr);
+		for(DokazRoot dr:dokaziRoot) {
+			if(dr.getClan() == 0 && dr.getStav() == 0 && dr.getTacka() == 0) {
+				kSession.insert(dr);
+			}
+		}
+			
 
 		List<DokazLeaf> dokaziLeaf = dokazLeafService.findAll();
 		for(DokazLeaf dl:dokaziLeaf) 

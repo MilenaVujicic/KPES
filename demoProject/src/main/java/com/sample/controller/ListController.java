@@ -49,6 +49,9 @@ public class ListController {
 	@Autowired
 	private LinkDService linkDService;
 	
+	@Autowired
+	private DokazRootService dokazRootService;
+	
 	@GetMapping(value = "/tuzioci")
 	public List<Tuzilac> getTuzioci() {
 		return tuzilacService.findAll();
@@ -129,7 +132,6 @@ public class ListController {
 	@GetMapping(value = "/sendDokazi/{response}")
 	public ResponseEntity<String> sendDokazi(@PathVariable("response") String response) {
 		
-		response += "."; // Iz nekog razloga na poslednji selektovan dokaz ne stavi tacku na kraju
 		if (!response.contains("&"))
 			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
 		String[] splitter = response.split("&");
@@ -141,18 +143,12 @@ public class ListController {
 	        KieContainer kContainer = ks.getKieClasspathContainer();
 	        KieSession kSession =  kContainer.newKieSession("ksession-rules");
 	        
-		    List<LinkT> tuziociLink = linkTService.findAll();
+		    List<DokazRoot> dokazRootList = dokazRootService.findAll();
 		        
-	        for(LinkT t : tuziociLink)
-	        	kSession.insert(t);
-	        
-	        List<LinkD> dokazLink = linkDService.findAll();
-	        
-	        for(LinkD d : dokazLink)
-	        	kSession.insert(d);
-	        
+	        for(DokazRoot dr : dokazRootList)
+	        	kSession.insert(dr);	        
         
-        	odgovor += "Dokaz pod nazivom " + splitter[i] + " je potreban za sledeca dela: ";
+        	odgovor += "Dokaz pod nazivom \"" + splitter[i] + "\" je potreban za sledeca dela: ";
         	QueryDataList.getInstance().put("dokaz", splitter[i]);
 	        System.out.println(QueryDataList.getInstance().toString());
 	        kSession.insert(QueryDataList.getInstance());
@@ -165,12 +161,15 @@ public class ListController {
 	        String odg = "";
         	for(LinkDAnswer d:dela) {
 	        	Delo novoDelo = deloService.findByClanTackaStav(d.getClan(),d.getStav(),d.getTacka());
+	        	if(novoDelo == null) {
+	        		continue;
+	        	}
 	        	if (!odg.contains(novoDelo.getNaziv().toUpperCase()))
 			    	odg += novoDelo.getNaziv().toUpperCase() + ", ";
 	        	
 	        }
         	
-        	//odgovor += odg.substring(0, odg.length() - 2);
+        	odgovor += odg.substring(0, odg.length() - 2);
 			if (i < splitter.length - 1)
 				odgovor += "&";
 	        
