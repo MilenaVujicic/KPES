@@ -43,8 +43,9 @@ function proveriDokaze() {
 			$.ajax({
 				url:url,
 				type: 'GET',
-				success: function() {
+				success: function(odgovor) {
 					alert("Success");
+					localStorage.setItem("backward_response", odgovor)
 					window.location = './backward_result.html';
 				},
 				error: function() {
