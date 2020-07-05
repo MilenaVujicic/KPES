@@ -23,6 +23,8 @@ import com.sample.model.Obelezje;
 import com.sample.model.QueryDataList;
 import com.sample.model.Tuzilac;
 import com.sample.service.DeloService;
+import com.sample.service.DokazLeafService;
+import com.sample.service.DokazRootService;
 import com.sample.service.DokazService;
 import com.sample.service.ObelezjeService;
 import com.sample.service.TuzilacService;
@@ -40,6 +42,12 @@ public class BackwardChainingTest {
 	
 	@Autowired
 	DokazService dokazService;
+	
+	@Autowired
+	DokazRootService dokazRootService;
+	
+	@Autowired
+	DokazLeafService dokazLeafService;
 	
 	@Autowired
 	TuzilacService tuzilacService;
@@ -76,19 +84,14 @@ public class BackwardChainingTest {
 		for(Tuzilac t : tuzioci)
 			kSession.insert(t);
 		
-		//test stablo za backwards chaining za dokaze
-		DokazRoot rootDokaz1 = makeTree();
-		kSession.insert(rootDokaz1);
 		
-		for(DokazLeaf dl : rootDokaz1.getDodatniOpis()) {
+		List<DokazRoot> dokaziRoot = dokazRootService.findAll();
+		for(DokazRoot dr:dokaziRoot)
+			kSession.insert(dr);
+
+		List<DokazLeaf> dokaziLeaf = dokazLeafService.findAll();
+		for(DokazLeaf dl:dokaziLeaf) 
 			kSession.insert(dl);
-		}
-		
-		for(DokazLeaf dl : rootDokaz1.getDodatniOpis()) {
-			for(DokazLeaf dl2: dl.getOpisChild()) {
-				kSession.insert(dl2);
-			}
-		}
 
 
 		

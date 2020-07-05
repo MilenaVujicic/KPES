@@ -19,13 +19,11 @@ public class DokazLeaf {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column
+	@Position(0)
 	private String opis;
 	@ManyToOne
-	@Position(0)
 	private DokazRoot dokazParent;
-
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Position(1)
 	private DokazLeaf opisParent;
 	@OneToMany(mappedBy = "opisParent", fetch = FetchType.EAGER)
 	private Set<DokazLeaf> opisChild;
@@ -34,9 +32,22 @@ public class DokazLeaf {
 		
 	}
 	
-	public DokazLeaf(String opis) {
-		super();
-		this.opis = opis;
+	
+	public DokazLeaf(DokazLeaf dl) {
+		if(dl == null) {
+			this.dokazParent = null;
+			this.id = null;
+			this.opis = "";
+			this.opisChild = null;
+			this.opisParent = null;
+		} else {
+			this.dokazParent = dl.dokazParent;
+			this.id = dl.id;
+			this.opis = dl.opis;
+			this.opisChild = dl.opisChild;
+			this.opisParent = dl.opisParent;
+		}
+		
 	}
 	
 	
