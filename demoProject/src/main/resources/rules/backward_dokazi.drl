@@ -10,56 +10,516 @@ import com.sample.model.Tuzilac;
 import com.sample.model.Obelezje;
 import com.sample.model.DokazLeaf;
 import com.sample.model.DokazRoot;
+import com.sample.model.DokazAnswer;
+
+/*
+query Leaf(DokazRoot dokazParent, DokazLeaf opisParent )
+	DokazLeaf(dokazParent,opisParent;)
+	or
+	$dl : DokazLeaf(dokazParent,opisParent;)
+	DokazLeaf(null,$dl;) and Leaf(null,$dl;)
+end*/
+
+/*
+query Leaf(DokazRoot dokazParent, DokazLeaf $opisParent )
+	DokazLeaf(dokazParent,$opisParent;)
+	or
+	DokazLeaf(dokazParent,$opisParent;) and Leaf(dokazParent,$opisParent;)
+end*/
+
+/*
+rule "Leaf dokaz"
+when
+	$root: DokazRoot(  );
+	Leaf($root, $opisParent;)
+then
+	DokazLeaf dl = new DokazLeaf($opisParent);
+	System.out.println("Dokaz \""+$root.getOsnovniOpis()+"\" zahteva dokaz: " + dl.getOpis());
+end*/
 
 
 query Root(String d, int clan, int stav, int tacka)
 	DokazRoot(clan, stav, tacka, d;)
 end
-/*
-query Leaf(DokazRoot dokazParent, DokazLeaf opisParent )
-	DokazLeaf(dokazParent, opisParent;)
-	or
-	DokazLeaf(dokazParent, null;)
-	or
-	DokazLeaf(null, opisParent;)
-end*/
 
-query Leaf(DokazRoot dokazParent, DokazLeaf $opisParent )
-	DokazLeaf(dokazParent,$opisParent;)
-	or
-	DokazLeaf(dokazParent,$opisParent;) and Leaf(null,null;)
+query Leaf(String d)
+	DokazLeaf(d;)
 end
 
-/*
-rule "Root dokaz" //Uvidjaj na licu mesta u testu
-lock-on-active true
-when
-	$queryMap: QueryDataList();
-	$d: String() from  $queryMap.get("dokaz");
-	Root($d, 0, 0, 0;)
-then
-	System.out.println("Delo zahteva dokaz: " + $d);
-end*/
-
-rule "Root dokaz" //Uvidjaj na licu mesta u testu
-lock-on-active true
+rule "Osnovni root dokazi"
 when
 	$queryMap: QueryDataList();
 	$dr : DokazRoot( );
 	$d: String() from  $dr.getOsnovniOpis();
 	Root($d, 0, 0, 0;)
 then
-	System.out.println("Delo zahteva dokaz: " + $d);
+	DokazAnswer da = new DokazAnswer($d);
+	System.out.println("Delo zahteva dokaz: \"" + $d + "\"");
+	insert(da);
 end
 
-rule "Leaf dokaz"
-lock-on-active true
+//1
+rule "Pravljenje zapisnika"
 when
-	$root: DokazRoot(  );
-	Leaf($root, $opisParent;)	
+	$dr : DokazRoot ( osnovniOpis == "Uvidjaj na licu mesta" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
 then
-	System.out.println("Dokaz \""+$root.getOsnovniOpis()+"\" zahteva dokaz: ");
+	DokazAnswer da = new DokazAnswer("Pravljenje zapisnika");
+	System.out.println("Dokaz \"Uvidjaj na licu mesta\" zahteva dokaz: \"Pravljenje zapisnika\"");
+	insert(da);
+end
+
+//2
+rule "Pravljenje video snimka lica mesta"
+when
+	$dl : DokazLeaf ( opis == "Pravljenje zapisnika" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Pravljenje video snimka lica mesta");
+	System.out.println("Dokaz \"Pravljenje zapisnika\" zahteva dokaz: \"Pravljenje video snimka lica mesta\"");
+	insert(da);
+end
+
+//3
+rule "Pravljenje fotografija lica mesta"
+when
+	$dl : DokazLeaf ( opis == "Pravljenje zapisnika" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Pravljenje fotografija lica mesta");
+	System.out.println("Dokaz \"Pravljenje zapisnika\" zahteva dokaz: \"Pravljenje fotografija lica mesta\"");
+	insert(da);
+end
+
+//4
+rule "Pravljenje skice lica mesta"
+when
+	$dl : DokazLeaf ( opis == "Pravljenje zapisnika" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Pravljenje skice lica mesta");
+	System.out.println("Dokaz \"Pravljenje zapisnika\" zahteva dokaz: \"Pravljenje skice lica mesta\"");
+	insert(da);
+end
+
+//5
+rule "Uzimanje bioloskih tragova"
+when
+	$dr : DokazRoot ( osnovniOpis == "Uzimanje tragova sa lica mesta" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje bioloskih tragova");
+	System.out.println("Dokaz \"Uzimanje tragova sa lica mesta\" zahteva dokaz: \"Uzimanje bioloskih tragova\"");
+	insert(da);
+end
+
+//6
+rule "Uzimanje otisaka sa prstiju i dlanova"
+when
+	$dl : DokazLeaf ( opis == "Uzimanje bioloskih tragova" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje otisaka sa prstiju i dlanova");
+	System.out.println("Dokaz \"Uzimanje bioloskih tragova\" zahteva dokaz: \"Uzimanje otisaka sa prstiju i dlanova\"");
+	insert(da);
 end
 
 
+//7
+rule "Uzimanje krvi, dlake, pljuvacke"
+when
+	$dr : DokazRoot ( osnovniOpis == "Uzimanje tragova sa lica mesta" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje krvi, dlake, pljuvacke");
+	System.out.println("Dokaz \"Uzimanje tragova sa lica mesta\" zahteva dokaz: \"Uzimanje krvi, dlake, pljuvacke\"");
+	insert(da);
+end
 
+//8
+rule "Uzimanje sredstava izvrsenja dela"
+when
+	$dr : DokazRoot ( osnovniOpis == "Uzimanje tragova sa lica mesta" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje sredstava izvrsenja dela");
+	System.out.println("Dokaz \"Uzimanje tragova sa lica mesta\" zahteva dokaz: \"Uzimanje sredstava izvrsenja dela\"");
+	insert(da);
+end
+
+//9
+rule "Uzimanje oruzija"
+when
+	$dl : DokazLeaf ( opis == "Uzimanje sredstava izvrsenja dela" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje oruzija");
+	System.out.println("Dokaz \"Uzimanje sredstava izvrsenja dela\" zahteva dokaz: \"Uzimanje oruzija\"");
+	insert(da);
+end
+
+//10
+rule "Uzimanje hrane ili tecnosti kojim je neko otrovan"
+when
+	$dl : DokazLeaf ( opis == "Uzimanje sredstava izvrsenja dela" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje hrane ili tecnosti kojim je neko otrovan");
+	System.out.println("Dokaz \"Uzimanje sredstava izvrsenja dela\" zahteva dokaz: \"Uzimanje hrane ili tecnosti kojim je neko otrovan\"");
+	insert(da);
+end
+
+//11
+rule "Uzimanje otisaka obuce"
+when
+	$dr : DokazRoot ( osnovniOpis == "Uzimanje tragova sa lica mesta" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje otisaka obuce");
+	System.out.println("Dokaz \"Uzimanje tragova sa lica mesta\" zahteva dokaz: \"Uzimanje otisaka obuce\"");
+	insert(da);
+end
+
+//12
+rule "Uzimanje otisaka pneumatika vozila"
+when
+	$dr : DokazRoot ( osnovniOpis == "Uzimanje tragova sa lica mesta" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje otisaka pneumatika vozila");
+	System.out.println("Dokaz \"Uzimanje tragova sa lica mesta\" zahteva dokaz: \"Uzimanje otisaka pneumatika vozila\"");
+	insert(da);
+end
+
+//13
+rule "Uzimanje krvi i urina"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pregled izvrsioca krivicnog dela" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje krvi i urina");
+	System.out.println("Dokaz \"Pregled izvrsioca krivicnog dela\" zahteva dokaz: \"Uzimanje krvi i urina\"");
+	insert(da);
+end
+
+//14
+rule "Uzimanje podnokatnog sadrzaja"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pregled izvrsioca krivicnog dela" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje podnokatnog sadrzaja");
+	System.out.println("Dokaz \"Pregled izvrsioca krivicnog dela\" zahteva dokaz: \"Uzimanje podnokatnog sadrzaja\"");
+	insert(da);
+end
+
+//15
+rule "Uzimanje bukalnog brisa"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pregled izvrsioca krivicnog dela" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje bukalnog brisa");
+	System.out.println("Dokaz \"Pregled izvrsioca krivicnog dela\" zahteva dokaz: \"Uzimanje bukalnog brisa\"");
+	insert(da);
+end
+
+//16
+rule "Uzimanje tragova krivicnog dela"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pregled izvrsioca krivicnog dela" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Uzimanje bukalnog brisa");
+	System.out.println("Dokaz \"Pregled izvrsioca krivicnog dela\" zahteva dokaz: \"Uzimanje tragova krivicnog dela\"");
+	insert(da);
+end
+
+
+//17
+rule "Tragovi tudje krvi"
+when
+	$dl : DokazLeaf ( opis == "Uzimanje tragova krivicnog dela" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Tragovi tudje krvi");
+	System.out.println("Dokaz \"Uzimanje tragova krivicnog dela\" zahteva dokaz: \"Tragovi tudje krvi\"");
+	insert(da);
+end
+
+
+//18
+rule "Tragovi barutnih cestica"
+when
+	$dl : DokazLeaf ( opis == "Uzimanje tragova krivicnog dela" );
+	$d : String() from $dl.getOpis();
+	Leaf($d;)
+then
+	DokazAnswer da = new DokazAnswer("Tragovi barutnih cestica");
+	System.out.println("Dokaz \"Uzimanje tragova krivicnog dela\" zahteva dokaz: \"Tragovi barutnih cestica\"");
+	insert(da);
+end
+
+
+//19
+rule "Sudsko medicinsko vestacenje"
+when
+	$dr : DokazRoot ( osnovniOpis == "Sudsko medicinsko vestacnje" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,1;)
+then
+	DokazAnswer da = new DokazAnswer("mehanizam nanosenja povrede");
+	System.out.println("Delo zahteva dokaz: \"Sudsko medicinsko vestacenje\"");
+	insert(da);
+end
+
+
+//20
+rule "Vrsta povrede"
+when
+	$dr : DokazRoot ( osnovniOpis == "Sudsko medicinsko vestacnje" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Vrsta povrede");
+	System.out.println("Dokaz \"Sudsko medicinsko vestacnje\" zahteva dokaz: \"Vrsta povrede\"");
+	insert(da);
+end
+
+
+//21
+rule "Tezina povrede"
+when
+	$dr : DokazRoot ( osnovniOpis == "Sudsko medicinsko vestacnje" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("Tezina povrede");
+	System.out.println("Dokaz \"Sudsko medicinsko vestacnje\" zahteva dokaz: \"Tezina povrede\"");
+	insert(da);
+end
+
+
+//22
+rule "mehanizam nanosenja povrede"
+when
+	$dr : DokazRoot ( osnovniOpis == "Sudsko medicinsko vestacnje" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,clan,tacka,stav;)
+then
+	DokazAnswer da = new DokazAnswer("mehanizam nanosenja povrede");
+	System.out.println("Dokaz \"Sudsko medicinsko vestacnje\" zahteva dokaz: \"mehanizam nanosenja povrede\"");
+	insert(da);
+end
+
+
+//23
+rule "Pretresanje stana"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pretresanje stana" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,5;)
+then
+	DokazAnswer da = new DokazAnswer("Pretresanje stana");
+	System.out.println("Delo zahteva dokaz: \"Pretresanje stana\"");
+	insert(da);
+end
+
+
+//24
+rule "Izvrsioca krivicnog dela"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pretresanje stana" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,5;)
+then
+	DokazAnswer da = new DokazAnswer("Izvrsioca krivicnog dela");
+	System.out.println("Dokaz \"Pretresanje stana\" zahteva dokaz: \"Izvrsioca krivicnog dela\"");
+	insert(da);
+end
+
+
+//24
+rule "Bliskih srodinka izvrsioca krivicnog dela"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pretresanje stana" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,5;)
+then
+	DokazAnswer da = new DokazAnswer("Bliskih srodinka izvrsioca krivicnog dela");
+	System.out.println("Dokaz \"Pretresanje stana\" zahteva dokaz: \"Bliskih srodinka izvrsioca krivicnog dela\"");
+	insert(da);
+end
+
+
+//25
+rule "Provera finansija zrtve"
+when
+	$dr : DokazRoot ( osnovniOpis == "Pretresanje stana" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,5;)
+then
+	DokazAnswer da = new DokazAnswer("Provera finansija zrtve");
+	System.out.println("Dokaz \"Pretresanje stana\" zahteva dokaz: \"Provera finansija zrtve\"");
+	insert(da);
+end
+
+
+//26
+rule "Dokaz o sluzbi ili funkciji koju je obavljala zrtva 114.1.6"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz o sluzbi ili funkciji koju je obavljala zrtva" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,6;)
+then
+	DokazAnswer da = new DokazAnswer("Dokaz o sluzbi ili funkciji koju je obavljala zrtva");
+	System.out.println("Delo zahteva dokaz: \"Dokaz o sluzbi ili funkciji koju je obavljala zrtva\"");
+	insert(da);
+end
+
+
+//27
+rule "Dokaz o sluzbi ili funkciji koju je obavljala zrtva 114.1.7"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz o sluzbi ili funkciji koju je obavljala zrtva" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,7;)
+then
+	DokazAnswer da = new DokazAnswer("Dokaz o sluzbi ili funkciji koju je obavljala zrtva");
+	System.out.println("Delo zahteva dokaz: \"Dokaz o sluzbi ili funkciji koju je obavljala zrtva\"");
+	insert(da);
+end
+
+
+//28
+rule "Dokaz o sluzbi ili funkciji koju je obavljala zrtva 114.1.8"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz o sluzbi ili funkciji koju je obavljala zrtva" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,8;)
+then
+	DokazAnswer da = new DokazAnswer("Dokaz o sluzbi ili funkciji koju je obavljala zrtva");
+	System.out.println("Delo zahteva dokaz: \"Dokaz o sluzbi ili funkciji koju je obavljala zrtva\"");
+	insert(da);
+end
+
+
+//29
+rule "Dokaz da je zrtva bila dete"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz da je zrtva bila dete" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,9;)
+then
+	DokazAnswer da = new DokazAnswer("Dokaz da je zrtva bila dete");
+	System.out.println("Delo zahteva dokaz: \"Dokaz da je zrtva bila dete\"");
+	insert(da);
+end
+
+
+//30
+rule "Dokaz da je zrtva bila bremenita zena"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz da je zrtva bila bremenita zena" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,9;)
+then
+	DokazAnswer da = new DokazAnswer("Dokaz da je zrtva bila bremenita zena");
+	System.out.println("Delo zahteva dokaz: \"Dokaz da je zrtva bila bremenita zena\"");
+	insert(da);
+end
+
+
+//31
+rule "Dokaz da je pocinilac clan porodice"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz da je pocinilac clan porodice" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,9;)
+then
+	DokazAnswer da = new DokazAnswer("Dokaz da je pocinilac clan porodice");
+	System.out.println("Delo zahteva dokaz: \"Dokaz da je pocinilac clan porodice\"");
+	insert(da);
+end
+
+
+//32
+rule "Izvod iz maticne knjige rodjenih"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz da je pocinilac clan porodice" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,9;)
+then
+	DokazAnswer da = new DokazAnswer("Izvod iz maticne knjige rodjenih");
+	System.out.println("Dokaz \"Dokaz da je pocinilac clan porodice\" zahteva dokaz: \"Izvod iz maticne knjige rodjenih\"");
+	insert(da);
+end
+
+
+//33
+rule "Izvod iz maticne knjige vencanih"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz da je pocinilac clan porodice" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,9;)
+then
+	DokazAnswer da = new DokazAnswer("Izvod iz maticne knjige vencanih");
+	System.out.println("Dokaz \"Dokaz da je pocinilac clan porodice\" zahteva dokaz: \"Izvod iz maticne knjige vencanih\"");
+	insert(da);
+end
+
+
+//34
+rule "Resenje o starateljstvu ili hraniteljskom odnosu"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz da je pocinilac clan porodice" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,9;)
+then
+	DokazAnswer da = new DokazAnswer("Resenje o starateljstvu ili hraniteljskom odnosu");
+	System.out.println("Dokaz \"Dokaz da je pocinilac clan porodice\" zahteva dokaz: \"Resenje o starateljstvu ili hraniteljskom odnosu\"");
+	insert(da);
+end
+
+
+//35
+rule "Sudsko psiholosko vestacenje pocinioca"
+when
+	$dr : DokazRoot ( osnovniOpis == "Sudsko psiholosko vestacenje pocinioca" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,114,1,9;)
+then
+	DokazAnswer da = new DokazAnswer("Sudsko psiholosko vestacenje pocinioca");
+	System.out.println("Delo zahteva dokaz: \"Sudsko psiholosko vestacenje pocinioca\"");
+	insert(da);
+end
+
+
+//36
+rule "Dokaz o sluzbi ili funkciji koju je obavljala zrtva 310.0.0"
+when
+	$dr : DokazRoot ( osnovniOpis == "Dokaz o sluzbi ili funkciji koju je obavljala zrtva" );
+	$d : String() from $dr.getOsnovniOpis();
+	Root($d,310,0,0;)
+then
+	DokazAnswer da = new DokazAnswer("Dokaz o sluzbi ili funkciji koju je obavljala zrtva");
+	System.out.println("Delo zahteva dokaz: \"Dokaz o sluzbi ili funkciji koju je obavljala zrtva\"");
+	insert(da);
+end
